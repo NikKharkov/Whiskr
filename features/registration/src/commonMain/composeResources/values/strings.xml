@@ -1,0 +1,11 @@
+<resources>
+    <string name="step1">Step 1 of 2</string>
+    <string name="step2">Step 2 of 2</string>
+    <string name="name">Name</string>
+    <string name="username">Username</string>
+    <string name="create_account">Create your account</string>
+    <string name="add_photo">Add photo (optional)</string>
+    <string name="next">Next: Add Pet</string>
+    <string name="registration_title">How should we call you?</string>
+    <string name="registration_caption">Your pets will be the stars, but we need to know who feeds them.</string>
+</resources>

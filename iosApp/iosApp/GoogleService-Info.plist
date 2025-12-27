@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>636998600750-16bbquj27h7d2t9dg2v7pvophgcgr4mg.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.636998600750-16bbquj27h7d2t9dg2v7pvophgcgr4mg</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>636998600750-vrfnb0qknr5ihre2f788md9638lbi6gc.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB7NEWe-Rz6C_NvGkrs0HjbgSH0iX46Hjc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>636998600750</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.example.whiskr</string>
+	<key>PROJECT_ID</key>
+	<string>whiskr-ceb25</string>
+	<key>STORAGE_BUCKET</key>
+	<string>whiskr-ceb25.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:636998600750:ios:f55ef966dc471d5a49f7bf</string>
+</dict>
+</plist>

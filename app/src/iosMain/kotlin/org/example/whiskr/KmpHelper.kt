@@ -1,0 +1,36 @@
+package org.example.whiskr
+
+import com.arkivanov.decompose.DefaultComponentContext
+import com.arkivanov.essenty.lifecycle.LifecycleRegistry
+import com.arkivanov.essenty.lifecycle.destroy
+import com.arkivanov.essenty.lifecycle.pause
+import com.arkivanov.essenty.lifecycle.resume
+import com.arkivanov.essenty.lifecycle.stop
+import org.example.whiskr.di.createIosComponent
+
+object KmpHelper {
+    private val lifecycle = LifecycleRegistry()
+
+    private val appComponent = createIosComponent()
+
+    val root =
+        appComponent.rootComponentFactory(
+            DefaultComponentContext(lifecycle = lifecycle),
+        )
+
+    fun resume() {
+        lifecycle.resume()
+    }
+
+    fun pause() {
+        lifecycle.pause()
+    }
+
+    fun stop() {
+        lifecycle.stop()
+    }
+
+    fun destroy() {
+        lifecycle.destroy()
+    }
+}

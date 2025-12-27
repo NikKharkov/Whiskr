@@ -1,0 +1,23 @@
+<resources>
+    <string name="whisp">Whisp</string>
+    <string name="whiskr">Whiskr</string>
+
+    <string name="welcome_text">See what's happening in the pet world right now</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="continue_with_apple">Continue with Apple</string>
+    <string name="or">or</string>
+    <string name="next">Next</string>
+    <string name="create_account">Create account</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="log_in">Log in</string>
+    <string name="sign_in">Sign in</string>
+
+    <string name="email_input_title">Enter your email</string>
+    <string name="email_input_subtitle">We'll send you a code to verify it.</string>
+
+    <string name="otp_toolbar_title">Verification</string>
+    <string name="otp_code_sent">We sent you a code</string>
+    <string name="otp_sent_description">Check your email at %1$s</string>
+    <string name="otp_resend_timer">Didn't receive it? Resend in %1$s</string>
+    <string name="otp_resend_now">Resend Code</string>
+</resources>
