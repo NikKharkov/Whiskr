@@ -13,7 +13,7 @@ class AuthRepositoryImpl(
 ) : AuthRepository {
     override suspend fun login(idToken: String): Result<Unit> {
         return try {
-            val response = authApi.googleLogin(SocialLoginRequestDto(idToken))
+            val response = authApi.socialLogin(SocialLoginRequestDto(idToken))
 
             tokenStorage.accessToken = response.accessToken
             tokenStorage.refreshToken = response.refreshToken

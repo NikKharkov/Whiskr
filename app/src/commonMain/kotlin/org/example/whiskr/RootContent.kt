@@ -38,7 +38,7 @@ fun RootContent(rootComponent: RootComponent) {
             when (child) {
                 is RootComponent.DialogChild.Login -> LoginScreen(child.loginComponent)
                 is RootComponent.DialogChild.Verification -> VerifyScreen(child.verificationComponent)
-                is RootComponent.DialogChild.Registration -> UserRegistrationScreen(child.userRegistrationComponent)
+                is RootComponent.DialogChild.UserRegistration -> UserRegistrationScreen(child.userRegistrationComponent)
             }
         }
     }

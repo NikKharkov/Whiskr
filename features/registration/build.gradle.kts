@@ -11,4 +11,5 @@ dependencies {
     commonMainImplementation(libs.peekaboo.image.picker)
     commonMainImplementation(libs.coil.compose)
     commonMainImplementation(libs.coil.network)
+    commonMainImplementation(libs.kotlinx.datetime)
 }

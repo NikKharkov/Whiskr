@@ -10,6 +10,7 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.replaceAll
 import component.MainComponent
+import component.pet.PetRegistrationComponent
 import component.user.UserRegistrationComponent
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
@@ -23,7 +24,8 @@ class DefaultRootComponent(
     private val welcomeFactory: WelcomeComponent.Factory,
     private val loginFactory: LoginComponent.Factory,
     private val verificationFactory: VerificationComponent.Factory,
-    private val registrationFactory: UserRegistrationComponent.Factory,
+    private val userRegistrationFactory: UserRegistrationComponent.Factory,
+    private val petRegistrationFactory: PetRegistrationComponent.Factory,
     private val mainFactory: MainComponent.Factory,
     private val authRepository: AuthRepository,
     @Assisted private val componentContext: ComponentContext,
@@ -70,7 +72,7 @@ class DefaultRootComponent(
                             dialogNavigation.activate(RootComponent.DialogConfig.Login)
                         },
                         onNavigateToMain = { navigation.replaceAll(RootComponent.StackConfig.Main) },
-                    ),
+                    )
                 )
 
             RootComponent.StackConfig.Main ->
@@ -83,9 +85,9 @@ class DefaultRootComponent(
                             },
                             onProfileMissing = {
                                 navigation.replaceAll(RootComponent.StackConfig.Welcome)
-                                dialogNavigation.activate(RootComponent.DialogConfig.Registration)
+                                dialogNavigation.activate(RootComponent.DialogConfig.UserRegistration)
                             },
-                        ),
+                        )
                 )
         }
 
@@ -102,7 +104,7 @@ class DefaultRootComponent(
                         onNavigateToVerify = { email ->
                             dialogNavigation.activate(RootComponent.DialogConfig.Verification(email))
                         },
-                    ),
+                    )
                 )
 
             is RootComponent.DialogConfig.Verification ->
@@ -110,17 +112,25 @@ class DefaultRootComponent(
                     verificationFactory(
                         componentContext = componentContext,
                         email = config.email,
-                        onVerified = { dialogNavigation.activate(RootComponent.DialogConfig.Registration) },
+                        onVerified = { dialogNavigation.activate(RootComponent.DialogConfig.UserRegistration) },
                         onBack = { dialogNavigation.activate(RootComponent.DialogConfig.Login) },
-                    ),
+                    )
                 )
 
-            RootComponent.DialogConfig.Registration ->
-                RootComponent.DialogChild.Registration(
-                    registrationFactory(
+            RootComponent.DialogConfig.UserRegistration ->
+                RootComponent.DialogChild.UserRegistration(
+                    userRegistrationFactory(
                         componentContext = componentContext,
-                        onNextClicked = {},
-                    ),
+                        onNextClicked = { dialogNavigation.activate(RootComponent.DialogConfig.PetRegistration) },
+                    )
+                )
+
+            RootComponent.DialogConfig.PetRegistration ->
+                RootComponent.DialogChild.PetRegistration(
+                    petRegistrationFactory(
+                        componentContext = componentContext,
+                        onFinished = { navigation.replaceAll(RootComponent.StackConfig.Main) }
+                    )
                 )
         }
     }

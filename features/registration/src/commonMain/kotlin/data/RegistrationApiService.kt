@@ -9,4 +9,7 @@ interface RegistrationApiService {
 
     @POST("profile/register")
     suspend fun registerUser(@Body body: MultiPartFormDataContent): HttpResponse
+
+    @POST("pet/save")
+    suspend fun savePet(@Body body: MultiPartFormDataContent): HttpResponse
 }

@@ -8,4 +8,16 @@
     <string name="next">Next: Add Pet</string>
     <string name="registration_title">How should we call you?</string>
     <string name="registration_caption">Your pets will be the stars, but we need to know who feeds them.</string>
+
+    <string name="pet_cat">Cat</string>
+    <string name="pet_dog">Dog</string>
+    <string name="pet_parrot">Parrot</string>
+    <string name="pet_hamster">Hamster</string>
+    <string name="pet_rabbit">Rabbit</string>
+    <string name="pet_fish">Fish</string>
+    <string name="pet_turtle">Turtle</string>
+    <string name="pet_snake">Snake</string>
+    <string name="pet_spider">Spider</string>
+    <string name="pet_horse">Horse</string>
+    <string name="pet_other">Other</string>
 </resources>

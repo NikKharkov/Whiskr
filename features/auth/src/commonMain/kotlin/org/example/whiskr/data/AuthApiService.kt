@@ -9,7 +9,7 @@ import org.example.whiskr.dto.AuthResponseDto
 interface AuthApiService {
     @Headers("Content-Type: application/json")
     @POST("auth/login")
-    suspend fun googleLogin(
+    suspend fun socialLogin(
         @Body request: SocialLoginRequestDto,
     ): AuthResponseDto
 
