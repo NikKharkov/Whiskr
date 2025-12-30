@@ -25,4 +25,5 @@ class FakePetRegistrationComponent(
 
     override fun onSkipClicked() {}
     override fun onSaveClicked() {}
+    override fun onBackClicked() {}
 }

@@ -2,7 +2,6 @@ package component.pet
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
-import component.user.UserRegistrationComponent
 import data.PetGender
 import data.PetType
 import kotlinx.datetime.LocalDate
@@ -12,6 +11,7 @@ interface PetRegistrationComponent {
 
     fun onSkipClicked()
     fun onSaveClicked()
+    fun onBackClicked()
     fun onNameChanged(name: String)
     fun onTypeChanged(type: PetType)
     fun onGenderChanged(gender: PetGender)
@@ -26,7 +26,8 @@ interface PetRegistrationComponent {
         val birthDate: LocalDate? = null,
         val isLoading: Boolean = false,
         val error: String? = null,
-        val isSaveEnabled: Boolean = false
+        val isSaveEnabled: Boolean = false,
+        val isSkipMode: Boolean = true
     ) {
         val showSkipButton: Boolean
             get() = name.isNullOrBlank() && type == null && gender == null && birthDate == null
@@ -35,7 +36,8 @@ interface PetRegistrationComponent {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            onFinished: () -> Unit
+            onFinished: () -> Unit,
+            onBack: () -> Unit
         ): PetRegistrationComponent
     }
 }

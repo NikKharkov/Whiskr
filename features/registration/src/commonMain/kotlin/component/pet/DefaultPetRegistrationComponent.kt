@@ -18,6 +18,7 @@ import org.example.whiskr.component.componentScope
 class DefaultPetRegistrationComponent(
     @Assisted private val componentContext: ComponentContext,
     @Assisted private val onFinished: () -> Unit,
+    @Assisted private val onBack: () -> Unit,
     private val registrationRepository: RegistrationRepository
 ) : PetRegistrationComponent, ComponentContext by componentContext {
 
@@ -28,6 +29,8 @@ class DefaultPetRegistrationComponent(
     override val model: Value<PetRegistrationComponent.Model> = _model
 
     override fun onSkipClicked() = onFinished()
+
+    override fun onBackClicked() = onBack()
 
     override fun onSaveClicked() {
         val state = _model.value
@@ -60,41 +63,44 @@ class DefaultPetRegistrationComponent(
     }
 
     override fun onNameChanged(name: String) {
-        _model.update {
-            val newState = it.copy(name = name, error = null)
-            newState.copy(isSaveEnabled = validate(newState))
-        }
+        updateState { it.copy(name = name, error = null) }
     }
 
     override fun onTypeChanged(type: PetType) {
-        _model.update {
-            val newState = it.copy(type = type, error = null)
-            newState.copy(isSaveEnabled = validate(newState))
-        }
+        updateState { it.copy(type = type, error = null) }
     }
 
     override fun onGenderChanged(gender: PetGender) {
-        _model.update {
-            val newState = it.copy(gender = gender, error = null)
-            newState.copy(isSaveEnabled = validate(newState))
-        }
+        updateState { it.copy(gender = gender, error = null) }
     }
 
     override fun onBirthDateChanged(date: LocalDate) {
-        _model.update {
-            val newState = it.copy(birthDate = date, error = null)
-            newState.copy(isSaveEnabled = validate(newState))
-        }
+        updateState { it.copy(birthDate = date, error = null) }
     }
 
     override fun onAvatarSelected(avatarBytes: ByteArray) {
-        _model.update { it.copy(avatarBytes = avatarBytes) }
+        updateState { it.copy(avatarBytes = avatarBytes) }
     }
 
-    private fun validate(state: PetRegistrationComponent.Model): Boolean {
-        return !state.name.isNullOrBlank() &&
-                state.type != null &&
-                state.gender != null &&
-                state.birthDate != null
+    private fun updateState(reducer: (PetRegistrationComponent.Model) -> PetRegistrationComponent.Model) {
+        _model.update { oldState ->
+            val newState = reducer(oldState)
+
+            val isFormEmpty = newState.name.isNullOrBlank() &&
+                    newState.type == null &&
+                    newState.gender == null &&
+                    newState.birthDate == null &&
+                    newState.avatarBytes == null
+
+            val isValid = !newState.name.isNullOrBlank() &&
+                    newState.type != null &&
+                    newState.gender != null &&
+                    newState.birthDate != null
+
+            newState.copy(
+                isSkipMode = isFormEmpty,
+                isSaveEnabled = isValid
+            )
+        }
     }
 }

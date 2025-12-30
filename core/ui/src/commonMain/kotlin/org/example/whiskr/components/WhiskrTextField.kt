@@ -72,6 +72,9 @@ fun WhiskrTextField(
             shape = shape,
             singleLine = true,
             colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = WhiskrTheme.colors.onBackground,
+                unfocusedTextColor = WhiskrTheme.colors.onBackground,
+                disabledTextColor = WhiskrTheme.colors.onBackground,
                 focusedBorderColor = WhiskrTheme.colors.primary,
                 unfocusedBorderColor = WhiskrTheme.colors.outline,
                 errorBorderColor = WhiskrTheme.colors.error,

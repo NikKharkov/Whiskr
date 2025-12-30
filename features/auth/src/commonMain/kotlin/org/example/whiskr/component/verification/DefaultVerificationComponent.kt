@@ -18,7 +18,7 @@ class DefaultVerificationComponent(
     @Assisted componentContext: ComponentContext,
     @Assisted private val email: String,
     @Assisted private val onBack: () -> Unit,
-    @Assisted private val onVerified: () -> Unit,
+    @Assisted private val onVerified: (Boolean) -> Unit,
     private val authRepository: AuthRepository,
 ) : VerificationComponent, ComponentContext by componentContext {
     private val scope = componentScope()
@@ -47,9 +47,9 @@ class DefaultVerificationComponent(
 
         scope.launch {
             authRepository.verifyOtp(email, code)
-                .onSuccess {
+                .onSuccess { isNewUser ->
                     _model.update { it.copy(isLoading = false) }
-                    onVerified()
+                    onVerified(isNewUser)
                 }
                 .onFailure {
                     _model.update {

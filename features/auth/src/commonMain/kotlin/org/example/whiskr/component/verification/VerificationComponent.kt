@@ -29,7 +29,7 @@ interface VerificationComponent {
             componentContext: ComponentContext,
             email: String,
             onBack: () -> Unit,
-            onVerified: () -> Unit,
+            onVerified: (isNewUser: Boolean) -> Unit
         ): VerificationComponent
     }
 }

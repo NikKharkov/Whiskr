@@ -39,17 +39,14 @@ class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun verifyOtp(
-        email: String,
-        code: String,
-    ): Result<Unit> {
+    override suspend fun verifyOtp(email: String, code: String): Result<Boolean> {
         return try {
             val response = authApi.verifyOtp(VerifyRequestDto(email, code))
 
             tokenStorage.accessToken = response.accessToken
             tokenStorage.refreshToken = response.refreshToken
 
-            Result.success(Unit)
+            Result.success(response.isNewUser)
         } catch (e: Exception) {
             Logger.withTag("AuthRepository").e(e) { "OTP verification failed" }
             Result.failure(e)

@@ -9,6 +9,15 @@
     <string name="registration_title">How should we call you?</string>
     <string name="registration_caption">Your pets will be the stars, but we need to know who feeds them.</string>
 
+    <string name="pet_registration_title">Who is the star?</string>
+    <string name="pet_registration_caption">Add your first companion</string>
+    <string name="pets_name">Pet's name</string>
+    <string name="its_a">It's a...</string>
+    <string name="gender">Gender</string>
+    <string name="birthday">Birthday</string>
+    <string name="skip">Skip</string>
+    <string name="complete_n_welcome">Complete Setup &amp; Welcome!</string>
+
     <string name="pet_cat">Cat</string>
     <string name="pet_dog">Dog</string>
     <string name="pet_parrot">Parrot</string>
@@ -20,4 +29,8 @@
     <string name="pet_spider">Spider</string>
     <string name="pet_horse">Horse</string>
     <string name="pet_other">Other</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="birthdatepicker_hint">DD.MM.YYYY</string>
 </resources>

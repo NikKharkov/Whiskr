@@ -33,7 +33,7 @@ import whiskr.features.registration.generated.resources.ic_add
 import whiskr.features.registration.generated.resources.ic_camera
 
 @Composable
-fun ProfilePhotoInput(
+fun ProfilePhotoSelector(
     modifier: Modifier = Modifier,
     avatarBytes: ByteArray?,
     onAvatarSelected: (ByteArray) -> Unit

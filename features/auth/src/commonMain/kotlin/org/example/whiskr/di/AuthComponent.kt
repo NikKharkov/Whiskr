@@ -42,7 +42,7 @@ interface AuthComponent {
     @Provides
     @Singleton
     fun provideVerificationFactory(
-        factory: (ComponentContext, String, () -> Unit, () -> Unit) -> DefaultVerificationComponent,
+        factory: (ComponentContext, String, () -> Unit, (Boolean) -> Unit) -> DefaultVerificationComponent,
     ): VerificationComponent.Factory {
         return VerificationComponent.Factory(factory)
     }

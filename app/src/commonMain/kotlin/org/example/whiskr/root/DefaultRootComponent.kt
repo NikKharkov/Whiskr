@@ -10,8 +10,7 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.replaceAll
 import component.MainComponent
-import component.pet.PetRegistrationComponent
-import component.user.UserRegistrationComponent
+import component.RegistrationWizardComponent
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.component.login.LoginComponent
@@ -24,8 +23,7 @@ class DefaultRootComponent(
     private val welcomeFactory: WelcomeComponent.Factory,
     private val loginFactory: LoginComponent.Factory,
     private val verificationFactory: VerificationComponent.Factory,
-    private val userRegistrationFactory: UserRegistrationComponent.Factory,
-    private val petRegistrationFactory: PetRegistrationComponent.Factory,
+    private val registrationFactory: RegistrationWizardComponent.Factory,
     private val mainFactory: MainComponent.Factory,
     private val authRepository: AuthRepository,
     @Assisted private val componentContext: ComponentContext,
@@ -45,9 +43,8 @@ class DefaultRootComponent(
             source = navigation,
             serializer = RootComponent.StackConfig.serializer(),
             initialConfiguration = startConfig,
-//        initialConfiguration = RootComponent.StackConfig.Welcome,
             handleBackButton = true,
-            childFactory = ::createStackChild,
+            childFactory = ::createStackChild
         )
 
     override val dialogSlot =
@@ -69,7 +66,7 @@ class DefaultRootComponent(
                     welcomeFactory(
                         componentContext = componentContext,
                         onNavigateToLogin = {
-                            dialogNavigation.activate(RootComponent.DialogConfig.Login)
+                             dialogNavigation.activate(RootComponent.DialogConfig.Login)
                         },
                         onNavigateToMain = { navigation.replaceAll(RootComponent.StackConfig.Main) },
                     )
@@ -85,8 +82,8 @@ class DefaultRootComponent(
                             },
                             onProfileMissing = {
                                 navigation.replaceAll(RootComponent.StackConfig.Welcome)
-                                dialogNavigation.activate(RootComponent.DialogConfig.UserRegistration)
-                            },
+                                dialogNavigation.activate(RootComponent.DialogConfig.RegistrationWizard)
+                            }
                         )
                 )
         }
@@ -112,24 +109,26 @@ class DefaultRootComponent(
                     verificationFactory(
                         componentContext = componentContext,
                         email = config.email,
-                        onVerified = { dialogNavigation.activate(RootComponent.DialogConfig.UserRegistration) },
+                        onVerified = { isNewUser ->
+                            if (isNewUser) {
+                                dialogNavigation.activate(RootComponent.DialogConfig.RegistrationWizard)
+                            } else {
+                                navigation.replaceAll(RootComponent.StackConfig.Main)
+                                dialogNavigation.dismiss()
+                            }
+                        },
                         onBack = { dialogNavigation.activate(RootComponent.DialogConfig.Login) },
                     )
                 )
 
-            RootComponent.DialogConfig.UserRegistration ->
-                RootComponent.DialogChild.UserRegistration(
-                    userRegistrationFactory(
+            RootComponent.DialogConfig.RegistrationWizard ->
+                RootComponent.DialogChild.RegistrationWizard(
+                    registrationFactory(
                         componentContext = componentContext,
-                        onNextClicked = { dialogNavigation.activate(RootComponent.DialogConfig.PetRegistration) },
-                    )
-                )
-
-            RootComponent.DialogConfig.PetRegistration ->
-                RootComponent.DialogChild.PetRegistration(
-                    petRegistrationFactory(
-                        componentContext = componentContext,
-                        onFinished = { navigation.replaceAll(RootComponent.StackConfig.Main) }
+                        onWizardFinished = {
+                            navigation.replaceAll(RootComponent.StackConfig.Main)
+                            dialogNavigation.dismiss()
+                        }
                     )
                 )
         }

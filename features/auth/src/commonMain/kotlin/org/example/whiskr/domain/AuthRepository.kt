@@ -5,10 +5,7 @@ interface AuthRepository {
 
     suspend fun requestOtp(email: String): Result<Unit>
 
-    suspend fun verifyOtp(
-        email: String,
-        code: String,
-    ): Result<Unit>
+    suspend fun verifyOtp(email: String, code: String): Result<Boolean>
 
     fun isUserLoggedIn(): Boolean
 }

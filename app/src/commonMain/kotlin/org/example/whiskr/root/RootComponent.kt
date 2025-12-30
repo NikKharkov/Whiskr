@@ -5,8 +5,7 @@ import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import component.MainComponent
-import component.pet.PetRegistrationComponent
-import component.user.UserRegistrationComponent
+import component.RegistrationWizardComponent
 import kotlinx.serialization.Serializable
 import org.example.whiskr.component.login.LoginComponent
 import org.example.whiskr.component.verification.VerificationComponent
@@ -34,27 +33,18 @@ interface RootComponent {
         data class Verification(val email: String) : DialogConfig
 
         @Serializable
-        data object UserRegistration : DialogConfig
-
-        @Serializable
-        data object PetRegistration : DialogConfig
+        data object RegistrationWizard : DialogConfig
     }
 
     sealed interface StackChild {
         class Welcome(val welcomeComponent: WelcomeComponent) : StackChild
-
         class Main(val mainComponent: MainComponent) : StackChild
     }
 
     sealed interface DialogChild {
         class Login(val loginComponent: LoginComponent) : DialogChild
-
         class Verification(val verificationComponent: VerificationComponent) : DialogChild
-
-        class UserRegistration(val userRegistrationComponent: UserRegistrationComponent) : DialogChild
-
-        class PetRegistration(val petRegistrationComponent: PetRegistrationComponent) : DialogChild
-
+        class RegistrationWizard(val registrationComponent: RegistrationWizardComponent) : DialogChild
     }
 
     fun interface Factory {

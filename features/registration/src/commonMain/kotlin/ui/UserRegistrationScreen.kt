@@ -29,7 +29,7 @@ import org.example.whiskr.theme.WhiskrTheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.components.HandleVisualTransformation
-import ui.components.ProfilePhotoInput
+import ui.components.ProfilePhotoSelector
 import whiskr.features.registration.generated.resources.Res
 import whiskr.features.registration.generated.resources.create_account
 import whiskr.features.registration.generated.resources.name
@@ -87,7 +87,7 @@ fun UserRegistrationScreen(
                 )
             }
 
-            ProfilePhotoInput(
+            ProfilePhotoSelector(
                 avatarBytes = model.avatarBytes,
                 onAvatarSelected = userRegistrationComponent::onAvatarSelected
             )

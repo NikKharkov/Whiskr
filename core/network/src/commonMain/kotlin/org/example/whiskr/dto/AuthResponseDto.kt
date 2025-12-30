@@ -5,5 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class AuthResponseDto(
     val accessToken: String,
-    val refreshToken: String
+    val refreshToken: String,
+    val isNewUser: Boolean
 )

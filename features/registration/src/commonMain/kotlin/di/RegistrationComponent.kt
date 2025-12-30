@@ -1,6 +1,8 @@
 package di
 
 import com.arkivanov.decompose.ComponentContext
+import component.DefaultRegistrationWizardComponent
+import component.RegistrationWizardComponent
 import component.pet.DefaultPetRegistrationComponent
 import component.pet.PetRegistrationComponent
 import component.user.DefaultUserRegistrationComponent
@@ -36,8 +38,16 @@ interface RegistrationComponent {
     @Provides
     @Singleton
     fun providePetRegistrationFactory(
-        factory: (ComponentContext, () -> Unit) -> DefaultPetRegistrationComponent
+        factory: (ComponentContext, () -> Unit, () -> Unit) -> DefaultPetRegistrationComponent
     ): PetRegistrationComponent.Factory {
         return PetRegistrationComponent.Factory(factory)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRegistrationWizardFactory(
+        factory: (ComponentContext, () -> Unit) -> DefaultRegistrationWizardComponent
+    ): RegistrationWizardComponent.Factory {
+        return RegistrationWizardComponent.Factory(factory)
     }
 }
