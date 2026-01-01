@@ -20,6 +20,10 @@ class TokenStorage(private val kvault: KVault) {
             else kvault.deleteObject(REFRESH_TOKEN)
         }
 
+    val isUserLoggedIn: Boolean
+        get() = !kvault.string(ACCESS_TOKEN).isNullOrBlank() &&
+                !kvault.string(REFRESH_TOKEN).isNullOrBlank()
+
     fun clear() {
         kvault.clear()
     }

@@ -34,8 +34,8 @@ import whiskr.features.auth.generated.resources.next
 import whiskr.features.auth.generated.resources.whisp
 
 @Composable
-fun LoginScreen(loginComponent: LoginComponent) {
-    val model by loginComponent.model.subscribeAsState()
+fun LoginScreen(component: LoginComponent) {
+    val model by component.model.subscribeAsState()
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val isTablet = maxWidth > 600.dp
@@ -45,7 +45,7 @@ fun LoginScreen(loginComponent: LoginComponent) {
             topBar = {
                 SimpleTopBar(
                     icon = painterResource(Res.drawable.ic_close),
-                    onIconClick = loginComponent::onBackClicked,
+                    onIconClick = component::onBackClicked,
                     title = {
                         Icon(
                             painter = painterResource(Res.drawable.whisp),
@@ -75,7 +75,7 @@ fun LoginScreen(loginComponent: LoginComponent) {
 
             WhiskrTextField(
                 value = model.email,
-                onValueChange = loginComponent::onEmailChanged,
+                onValueChange = component::onEmailChanged,
                 hint = "example@gmail.com",
                 errorMessage = model.errorMessage,
                 enabled = !model.isLoading,
@@ -83,7 +83,7 @@ fun LoginScreen(loginComponent: LoginComponent) {
                 imeAction = ImeAction.Next,
                 onImeAction = {
                     if (model.isNextButtonEnabled && !model.isLoading) {
-                        loginComponent.onNextClicked()
+                        component.onNextClicked()
                     }
                 },
             )
@@ -93,7 +93,7 @@ fun LoginScreen(loginComponent: LoginComponent) {
             WhiskrButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(Res.string.next),
-                onClick = loginComponent::onNextClicked,
+                onClick = component::onNextClicked,
                 enabled = model.isNextButtonEnabled,
                 isLoading = model.isLoading,
                 contentColor = Color.White,
@@ -107,7 +107,7 @@ fun LoginScreen(loginComponent: LoginComponent) {
 private fun LoginScreenPreview() {
     WhiskrTheme(isDarkTheme = false) {
         LoginScreen(
-            loginComponent = FakeLoginComponent(),
+            component = FakeLoginComponent(),
         )
     }
 }
@@ -117,7 +117,7 @@ private fun LoginScreenPreview() {
 private fun LoginScreenDarkThemePreview() {
     WhiskrTheme(isDarkTheme = true) {
         LoginScreen(
-            loginComponent = FakeLoginComponent(),
+            component = FakeLoginComponent(),
         )
     }
 }
@@ -127,7 +127,7 @@ private fun LoginScreenDarkThemePreview() {
 private fun LoginScreenTabletPreview() {
     WhiskrTheme(isDarkTheme = false) {
         LoginScreen(
-            loginComponent = FakeLoginComponent(),
+            component = FakeLoginComponent(),
         )
     }
 }

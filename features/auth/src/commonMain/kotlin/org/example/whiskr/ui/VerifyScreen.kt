@@ -36,8 +36,8 @@ import whiskr.features.auth.generated.resources.otp_sent_description
 import whiskr.features.auth.generated.resources.otp_toolbar_title
 
 @Composable
-fun VerifyScreen(verificationComponent: VerificationComponent) {
-    val model by verificationComponent.model.subscribeAsState()
+fun VerifyScreen(component: VerificationComponent) {
+    val model by component.model.subscribeAsState()
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val isTablet = maxWidth > 600.dp
@@ -47,7 +47,7 @@ fun VerifyScreen(verificationComponent: VerificationComponent) {
             topBar = {
                 SimpleTopBar(
                     icon = painterResource(Res.drawable.ic_arrow_back),
-                    onIconClick = verificationComponent::onBackClicked,
+                    onIconClick = component::onBackClicked,
                     title = {
                         Text(
                             text = stringResource(Res.string.otp_toolbar_title),
@@ -76,7 +76,7 @@ fun VerifyScreen(verificationComponent: VerificationComponent) {
 
             WhiskrOtpInput(
                 code = model.code,
-                onValueChange = verificationComponent::onCodeChanged,
+                onValueChange = component::onCodeChanged,
                 errorMessage = model.error,
                 enabled = !model.isLoading,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -90,7 +90,7 @@ fun VerifyScreen(verificationComponent: VerificationComponent) {
                     Text(
                         text = stringResource(Res.string.otp_resend_now),
                         color = WhiskrTheme.colors.primary,
-                        modifier = Modifier.customClickable(onClick = verificationComponent::onResendClicked),
+                        modifier = Modifier.customClickable(onClick = component::onResendClicked),
                     )
                 } else {
                     val minutes = model.timerSeconds / 60
@@ -110,7 +110,7 @@ fun VerifyScreen(verificationComponent: VerificationComponent) {
             WhiskrButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(Res.string.next),
-                onClick = verificationComponent::onVerifyClicked,
+                onClick = component::onVerifyClicked,
                 enabled = model.isVerifyEnabled,
                 contentColor = Color.White,
                 isLoading = model.isLoading,
@@ -124,7 +124,7 @@ fun VerifyScreen(verificationComponent: VerificationComponent) {
 private fun VerifyScreenPreview() {
     WhiskrTheme(isDarkTheme = false) {
         VerifyScreen(
-            verificationComponent = FakeVerificationComponent(),
+            component = FakeVerificationComponent(),
         )
     }
 }
@@ -134,7 +134,7 @@ private fun VerifyScreenPreview() {
 private fun VerifyScreenDarkThemePreview() {
     WhiskrTheme(isDarkTheme = true) {
         VerifyScreen(
-            verificationComponent = FakeVerificationComponent(),
+            component = FakeVerificationComponent(),
         )
     }
 }
@@ -144,7 +144,7 @@ private fun VerifyScreenDarkThemePreview() {
 private fun VerifyScreenTabletPreview() {
     WhiskrTheme(isDarkTheme = false) {
         VerifyScreen(
-            verificationComponent = FakeVerificationComponent(),
+            component = FakeVerificationComponent(),
         )
     }
 }

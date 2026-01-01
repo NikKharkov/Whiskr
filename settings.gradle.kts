@@ -31,10 +31,13 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
+include(":app")
+include(":flows:auth")
+include(":flows:main")
+
 include(":features:auth")
 include(":features:registration")
 include(":features:main")
-include(":app")
 include(":core:common")
 include(":core:network")
 include(":core:platform")

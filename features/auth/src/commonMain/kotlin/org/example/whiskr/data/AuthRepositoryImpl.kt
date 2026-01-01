@@ -52,8 +52,4 @@ class AuthRepositoryImpl(
             Result.failure(e)
         }
     }
-
-    override fun isUserLoggedIn(): Boolean {
-        return tokenStorage.accessToken != null && tokenStorage.refreshToken != null
-    }
 }

@@ -12,6 +12,8 @@ dependencies {
     commonMainImplementation(projects.features.auth)
     commonMainImplementation(projects.features.registration)
     commonMainImplementation(projects.features.main)
+    commonMainImplementation(projects.flows.auth)
+    commonMainImplementation(projects.flows.main)
     androidMainImplementation(libs.androidx.activity.compose)
 }
 

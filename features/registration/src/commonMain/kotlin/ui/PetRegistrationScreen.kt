@@ -46,9 +46,9 @@ import whiskr.features.registration.generated.resources.step2
 
 @Composable
 fun PetRegistrationScreen(
-    petRegistrationComponent: PetRegistrationComponent
+    component: PetRegistrationComponent
 ) {
-    val model by petRegistrationComponent.model.subscribeAsState()
+    val model by component.model.subscribeAsState()
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val isTablet = maxWidth > 600.dp
@@ -58,7 +58,7 @@ fun PetRegistrationScreen(
             topBar = {
                 SimpleTopBar(
                     icon = painterResource(Res.drawable.ic_arrow_back),
-                    onIconClick = petRegistrationComponent::onBackClicked,
+                    onIconClick = component::onBackClicked,
                     title = {
                         Text(
                             text = stringResource(Res.string.step2),
@@ -87,7 +87,7 @@ fun PetRegistrationScreen(
 
             ProfilePhotoSelector(
                 avatarBytes = model.avatarBytes,
-                onAvatarSelected = petRegistrationComponent::onAvatarSelected
+                onAvatarSelected = component::onAvatarSelected
             )
 
             Text(
@@ -100,7 +100,7 @@ fun PetRegistrationScreen(
 
             PetTypeSelector(
                 selectedType = model.type,
-                onTypeSelected = petRegistrationComponent::onTypeChanged
+                onTypeSelected = component::onTypeChanged
             )
 
             Text(
@@ -113,7 +113,7 @@ fun PetRegistrationScreen(
 
             WhiskrTextField(
                 value = model.name ?: "",
-                onValueChange = petRegistrationComponent::onNameChanged,
+                onValueChange = component::onNameChanged,
                 hint = "Luna",
                 enabled = !model.isLoading,
                 keyboardType = KeyboardType.Text
@@ -129,7 +129,7 @@ fun PetRegistrationScreen(
 
             PetGenderSelector(
                 selectedGender = model.gender,
-                onGenderSelected = petRegistrationComponent::onGenderChanged
+                onGenderSelected = component::onGenderChanged
             )
 
             Text(
@@ -142,7 +142,7 @@ fun PetRegistrationScreen(
 
             BirthDatePicker(
                 selectedDate = model.birthDate,
-                onDateSelected = petRegistrationComponent::onBirthDateChanged
+                onDateSelected = component::onBirthDateChanged
             )
 
             Spacer(if (isTablet) Modifier.height(16.dp) else Modifier.weight(1f))
@@ -152,9 +152,9 @@ fun PetRegistrationScreen(
                 text = stringResource(if (model.isSkipMode) Res.string.skip else Res.string.complete_n_welcome),
                 onClick = {
                     if (model.isSkipMode) {
-                        petRegistrationComponent.onSkipClicked()
+                        component.onSkipClicked()
                     } else {
-                        petRegistrationComponent.onSaveClicked()
+                        component.onSaveClicked()
                     }
                 },
                 enabled = model.isSkipMode || model.isSaveEnabled,

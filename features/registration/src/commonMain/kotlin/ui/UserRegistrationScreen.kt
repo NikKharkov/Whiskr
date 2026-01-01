@@ -41,9 +41,9 @@ import whiskr.features.registration.generated.resources.username
 
 @Composable
 fun UserRegistrationScreen(
-    userRegistrationComponent: UserRegistrationComponent
+    component: UserRegistrationComponent
 ) {
-    val model by userRegistrationComponent.model.subscribeAsState()
+    val model by component.model.subscribeAsState()
     val focusManager = LocalFocusManager.current
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
@@ -89,7 +89,7 @@ fun UserRegistrationScreen(
 
             ProfilePhotoSelector(
                 avatarBytes = model.avatarBytes,
-                onAvatarSelected = userRegistrationComponent::onAvatarSelected
+                onAvatarSelected = component::onAvatarSelected
             )
 
             Text(
@@ -102,7 +102,7 @@ fun UserRegistrationScreen(
 
             WhiskrTextField(
                 value = model.name,
-                onValueChange = userRegistrationComponent::onNameChanged,
+                onValueChange = component::onNameChanged,
                 hint = "johndoe",
                 enabled = !model.isLoading,
                 keyboardType = KeyboardType.Text,
@@ -119,7 +119,7 @@ fun UserRegistrationScreen(
 
             WhiskrTextField(
                 value = model.username,
-                onValueChange = userRegistrationComponent::onUsernameChanged,
+                onValueChange = component::onUsernameChanged,
                 hint = "@johndoe",
                 enabled = !model.isLoading,
                 keyboardType = KeyboardType.Ascii,
@@ -129,7 +129,7 @@ fun UserRegistrationScreen(
                 onImeAction = {
                     focusManager.clearFocus()
                     if (model.isSubmitEnabled) {
-                        userRegistrationComponent.onNextClicked()
+                        component.onNextClicked()
                     }
                 }
             )
@@ -139,7 +139,7 @@ fun UserRegistrationScreen(
             WhiskrButton(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(Res.string.next),
-                onClick = userRegistrationComponent::onNextClicked,
+                onClick = component::onNextClicked,
                 enabled = model.isSubmitEnabled,
                 contentColor = Color.White,
                 isLoading = model.isLoading
@@ -154,7 +154,7 @@ fun UserRegistrationScreen(
 private fun UserRegistrationScreenPreview() {
     WhiskrTheme(isDarkTheme = false) {
         UserRegistrationScreen(
-            userRegistrationComponent = FakeUserRegistrationComponent()
+            component = FakeUserRegistrationComponent()
         )
     }
 }
@@ -164,7 +164,7 @@ private fun UserRegistrationScreenPreview() {
 private fun UserRegistrationScreenDarkThemePreview() {
     WhiskrTheme(isDarkTheme = true) {
         UserRegistrationScreen(
-            userRegistrationComponent = FakeUserRegistrationComponent(
+            component = FakeUserRegistrationComponent(
                 initialModel = UserRegistrationComponent.Model(
                     name = "Dark User",
                     username = "dark_knight",
@@ -181,7 +181,7 @@ private fun UserRegistrationScreenDarkThemePreview() {
 private fun UserRegistrationScreenTabletPreview() {
     WhiskrTheme(isDarkTheme = false) {
         UserRegistrationScreen(
-            userRegistrationComponent = FakeUserRegistrationComponent()
+            component = FakeUserRegistrationComponent()
         )
     }
 }

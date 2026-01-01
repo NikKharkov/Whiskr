@@ -20,7 +20,7 @@ import org.example.whiskr.util.WEB_CLIENT_ID
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
-fun WelcomeScreen(welcomeComponent: WelcomeComponent) {
+fun WelcomeScreen(component: WelcomeComponent) {
     BoxWithConstraints(
         modifier =
             Modifier
@@ -38,8 +38,8 @@ fun WelcomeScreen(welcomeComponent: WelcomeComponent) {
             bottomContent = {
                 WelcomeActionsContent(
                     isTablet = isTablet,
-                    handleAuth = welcomeComponent::onAuthResult,
-                    onLoginClick = welcomeComponent::onLoginClicked,
+                    handleAuth = component::onAuthResult,
+                    onLoginClick = component::onLoginClicked,
                 )
             },
         )
@@ -58,7 +58,7 @@ fun WelcomeScreen(welcomeComponent: WelcomeComponent) {
 private fun WelcomeScreenPreview() {
     WhiskrTheme(isDarkTheme = false) {
         WelcomeScreen(
-            welcomeComponent = FakeWelcomeComponent(),
+            component = FakeWelcomeComponent(),
         )
     }
 }
@@ -68,7 +68,7 @@ private fun WelcomeScreenPreview() {
 private fun WelcomeScreenDarkThemePreview() {
     WhiskrTheme(isDarkTheme = true) {
         WelcomeScreen(
-            welcomeComponent = FakeWelcomeComponent(),
+            component = FakeWelcomeComponent(),
         )
     }
 }
@@ -78,7 +78,7 @@ private fun WelcomeScreenDarkThemePreview() {
 private fun WelcomeScreenTabletPreview() {
     WhiskrTheme(isDarkTheme = false) {
         WelcomeScreen(
-            welcomeComponent = FakeWelcomeComponent(),
+            component = FakeWelcomeComponent(),
         )
     }
 }
