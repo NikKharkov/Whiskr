@@ -1,0 +1,21 @@
+package org.example.whiskr.util
+
+import org.example.whiskr.component.MainFlowComponent
+
+fun MainFlowComponent.Child.toTab(): MainFlowComponent.Tab = when (this) {
+    is MainFlowComponent.Child.Home -> MainFlowComponent.Tab.HOME
+    is MainFlowComponent.Child.Explore -> MainFlowComponent.Tab.EXPLORE
+    is MainFlowComponent.Child.AIStudio -> MainFlowComponent.Tab.AI_STUDIO
+    is MainFlowComponent.Child.Games -> MainFlowComponent.Tab.GAMES
+    is MainFlowComponent.Child.Messages -> MainFlowComponent.Tab.MESSAGES
+    is MainFlowComponent.Child.Profile -> MainFlowComponent.Tab.PROFILE
+}
+
+fun MainFlowComponent.Tab.toConfig(): MainFlowComponent.Config = when (this) {
+    MainFlowComponent.Tab.HOME -> MainFlowComponent.Config.Home
+    MainFlowComponent.Tab.EXPLORE -> MainFlowComponent.Config.Explore
+    MainFlowComponent.Tab.AI_STUDIO -> MainFlowComponent.Config.AIStudio
+    MainFlowComponent.Tab.GAMES -> MainFlowComponent.Config.Games
+    MainFlowComponent.Tab.MESSAGES -> MainFlowComponent.Config.Messages
+    MainFlowComponent.Tab.PROFILE -> MainFlowComponent.Config.Profile
+}

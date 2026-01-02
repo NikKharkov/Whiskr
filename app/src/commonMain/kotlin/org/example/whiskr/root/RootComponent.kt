@@ -5,7 +5,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.Serializable
 import org.example.whiskr.AuthFlowComponent
-import org.example.whiskr.MainFlowComponent
+import org.example.whiskr.component.MainFlowComponent
 
 interface RootComponent {
     val stack: Value<ChildStack<Config, Child>>

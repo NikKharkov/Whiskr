@@ -32,14 +32,16 @@ plugins {
 }
 
 include(":app")
+
 include(":flows:auth")
 include(":flows:main")
 
 include(":features:auth")
 include(":features:registration")
-include(":features:main")
+include(":features:home")
+
 include(":core:common")
 include(":core:network")
-include(":core:platform")
 include(":core:storage")
+include(":core:user")
 include(":core:ui")

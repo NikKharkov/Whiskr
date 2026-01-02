@@ -1,0 +1,10 @@
+<resources>
+    <string name="tab_home">Home</string>
+    <string name="tab_explore">Explore</string>
+    <string name="tab_ai">AI Studio</string>
+    <string name="tab_games">Games</string>
+    <string name="tab_profile">Profile</string>
+    <string name="tab_messages">Messages</string>
+    <string name="options">Options</string>
+    <string name="post">Post</string>
+</resources>

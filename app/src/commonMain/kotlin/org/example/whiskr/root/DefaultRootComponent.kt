@@ -7,7 +7,7 @@ import com.arkivanov.decompose.router.stack.replaceAll
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.AuthFlowComponent
-import org.example.whiskr.MainFlowComponent
+import org.example.whiskr.component.MainFlowComponent
 import org.example.whiskr.TokenStorage
 
 @Inject
