@@ -1,16 +1,16 @@
 package org.example.whiskr
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.extensions.compose.stack.Children
-import org.example.whiskr.theme.ThemeRevealContainer
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import org.example.whiskr.root.RootComponent
+import org.example.whiskr.theme.ThemeRevealContainer
 import org.example.whiskr.theme.WhiskrTheme
 
 @Composable
 fun RootContent(rootComponent: RootComponent) {
-    val isDarkTheme by rootComponent.isDarkTheme.collectAsState()
+    val isDarkTheme by rootComponent.isDarkTheme.subscribeAsState()
 
     ThemeRevealContainer(
         isDarkTheme = isDarkTheme,
@@ -28,6 +28,7 @@ fun RootContent(rootComponent: RootComponent) {
                     is RootComponent.Child.MainFlow -> {
                         MainFlowContent(
                             component = instance.component,
+                            isDarkThemeOverride = isDarkTheme,
                             onThemeAnimationStart = startAnimation
                         )
                     }

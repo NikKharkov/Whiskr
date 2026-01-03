@@ -1,14 +1,13 @@
 package org.example.whiskr.preferences
 
 import com.russhwolf.settings.ExperimentalSettingsApi
-import com.russhwolf.settings.ObservableSettings
-import com.russhwolf.settings.coroutines.getBooleanFlow
-import kotlinx.coroutines.flow.Flow
+import com.russhwolf.settings.Settings
 
 @OptIn(ExperimentalSettingsApi::class)
-class UserPreferences(private val settings: ObservableSettings) {
+class UserPreferences {
+    private val settings = Settings()
 
-    val isDarkTheme: Flow<Boolean> = settings.getBooleanFlow(
+    val isDarkTheme: Boolean = settings.getBoolean(
         key = KEY_IS_DARK_THEME,
         defaultValue = false
     )

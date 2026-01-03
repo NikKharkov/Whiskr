@@ -16,11 +16,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val databaseFactory = AndroidDatabaseFactory(context = applicationContext)
-        val sharedPrefs = applicationContext.getSharedPreferences(WHISKR_PREFERENCES, MODE_PRIVATE)
-        val settings = SharedPreferencesSettings(sharedPrefs)
 
         val appComponent =
-            AndroidApplicationComponentDI::class.create(applicationContext, databaseFactory, settings)
+            AndroidApplicationComponentDI::class.create(applicationContext, databaseFactory)
 
         val root = retainedComponent { componentContext ->
             appComponent.rootComponentFactory(componentContext)

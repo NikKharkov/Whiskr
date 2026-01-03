@@ -6,6 +6,8 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -20,6 +22,8 @@ import androidx.compose.ui.unit.toSize
 import kotlinx.coroutines.launch
 import org.example.whiskr.extensions.circularClip
 import org.example.whiskr.extensions.getDistanceToCorner
+
+val LocalThemeIsTransitioning = compositionLocalOf { false }
 
 @Composable
 fun ThemeRevealContainer(
@@ -52,7 +56,9 @@ fun ThemeRevealContainer(
                         .fillMaxSize()
                         .circularClip(radiusAnim.value, revealOffset)
                 ) {
-                    content(!previousThemeIsDark) {}
+                    CompositionLocalProvider(LocalThemeIsTransitioning provides true) {
+                        content(!previousThemeIsDark) {}
+                    }
                 }
             }
         } else {

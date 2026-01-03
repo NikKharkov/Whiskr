@@ -43,8 +43,7 @@ fun ThemeToggleIconButton(
     ) {
         MoonToSunSwitcher(
             isMoon = isDarkTheme,
-            color = WhiskrTheme.colors.primary,
-            //color = if (isDarkTheme) darkPalette.onBackground else lightPalette.onBackground,
+            color = WhiskrTheme.colors.onBackground
         )
     }
 }

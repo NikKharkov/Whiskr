@@ -1,12 +1,13 @@
 package org.example.whiskr.ui
 
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -17,6 +18,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.unit.dp
+import org.example.whiskr.theme.LocalThemeIsTransitioning
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -27,11 +29,23 @@ fun MoonToSunSwitcher(
     isMoon: Boolean,
     color: Color
 ) {
-    val progress by animateFloatAsState(
-        targetValue = if (isMoon) 1f else 0f,
-        animationSpec = tween(400),
-        label = "Theme switcher progress"
-    )
+    val isTransitioning = LocalThemeIsTransitioning.current
+
+    val targetValue = if (isMoon) 1f else 0f
+
+    val progressAnimatable = remember {
+        val initial = if (isTransitioning) 1f - targetValue else targetValue
+        Animatable(initial)
+    }
+
+    LaunchedEffect(targetValue) {
+        progressAnimatable.animateTo(
+            targetValue = targetValue,
+            animationSpec = tween(400)
+        )
+    }
+
+    val progress = progressAnimatable.value
 
     Canvas(
         modifier = modifier

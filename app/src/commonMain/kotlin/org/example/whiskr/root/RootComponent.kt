@@ -10,7 +10,7 @@ import org.example.whiskr.component.MainFlowComponent
 
 interface RootComponent {
     val stack: Value<ChildStack<Config, Child>>
-    val isDarkTheme: StateFlow<Boolean>
+    val isDarkTheme: Value<Boolean>
 
     fun toggleTheme(isDark: Boolean)
 

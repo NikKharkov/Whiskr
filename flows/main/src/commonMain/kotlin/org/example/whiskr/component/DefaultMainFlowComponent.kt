@@ -9,14 +9,9 @@ import com.arkivanov.decompose.value.Value
 import component.HomeComponent
 import domain.UserRepository
 import domain.UserState
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
-import org.example.whiskr.preferences.UserPreferences
 import org.example.whiskr.util.toConfig
 
 @OptIn(DelicateDecomposeApi::class)
@@ -24,20 +19,15 @@ import org.example.whiskr.util.toConfig
 class DefaultMainFlowComponent(
     @Assisted private val componentContext: ComponentContext,
     @Assisted private val onSignOut: () -> Unit,
+    @Assisted override val isDarkTheme: Value<Boolean>,
     private val userRepository: UserRepository,
-    private val userPreferences: UserPreferences,
     private val homeFactory: HomeComponent.Factory
 ) : MainFlowComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<MainFlowComponent.Config>()
     private val scope = componentScope()
+
     override val userState: Value<UserState> = userRepository.user
-    override val isDarkTheme: StateFlow<Boolean> = userPreferences.isDarkTheme
-        .stateIn(
-            scope = componentScope(),
-            started = SharingStarted.Eagerly,
-            initialValue = false
-        )
 
     init {
         scope.launch {
@@ -54,7 +44,6 @@ class DefaultMainFlowComponent(
         handleBackButton = true,
         childFactory = ::createChild
     )
-
 
     private fun createChild(
         config: MainFlowComponent.Config,

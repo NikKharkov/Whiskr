@@ -5,8 +5,6 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import component.HomeComponent
 import domain.UserState
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
@@ -28,7 +26,7 @@ interface MainFlowComponent {
 
     val stack: Value<ChildStack<Config, Child>>
     val userState: Value<UserState>
-    val isDarkTheme: StateFlow<Boolean>
+    val isDarkTheme: Value<Boolean>
 
     fun onTabSelected(tab: Tab)
 
@@ -65,7 +63,8 @@ interface MainFlowComponent {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            onSignOut: () -> Unit
+            onSignOut: () -> Unit,
+            isDarkTheme: Value<Boolean>
         ): MainFlowComponent
     }
 

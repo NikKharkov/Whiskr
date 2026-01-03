@@ -1,9 +1,7 @@
 package org.example.whiskr.di
 
-import com.russhwolf.settings.ObservableSettings
 import org.example.whiskr.DatabaseFactory
 
 actual fun createIosComponent(
-    databaseFactory: DatabaseFactory,
-    settings: ObservableSettings
-): IosApplicationComponentDI = InjectIosApplicationComponentDI(databaseFactory, settings)
+    databaseFactory: DatabaseFactory
+): IosApplicationComponentDI = InjectIosApplicationComponentDI(databaseFactory)

@@ -1,6 +1,5 @@
 package org.example.whiskr.di
 
-import com.russhwolf.settings.ObservableSettings
 import me.tatarka.inject.annotations.Provides
 import org.example.whiskr.AppDatabase
 import org.example.whiskr.DatabaseFactory
@@ -23,6 +22,6 @@ interface StorageComponent {
 
     @Singleton
     @Provides
-    fun provideUserPreferences(settings: ObservableSettings): UserPreferences =
-        UserPreferences(settings)
+    fun provideUserPreferences(): UserPreferences =
+        UserPreferences()
 }

@@ -4,8 +4,8 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.replaceAll
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
+import com.arkivanov.decompose.value.MutableValue
+import com.arkivanov.decompose.value.Value
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
@@ -26,12 +26,9 @@ class DefaultRootComponent(
 
     private val navigation = StackNavigation<RootComponent.Config>()
     private val scope = componentScope()
-    override val isDarkTheme = userPreferences.isDarkTheme
-        .stateIn(
-            scope = scope,
-            started = SharingStarted.Eagerly,
-            initialValue = false
-        )
+
+    private val _isDarkTheme = MutableValue(userPreferences.isDarkTheme)
+    override val isDarkTheme: Value<Boolean> = _isDarkTheme
 
     private val startConfig: RootComponent.Config = if (tokenStorage.isUserLoggedIn) {
         RootComponent.Config.MainFlow
@@ -48,6 +45,7 @@ class DefaultRootComponent(
     )
 
     override fun toggleTheme(isDark: Boolean) {
+        _isDarkTheme.value = isDark
         scope.launch { userPreferences.setDarkTheme(isDark) }
     }
 
@@ -70,7 +68,8 @@ class DefaultRootComponent(
                 componentContext = context,
                 onSignOut = {
                     navigation.replaceAll(RootComponent.Config.AuthFlow)
-                }
+                },
+                isDarkTheme = isDarkTheme
             )
         )
     }
