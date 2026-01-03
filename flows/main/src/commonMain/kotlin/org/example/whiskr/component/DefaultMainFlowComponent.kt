@@ -10,6 +10,9 @@ import component.HomeComponent
 import domain.UserRepository
 import domain.UserState
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
@@ -29,7 +32,12 @@ class DefaultMainFlowComponent(
     private val navigation = StackNavigation<MainFlowComponent.Config>()
     private val scope = componentScope()
     override val userState: Value<UserState> = userRepository.user
-    override val isDarkTheme: Flow<Boolean> = userPreferences.isDarkTheme
+    override val isDarkTheme: StateFlow<Boolean> = userPreferences.isDarkTheme
+        .stateIn(
+            scope = componentScope(),
+            started = SharingStarted.Eagerly,
+            initialValue = false
+        )
 
     init {
         scope.launch {

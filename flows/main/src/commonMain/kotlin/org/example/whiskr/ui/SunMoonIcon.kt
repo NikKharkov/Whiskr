@@ -1,98 +1,160 @@
 package org.example.whiskr.ui
 
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.ClipOp
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.rotate
-import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.unit.dp
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
-import androidx.compose.ui.graphics.Path
 
 @Composable
-fun SunMoonIcon(
-    isDarkTheme: Boolean,
-    color: Color,
-    modifier: Modifier = Modifier
+fun MoonToSunSwitcher(
+    modifier: Modifier = Modifier,
+    isMoon: Boolean,
+    color: Color
 ) {
     val progress by animateFloatAsState(
-        targetValue = if (isDarkTheme) 1f else 0f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessLow
-        ),
-        label = "SunMoon"
+        targetValue = if (isMoon) 1f else 0f,
+        animationSpec = tween(400),
+        label = "Theme switcher progress"
     )
 
-    Canvas(modifier = modifier.size(24.dp)) {
-        val centerX = size.width / 2
-        val centerY = size.height / 2
+    Canvas(
+        modifier = modifier
+            .size(24.dp)
+            .aspectRatio(1f)
+    ) {
+        val width = size.width
+        val height = size.height
+        val baseRadius = width * 0.25f
 
-        val rotation = -45f + (360f * progress)
+        val extraRadius = width * 0.2f * progress
+        val radius = baseRadius + extraRadius
 
-        rotate(rotation, center) {
-            val raysScale = (1f - progress).coerceIn(0f, 1f)
+        rotate(180f * (1 - progress)) {
 
-            if (raysScale > 0.1f) {
-                val rayCount = 8
-                val rayLength = 3.dp.toPx()
-                val innerRadius = 8.dp.toPx()
+            val raysProgress = if (progress < 0.5f) (progress / 0.85f) else 0f
 
-                for (i in 0 until rayCount) {
-                    val angleRad = (2.0 * PI * i / rayCount).toFloat()
+            drawRays(
+                color = color,
+                alpha = if (progress < 0.5f) 1f else 0f,
+                radius = (radius * 1.5f) * (1f - raysProgress),
+                rayWidth = radius * 0.3f,
+                rayLength = radius * 0.2f
+            )
 
-                    val start = Offset(
-                        x = centerX + innerRadius * cos(angleRad),
-                        y = centerY + innerRadius * sin(angleRad)
-                    )
-                    val end = Offset(
-                        x = centerX + (innerRadius + rayLength * raysScale) * cos(angleRad),
-                        y = centerY + (innerRadius + rayLength * raysScale) * sin(angleRad)
-                    )
-
-                    drawLine(
-                        color = color,
-                        start = start,
-                        end = end,
-                        strokeWidth = 2.dp.toPx() * raysScale,
-                        cap = StrokeCap.Round
-                    )
-                }
-            }
-
-            val mainRadius = androidx.compose.ui.util.lerp(5.dp.toPx(), 10.dp.toPx(), progress)
-            val eclipseOffset = androidx.compose.ui.util.lerp(mainRadius * 3, mainRadius * 0.5f, progress)
-
-            val path = Path().apply {
-                addOval(androidx.compose.ui.geometry.Rect(
-                    center = center,
-                    radius = mainRadius
-                ))
-            }
-
-            val eclipsePath = Path().apply {
-                addOval(androidx.compose.ui.geometry.Rect(
-                    center = Offset(centerX - eclipseOffset, centerY - eclipseOffset),
-                    radius = mainRadius
-                ))
-            }
-
-            withTransform({
-                clipPath(eclipsePath, clipOp = ClipOp.Difference)
-            }) {
-                drawPath(path, color)
-            }
+            drawMoonToSun(radius, progress, color)
         }
+
+        val starProgress = if (progress > 0.8f) ((progress - 0.8f) / 0.2f) else 0f
+
+        drawStar(
+            color = color,
+            centerOffset = Offset(width * 0.4f, height * 0.4f),
+            radius = (height * 0.05f) * starProgress,
+            alpha = starProgress
+        )
+        drawStar(
+            color = color,
+            centerOffset = Offset(width * 0.2f, height * 0.2f),
+            radius = (height * 0.1f) * starProgress,
+            alpha = starProgress
+        )
     }
+}
+
+private fun DrawScope.drawMoonToSun(radius: Float, progress: Float, color: Color) {
+
+    val mainCircle = Path().apply {
+        addOval(Rect(center, radius))
+    }
+
+    val initialOffset = center - Offset(radius * 2.3f, radius * 2.3f)
+
+    val offset = (radius * 1.8f) * progress
+
+    val subtractCircle = Path().apply {
+        addOval(Rect(initialOffset + Offset(offset, offset), radius))
+    }
+
+    val moonToSunPath = Path().apply {
+        op(mainCircle, subtractCircle, PathOperation.Difference)
+    }
+
+    drawPath(moonToSunPath, color)
+}
+
+private fun DrawScope.drawRays(
+    color: Color,
+    radius: Float,
+    rayWidth: Float,
+    rayLength: Float,
+    alpha: Float = 1f,
+    rayCount: Int = 8
+) {
+    for (i in 0 until rayCount) {
+        val angle = (2 * PI * i / rayCount).toFloat()
+
+        val startX = center.x + radius * cos(angle)
+        val startY = center.y + radius * sin(angle)
+
+        val endX = center.x + (radius + rayLength) * cos(angle)
+        val endY = center.y + (radius + rayLength) * sin(angle)
+
+        drawLine(
+            color = color,
+            alpha = alpha,
+            start = Offset(startX, startY),
+            end = Offset(endX, endY),
+            cap = StrokeCap.Round,
+            strokeWidth = rayWidth
+        )
+    }
+}
+
+private fun DrawScope.drawStar(
+    color: Color,
+    centerOffset: Offset,
+    radius: Float,
+    alpha: Float = 1f,
+) {
+    val leverage = radius * 0.1f
+    val starPath = Path().apply {
+        moveTo(centerOffset.x - radius, centerOffset.y)
+
+        quadraticTo(
+            x1 = centerOffset.x - leverage, y1 = centerOffset.y - leverage,
+            x2 = centerOffset.x, y2 = centerOffset.y - radius
+        )
+
+        quadraticTo(
+            x1 = centerOffset.x + leverage, y1 = centerOffset.y - leverage,
+            x2 = centerOffset.x + radius, y2 = centerOffset.y
+        )
+
+        quadraticTo(
+            x1 = centerOffset.x + leverage, y1 = centerOffset.y + leverage,
+            x2 = centerOffset.x, y2 = centerOffset.y + radius
+        )
+
+        quadraticTo(
+            x1 = centerOffset.x - leverage, y1 = centerOffset.y + leverage,
+            x2 = centerOffset.x - radius, y2 = centerOffset.y
+        )
+    }
+    drawPath(starPath, color, alpha)
 }

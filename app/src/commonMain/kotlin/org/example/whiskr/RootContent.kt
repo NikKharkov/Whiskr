@@ -4,13 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.extensions.compose.stack.Children
-import org.example.whiskr.animations.ThemeRevealContainer
+import org.example.whiskr.theme.ThemeRevealContainer
 import org.example.whiskr.root.RootComponent
 import org.example.whiskr.theme.WhiskrTheme
 
 @Composable
 fun RootContent(rootComponent: RootComponent) {
-    val isDarkTheme by rootComponent.isDarkTheme.collectAsState(initial = false)
+    val isDarkTheme by rootComponent.isDarkTheme.collectAsState()
 
     ThemeRevealContainer(
         isDarkTheme = isDarkTheme,

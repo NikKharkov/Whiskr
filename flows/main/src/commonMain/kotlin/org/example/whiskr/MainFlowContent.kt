@@ -23,7 +23,7 @@ fun MainFlowContent(
 ) {
     val stack by component.stack.subscribeAsState()
     val user by component.userState.subscribeAsState()
-    val isDarkTheme by component.isDarkTheme.collectAsState(initial = false)
+    val isDarkTheme by component.isDarkTheme.collectAsState()
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val isTablet = maxWidth > 600.dp

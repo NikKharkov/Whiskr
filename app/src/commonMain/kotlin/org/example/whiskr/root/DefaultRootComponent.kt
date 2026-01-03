@@ -4,6 +4,8 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.replaceAll
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
@@ -24,6 +26,12 @@ class DefaultRootComponent(
 
     private val navigation = StackNavigation<RootComponent.Config>()
     private val scope = componentScope()
+    override val isDarkTheme = userPreferences.isDarkTheme
+        .stateIn(
+            scope = scope,
+            started = SharingStarted.Eagerly,
+            initialValue = false
+        )
 
     private val startConfig: RootComponent.Config = if (tokenStorage.isUserLoggedIn) {
         RootComponent.Config.MainFlow
@@ -38,8 +46,6 @@ class DefaultRootComponent(
         handleBackButton = true,
         childFactory = ::createChild
     )
-
-    override val isDarkTheme = userPreferences.isDarkTheme
 
     override fun toggleTheme(isDark: Boolean) {
         scope.launch { userPreferences.setDarkTheme(isDark) }

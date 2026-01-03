@@ -1,4 +1,4 @@
-package org.example.whiskr.animations
+package org.example.whiskr.theme
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing

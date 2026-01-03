@@ -16,8 +16,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.unit.dp
 import org.example.whiskr.extensions.customClickable
-import org.example.whiskr.theme.darkPalette
-import org.example.whiskr.theme.lightPalette
+import org.example.whiskr.theme.WhiskrTheme
 
 @Composable
 fun ThemeToggleIconButton(
@@ -34,7 +33,6 @@ fun ThemeToggleIconButton(
             .onGloballyPositioned { layoutCoordinates ->
                 val position = layoutCoordinates.positionInWindow()
                 val size = layoutCoordinates.size
-
                 globalCenter = Offset(
                     x = position.x + (size.width / 2f),
                     y = position.y + (size.height / 2f)
@@ -43,26 +41,10 @@ fun ThemeToggleIconButton(
             .customClickable(onClick = { onClick(globalCenter) }),
         contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = modifier
-                .size(48.dp)
-                .clip(CircleShape)
-                .onGloballyPositioned { layoutCoordinates ->
-                    val position = layoutCoordinates.positionInWindow()
-                    val size = layoutCoordinates.size
-                    globalCenter = Offset(
-                        x = position.x + (size.width / 2f),
-                        y = position.y + (size.height / 2f)
-                    )
-                }
-                .customClickable(onClick = { onClick(globalCenter) }),
-            contentAlignment = Alignment.Center
-        ) {
-            SunMoonIcon(
-                isDarkTheme = isDarkTheme,
-                color = if (isDarkTheme) darkPalette.onBackground else lightPalette.onBackground,
-                modifier = Modifier.size(24.dp)
-            )
-        }
+        MoonToSunSwitcher(
+            isMoon = isDarkTheme,
+            color = WhiskrTheme.colors.primary,
+            //color = if (isDarkTheme) darkPalette.onBackground else lightPalette.onBackground,
+        )
     }
 }

@@ -33,14 +33,11 @@ import coil3.compose.AsyncImage
 import domain.UserState
 import org.example.whiskr.component.MainFlowComponent
 import org.example.whiskr.components.WhiskrButton
-import org.example.whiskr.extensions.customClickable
 import org.example.whiskr.theme.WhiskrTheme
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import whiskr.flows.main.generated.resources.Res
 import whiskr.flows.main.generated.resources.ic_avatar_placeholder
-import whiskr.flows.main.generated.resources.ic_more_horiz
-import whiskr.flows.main.generated.resources.options
 import whiskr.flows.main.generated.resources.post
 
 @Composable
@@ -89,13 +86,6 @@ fun TabletSidebar(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        ThemeToggleIconButton(
-            isDarkTheme = isDarkTheme,
-            onClick = { centerOffset ->
-                onThemeToggle(centerOffset)
-            }
-        )
-
         WhiskrButton(
             text = stringResource(Res.string.post),
             contentColor = Color.White,
@@ -103,20 +93,25 @@ fun TabletSidebar(
             onClick = { TODO("Go to POST Screen") }
         )
 
-        SidebarProfileItem(userState = userState)
+        SidebarProfileItem(
+            userState = userState,
+            isDarkTheme = isDarkTheme,
+            onThemeToggle = onThemeToggle
+        )
     }
 }
 
 @Composable
 private fun SidebarProfileItem(
     modifier: Modifier = Modifier,
+    isDarkTheme: Boolean,
+    onThemeToggle: (Offset) -> Unit,
     userState: UserState
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(12.dp)
-            .customClickable(onClick = { /* TODO: Open settings popup */ }),
+            .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (userState.isLoading) {
@@ -166,11 +161,11 @@ private fun SidebarProfileItem(
                 )
             }
 
-            Icon(
-                painter = painterResource(Res.drawable.ic_more_horiz),
-                contentDescription = stringResource(Res.string.options),
-                tint = WhiskrTheme.colors.onBackground,
-                modifier = Modifier.size(16.dp)
+            ThemeToggleIconButton(
+                isDarkTheme = isDarkTheme,
+                onClick = { centerOffset ->
+                    onThemeToggle(centerOffset)
+                }
             )
         }
     }
