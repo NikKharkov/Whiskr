@@ -27,10 +27,8 @@ interface MainFlowComponent {
 
     val stack: Value<ChildStack<Config, Child>>
     val userState: Value<UserState>
-
     val isDarkTheme: Flow<Boolean>
 
-    fun onThemeToggle(isDark: Boolean)
     fun onTabSelected(tab: Tab)
 
     sealed class Child {

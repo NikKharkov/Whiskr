@@ -10,8 +10,9 @@ import org.example.whiskr.component.MainFlowComponent
 
 interface RootComponent {
     val stack: Value<ChildStack<Config, Child>>
-
     val isDarkTheme: Flow<Boolean>
+
+    fun toggleTheme(isDark: Boolean)
 
     @Serializable
     sealed interface Config {

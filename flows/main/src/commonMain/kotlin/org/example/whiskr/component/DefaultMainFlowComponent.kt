@@ -47,11 +47,6 @@ class DefaultMainFlowComponent(
         childFactory = ::createChild
     )
 
-    override fun onThemeToggle(isDark: Boolean) {
-        scope.launch {
-            userPreferences.setDarkTheme(isDark)
-        }
-    }
 
     private fun createChild(
         config: MainFlowComponent.Config,

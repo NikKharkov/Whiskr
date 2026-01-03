@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.arkivanov.decompose.extensions.compose.stack.Children
+import org.example.whiskr.animations.ThemeRevealContainer
 import org.example.whiskr.root.RootComponent
 import org.example.whiskr.theme.WhiskrTheme
 
@@ -11,15 +12,25 @@ import org.example.whiskr.theme.WhiskrTheme
 fun RootContent(rootComponent: RootComponent) {
     val isDarkTheme by rootComponent.isDarkTheme.collectAsState(initial = false)
 
-    WhiskrTheme(isDarkTheme = isDarkTheme) {
-        Children(stack = rootComponent.stack) { child ->
-            when (val instance = child.instance) {
-                is RootComponent.Child.AuthFlow -> {
-                    AuthFlowContent(component = instance.component)
-                }
+    ThemeRevealContainer(
+        isDarkTheme = isDarkTheme,
+        onToggleTheme = { newTheme ->
+            rootComponent.toggleTheme(newTheme)
+        }
+    ) { isDarkTheme, startAnimation ->
+        WhiskrTheme(isDarkTheme = isDarkTheme) {
+            Children(stack = rootComponent.stack) { child ->
+                when (val instance = child.instance) {
+                    is RootComponent.Child.AuthFlow -> {
+                        AuthFlowContent(component = instance.component)
+                    }
 
-                is RootComponent.Child.MainFlow -> {
-                    MainFlowContent(component = instance.component)
+                    is RootComponent.Child.MainFlow -> {
+                        MainFlowContent(
+                            component = instance.component,
+                            onThemeAnimationStart = startAnimation
+                        )
+                    }
                 }
             }
         }

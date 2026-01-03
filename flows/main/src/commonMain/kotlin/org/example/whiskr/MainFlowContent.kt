@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
@@ -17,7 +18,8 @@ import ui.HomeScreen
 
 @Composable
 fun MainFlowContent(
-    component: MainFlowComponent
+    component: MainFlowComponent,
+    onThemeAnimationStart: (Offset) -> Unit
 ) {
     val stack by component.stack.subscribeAsState()
     val user by component.userState.subscribeAsState()
@@ -31,7 +33,9 @@ fun MainFlowContent(
             activeTab = stack.active.instance.toTab(),
             userState = user,
             isDarkTheme = isDarkTheme,
-            onThemeToggle = component::onThemeToggle,
+            onThemeToggle = { centerOffset ->
+                onThemeAnimationStart(centerOffset)
+            },
             onTabSelected = component::onTabSelected,
         ) {
             Children(

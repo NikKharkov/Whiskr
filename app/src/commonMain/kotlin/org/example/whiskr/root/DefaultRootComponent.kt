@@ -4,11 +4,13 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.replaceAll
+import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.AuthFlowComponent
 import org.example.whiskr.TokenStorage
 import org.example.whiskr.component.MainFlowComponent
+import org.example.whiskr.component.componentScope
 import org.example.whiskr.preferences.UserPreferences
 
 @Inject
@@ -21,6 +23,7 @@ class DefaultRootComponent(
 ) : RootComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<RootComponent.Config>()
+    private val scope = componentScope()
 
     private val startConfig: RootComponent.Config = if (tokenStorage.isUserLoggedIn) {
         RootComponent.Config.MainFlow
@@ -37,6 +40,10 @@ class DefaultRootComponent(
     )
 
     override val isDarkTheme = userPreferences.isDarkTheme
+
+    override fun toggleTheme(isDark: Boolean) {
+        scope.launch { userPreferences.setDarkTheme(isDark) }
+    }
 
     private fun createChild(
         config: RootComponent.Config,

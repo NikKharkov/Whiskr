@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
 import domain.UserState
 import org.example.whiskr.component.MainFlowComponent
@@ -24,7 +25,7 @@ fun AdaptiveMainLayout(
     onTabSelected: (MainFlowComponent.Tab) -> Unit,
     userState: UserState,
     isDarkTheme: Boolean,
-    onThemeToggle: (Boolean) -> Unit,
+    onThemeToggle: (Offset) -> Unit,
     content: @Composable () -> Unit
 ) {
     if (isTablet) {

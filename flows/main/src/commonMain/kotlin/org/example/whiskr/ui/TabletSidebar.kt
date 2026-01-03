@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
@@ -48,7 +49,7 @@ fun TabletSidebar(
     userState: UserState,
     activeTab: MainFlowComponent.Tab,
     isDarkTheme: Boolean,
-    onThemeToggle: (Boolean) -> Unit,
+    onThemeToggle: (Offset) -> Unit,
     onTabSelected: (MainFlowComponent.Tab) -> Unit
 ) {
     Column(
@@ -88,9 +89,11 @@ fun TabletSidebar(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        ThemeToggleItem(
+        ThemeToggleIconButton(
             isDarkTheme = isDarkTheme,
-            onToggle = onThemeToggle
+            onClick = { centerOffset ->
+                onThemeToggle(centerOffset)
+            }
         )
 
         WhiskrButton(
@@ -126,7 +129,7 @@ private fun SidebarProfileItem(
                 modifier = modifier
                     .size(40.dp)
                     .clip(CircleShape)
-                    .background(WhiskrTheme.colors.surface), // Цвет кружка
+                    .background(WhiskrTheme.colors.surface),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
