@@ -47,6 +47,8 @@ fun TabletSidebar(
     modifier: Modifier = Modifier,
     userState: UserState,
     activeTab: MainFlowComponent.Tab,
+    isDarkTheme: Boolean,
+    onThemeToggle: (Boolean) -> Unit,
     onTabSelected: (MainFlowComponent.Tab) -> Unit
 ) {
     Column(
@@ -85,6 +87,11 @@ fun TabletSidebar(
         }
 
         Spacer(modifier = Modifier.weight(1f))
+
+        ThemeToggleItem(
+            isDarkTheme = isDarkTheme,
+            onToggle = onThemeToggle
+        )
 
         WhiskrButton(
             text = stringResource(Res.string.post),

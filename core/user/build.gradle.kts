@@ -4,7 +4,6 @@ plugins {
     id("whiskr.di")
     id("whiskr.network")
     id("whiskr.navigation")
-//    id("whiskr.room")
 }
 
 android {
@@ -14,4 +13,5 @@ android {
 dependencies {
     commonMainImplementation(libs.kermit)
     commonMainImplementation(projects.core.common)
+    commonMainImplementation(projects.core.storage)
 }

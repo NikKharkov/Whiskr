@@ -7,20 +7,22 @@ import com.arkivanov.decompose.router.stack.replaceAll
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.AuthFlowComponent
-import org.example.whiskr.component.MainFlowComponent
 import org.example.whiskr.TokenStorage
+import org.example.whiskr.component.MainFlowComponent
+import org.example.whiskr.preferences.UserPreferences
 
 @Inject
 class DefaultRootComponent(
     @Assisted componentContext: ComponentContext,
     private val tokenStorage: TokenStorage,
+    private val userPreferences: UserPreferences,
     private val authFlowFactory: AuthFlowComponent.Factory,
     private val mainFlowFactory: MainFlowComponent.Factory
 ) : RootComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<RootComponent.Config>()
 
-    private val startConfig = if (tokenStorage.isUserLoggedIn) {
+    private val startConfig: RootComponent.Config = if (tokenStorage.isUserLoggedIn) {
         RootComponent.Config.MainFlow
     } else {
         RootComponent.Config.AuthFlow
@@ -33,6 +35,8 @@ class DefaultRootComponent(
         handleBackButton = true,
         childFactory = ::createChild
     )
+
+    override val isDarkTheme = userPreferences.isDarkTheme
 
     private fun createChild(
         config: RootComponent.Config,

@@ -5,6 +5,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import component.HomeComponent
 import domain.UserState
+import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
@@ -27,6 +28,9 @@ interface MainFlowComponent {
     val stack: Value<ChildStack<Config, Child>>
     val userState: Value<UserState>
 
+    val isDarkTheme: Flow<Boolean>
+
+    fun onThemeToggle(isDark: Boolean)
     fun onTabSelected(tab: Tab)
 
     sealed class Child {
@@ -66,7 +70,11 @@ interface MainFlowComponent {
         ): MainFlowComponent
     }
 
-    enum class Tab(val label: StringResource, val icon: DrawableResource, val showInBottomBar: Boolean = true) {
+    enum class Tab(
+        val label: StringResource,
+        val icon: DrawableResource,
+        val showInBottomBar: Boolean = true
+    ) {
         HOME(Res.string.tab_home, Res.drawable.ic_home),
         EXPLORE(Res.string.tab_explore, Res.drawable.ic_explore),
         AI_STUDIO(Res.string.tab_ai, Res.drawable.ic_ai),

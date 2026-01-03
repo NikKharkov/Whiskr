@@ -6,6 +6,7 @@ plugins {
 dependencies {
     debugImplementation(compose.uiTooling)
     commonMainImplementation(projects.core.network)
+    commonMainImplementation(projects.core.storage)
     commonMainImplementation(projects.core.common)
     commonMainImplementation(projects.core.ui)
     commonMainImplementation(projects.core.user)
@@ -15,6 +16,7 @@ dependencies {
     commonMainImplementation(projects.features.home)
     commonMainImplementation(projects.flows.auth)
     commonMainImplementation(projects.flows.main)
+    commonMainImplementation(libs.multiplatform.settings)
     androidMainImplementation(libs.androidx.activity.compose)
 }
 

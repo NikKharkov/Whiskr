@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -20,14 +21,17 @@ fun MainFlowContent(
 ) {
     val stack by component.stack.subscribeAsState()
     val user by component.userState.subscribeAsState()
+    val isDarkTheme by component.isDarkTheme.collectAsState(initial = false)
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-        val isTablet = maxWidth > 840.dp
+        val isTablet = maxWidth > 600.dp
 
         AdaptiveMainLayout(
             isTablet = isTablet,
             activeTab = stack.active.instance.toTab(),
             userState = user,
+            isDarkTheme = isDarkTheme,
+            onThemeToggle = component::onThemeToggle,
             onTabSelected = component::onTabSelected,
         ) {
             Children(

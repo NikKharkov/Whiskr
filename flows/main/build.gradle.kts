@@ -8,6 +8,7 @@ android {
 
 dependencies {
     commonMainImplementation(projects.core.user)
+    commonMainImplementation(projects.core.storage)
     commonMainImplementation(projects.features.home)
     commonMainImplementation(libs.coil.compose)
     commonMainImplementation(libs.coil.network)

@@ -23,6 +23,8 @@ fun AdaptiveMainLayout(
     activeTab: MainFlowComponent.Tab,
     onTabSelected: (MainFlowComponent.Tab) -> Unit,
     userState: UserState,
+    isDarkTheme: Boolean,
+    onThemeToggle: (Boolean) -> Unit,
     content: @Composable () -> Unit
 ) {
     if (isTablet) {
@@ -35,6 +37,8 @@ fun AdaptiveMainLayout(
                 activeTab = activeTab,
                 onTabSelected = onTabSelected,
                 userState = userState,
+                isDarkTheme = isDarkTheme,
+                onThemeToggle = onThemeToggle,
                 modifier = Modifier
                     .width(250.dp)
                     .fillMaxHeight()

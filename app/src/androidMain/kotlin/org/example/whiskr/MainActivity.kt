@@ -5,20 +5,26 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.arkivanov.decompose.retainedComponent
+import com.russhwolf.settings.SharedPreferencesSettings
 import org.example.whiskr.di.AndroidApplicationComponentDI
 import org.example.whiskr.di.create
+import org.example.whiskr.util.WHISKR_PREFERENCES
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        val appComponent = AndroidApplicationComponentDI::class.create(applicationContext)
+        val databaseFactory = AndroidDatabaseFactory(context = applicationContext)
+        val sharedPrefs = applicationContext.getSharedPreferences(WHISKR_PREFERENCES, MODE_PRIVATE)
+        val settings = SharedPreferencesSettings(sharedPrefs)
 
-        val root =
-            retainedComponent { componentContext ->
-                appComponent.rootComponentFactory(componentContext)
-            }
+        val appComponent =
+            AndroidApplicationComponentDI::class.create(applicationContext, databaseFactory, settings)
+
+        val root = retainedComponent { componentContext ->
+            appComponent.rootComponentFactory(componentContext)
+        }
 
         setContent {
             RootContent(root)

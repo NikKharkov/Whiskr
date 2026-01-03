@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-    <dict>
-        <key>GIDClientID</key>
-        <string>636998600750-16bbquj27h7d2t9dg2v7pvophgcgr4mg.apps.googleusercontent.com</string>
-        <key>CADisableMinimumFrameDurationOnPhone</key>
-        <true/>
-        <key>CFBundleURLTypes</key>
-        <array>
-            <dict>
-                <key>CFBundleTypeRole</key>
-                <string>Editor</string>
-                <key>CFBundleURLName</key>
-                <string>REVERSE_CLIENT_ID</string>
-                <key>CFBundleURLSchemes</key>
-                <array>
-                    <string>com.googleusercontent.apps.636998600750-16bbquj27h7d2t9dg2v7pvophgcgr4mg</string>
-                </array>
-            </dict>
-        </array>
-        <key>Privacy - Camera Usage Description</key>
-        <string>This app uses camera for capturing photos.</string>
-    </dict>
+<dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>REVERSE_CLIENT_ID</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.636998600750-16bbquj27h7d2t9dg2v7pvophgcgr4mg</string>
+			</array>
+		</dict>
+	</array>
+	<key>GIDClientID</key>
+	<string>636998600750-16bbquj27h7d2t9dg2v7pvophgcgr4mg.apps.googleusercontent.com</string>
+	<key>Privacy - Camera Usage Description</key>
+	<string>This app uses camera for capturing photos.</string>
+</dict>
 </plist>

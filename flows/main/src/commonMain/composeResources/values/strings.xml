@@ -7,4 +7,6 @@
     <string name="tab_messages">Messages</string>
     <string name="options">Options</string>
     <string name="post">Post</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="light_mode">Light Mode</string>
 </resources>
