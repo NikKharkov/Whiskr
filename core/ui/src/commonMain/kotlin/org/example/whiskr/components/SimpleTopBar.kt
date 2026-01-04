@@ -18,16 +18,16 @@ import org.example.whiskr.theme.WhiskrTheme
 
 @Composable
 fun SimpleTopBar(
+    modifier: Modifier = Modifier,
     icon: Painter,
     onIconClick: () -> Unit,
     title: @Composable () -> Unit
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-
         Icon(
             painter = icon,
             contentDescription = null,
@@ -37,7 +37,6 @@ fun SimpleTopBar(
                 .clip(CircleShape)
                 .clickable(onClick = onIconClick)
         )
-
 
         title()
 

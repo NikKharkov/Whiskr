@@ -23,6 +23,7 @@ fun MainFlowContent(
 ) {
     val stack by component.stack.subscribeAsState()
     val user by component.userState.subscribeAsState()
+    val isDrawerOpen by component.isDrawerOpen.subscribeAsState()
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val isTablet = maxWidth > 600.dp
@@ -36,6 +37,8 @@ fun MainFlowContent(
                 onThemeAnimationStart(centerOffset)
             },
             onTabSelected = component::onTabSelected,
+            isDrawerOpen = isDrawerOpen,
+            onDrawerOpenChange = component::setDrawerOpen
         ) {
             Children(
                 stack = stack,

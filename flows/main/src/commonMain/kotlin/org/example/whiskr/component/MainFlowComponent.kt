@@ -27,7 +27,9 @@ interface MainFlowComponent {
     val stack: Value<ChildStack<Config, Child>>
     val userState: Value<UserState>
     val isDarkTheme: Value<Boolean>
+    val isDrawerOpen: Value<Boolean>
 
+    fun setDrawerOpen(isOpen: Boolean)
     fun onTabSelected(tab: Tab)
 
     sealed class Child {

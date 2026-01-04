@@ -5,6 +5,7 @@ import com.arkivanov.decompose.DelicateDecomposeApi
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import component.HomeComponent
 import domain.UserRepository
@@ -29,12 +30,19 @@ class DefaultMainFlowComponent(
 
     override val userState: Value<UserState> = userRepository.user
 
+    private val _isDrawerOpen = MutableValue(false)
+    override val isDrawerOpen: Value<Boolean> = _isDrawerOpen
+
     init {
         scope.launch {
             if (userRepository.user.value.profile == null) {
                 userRepository.getMyProfile()
             }
         }
+    }
+
+    override fun setDrawerOpen(isOpen: Boolean) {
+        _isDrawerOpen.value = isOpen
     }
 
     override val stack = childStack(

@@ -7,3 +7,7 @@ plugins {
 android {
     namespace = "org.example.whiskr.core.ui"
 }
+
+dependencies {
+    commonMainImplementation(libs.coil.compose)
+}

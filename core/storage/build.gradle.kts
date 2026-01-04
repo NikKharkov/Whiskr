@@ -20,5 +20,4 @@ dependencies {
     commonMainImplementation(libs.kermit)
     commonMainImplementation(projects.core.common)
     commonMainImplementation(libs.multiplatform.settings)
-    commonMainImplementation(libs.multiplatform.settings.coroutines)
 }

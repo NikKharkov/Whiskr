@@ -6,14 +6,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.VerticalDivider
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
 import domain.UserState
+import kotlinx.coroutines.launch
 import org.example.whiskr.component.MainFlowComponent
 import org.example.whiskr.theme.WhiskrTheme
 
@@ -26,6 +33,8 @@ fun AdaptiveMainLayout(
     userState: UserState,
     isDarkTheme: Boolean,
     onThemeToggle: (Offset) -> Unit,
+    isDrawerOpen: Boolean,
+    onDrawerOpenChange: (Boolean) -> Unit,
     content: @Composable () -> Unit
 ) {
     if (isTablet) {
@@ -57,21 +66,66 @@ fun AdaptiveMainLayout(
             }
         }
     } else {
-        Scaffold(
-            modifier = modifier.fillMaxSize(),
-            bottomBar = {
-                MobileBottomBar(
+        val drawerState = rememberDrawerState(
+            initialValue = if (isDrawerOpen) DrawerValue.Open else DrawerValue.Closed,
+            confirmStateChange = { newValue ->
+                val isOpen = newValue == DrawerValue.Open
+                onDrawerOpenChange(isOpen)
+                true
+            }
+        )
+
+        LaunchedEffect(isDrawerOpen) {
+            if (isDrawerOpen) {
+                drawerState.open()
+            } else {
+                drawerState.close()
+            }
+        }
+
+        val scope = rememberCoroutineScope()
+
+        ModalNavigationDrawer(
+            drawerState = drawerState,
+            gesturesEnabled = true,
+            drawerContent = {
+                MobileDrawerContent(
+                    userState = userState,
                     activeTab = activeTab,
-                    onTabSelected = onTabSelected
+                    isDarkTheme = isDarkTheme,
+                    onTabSelected = onTabSelected,
+                    onThemeToggle = onThemeToggle,
+                    onCloseDrawer = {
+                        onDrawerOpenChange(false)
+                    }
                 )
             }
-        ) { innerPadding ->
-            Box(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-            ) {
-                content()
+        ) {
+            Scaffold(
+                modifier = modifier.fillMaxSize(),
+                bottomBar = {
+                    MobileBottomBar(
+                        activeTab = activeTab,
+                        onTabSelected = onTabSelected
+                    )
+                },
+                topBar = {
+                    MobileTopBar(
+                        avatarUrl = userState.profile?.avatarUrl,
+                        isThereUnreadNotifications = true,
+                        onAvatarClick = { scope.launch { drawerState.open() } },
+                        onNotificationsClick = {},
+                        modifier = Modifier.safeContentPadding()
+                    )
+                }
+            ) { innerPadding ->
+                Box(
+                    modifier = Modifier
+                        .background(WhiskrTheme.colors.background)
+                        .padding(innerPadding)
+                ) {
+                    content()
+                }
             }
         }
     }

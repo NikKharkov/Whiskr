@@ -100,7 +100,6 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 
 multiplatform-settings = { group = "com.russhwolf", name = "multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
-multiplatform-settings-coroutines = { group = "com.russhwolf", name = "multiplatform-settings-coroutines", version.ref = "multiplatformSettings" }
 multiplatform-settings-serialization = { group = "com.russhwolf", name = "multiplatform-settings-serialization", version.ref = "multiplatformSettings" }
 multiplatform-settings-test = { group = "com.russhwolf", name = "multiplatform-settings-test", version.ref = "multiplatformSettings" }
 
@@ -121,7 +120,6 @@ coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "
 kmpauth-google = { module = "io.github.mirzemehdi:kmpauth-google", version.ref = "kmpauth" }
 kmpauth-firebase = { module = "io.github.mirzemehdi:kmpauth-firebase", version.ref = "kmpauth" }
 kmpauth-uihelper = { module = "io.github.mirzemehdi:kmpauth-uihelper", version.ref = "kmpauth" }
-
 
 # Utils
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
