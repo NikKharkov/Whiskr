@@ -3,12 +3,11 @@ package org.example.whiskr.theme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 
-val LocalWhiskrColors = staticCompositionLocalOf<WhiskrColors> {
-    error("No colors provided")
-}
-
+val LocalThemeIsTransitioning = compositionLocalOf { false }
+val LocalWhiskrColors = staticCompositionLocalOf<WhiskrColors> { error("No colors provided") }
 val LocalWhiskrTypography = staticCompositionLocalOf { typography }
 
 @Composable

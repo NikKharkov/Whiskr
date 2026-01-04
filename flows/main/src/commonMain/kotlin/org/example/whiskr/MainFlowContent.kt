@@ -18,13 +18,11 @@ import ui.HomeScreen
 @Composable
 fun MainFlowContent(
     component: MainFlowComponent,
-    isDarkThemeOverride: Boolean? = null,
+    isDarkTheme: Boolean,
     onThemeAnimationStart: (Offset) -> Unit
 ) {
     val stack by component.stack.subscribeAsState()
     val user by component.userState.subscribeAsState()
-    val componentTheme by component.isDarkTheme.subscribeAsState()
-    val isDarkTheme = isDarkThemeOverride ?: componentTheme
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val isTablet = maxWidth > 600.dp

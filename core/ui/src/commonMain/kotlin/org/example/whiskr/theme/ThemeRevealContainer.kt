@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -23,8 +22,6 @@ import kotlinx.coroutines.launch
 import org.example.whiskr.extensions.circularClip
 import org.example.whiskr.extensions.getDistanceToCorner
 
-val LocalThemeIsTransitioning = compositionLocalOf { false }
-
 @Composable
 fun ThemeRevealContainer(
     isDarkTheme: Boolean,
@@ -33,11 +30,10 @@ fun ThemeRevealContainer(
 ) {
     var containerSize by remember { mutableStateOf(Size.Zero) }
     var revealOffset by remember { mutableStateOf(Offset.Zero) }
-
     var isAnimating by remember { mutableStateOf(false) }
     var previousThemeIsDark by remember { mutableStateOf(isDarkTheme) }
-
     val radiusAnim = remember { Animatable(0f) }
+
     val scope = rememberCoroutineScope()
 
     Box(

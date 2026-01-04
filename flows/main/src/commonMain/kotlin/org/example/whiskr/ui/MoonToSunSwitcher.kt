@@ -82,6 +82,7 @@ fun MoonToSunSwitcher(
             radius = (height * 0.05f) * starProgress,
             alpha = starProgress
         )
+
         drawStar(
             color = color,
             centerOffset = Offset(width * 0.2f, height * 0.2f),

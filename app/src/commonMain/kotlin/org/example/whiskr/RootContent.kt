@@ -28,7 +28,7 @@ fun RootContent(rootComponent: RootComponent) {
                     is RootComponent.Child.MainFlow -> {
                         MainFlowContent(
                             component = instance.component,
-                            isDarkThemeOverride = isDarkTheme,
+                            isDarkTheme = isDarkTheme,
                             onThemeAnimationStart = startAnimation
                         )
                     }
