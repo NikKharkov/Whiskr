@@ -4,6 +4,7 @@ plugins {
     id("whiskr.di")
     id("whiskr.network")
     id("whiskr.navigation")
+    id("whiskr.compose")
 }
 
 android {

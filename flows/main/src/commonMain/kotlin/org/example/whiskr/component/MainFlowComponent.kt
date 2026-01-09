@@ -3,9 +3,10 @@ package org.example.whiskr.component
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
-import component.HomeComponent
+import org.example.whiskr.data.PostMedia
 import domain.UserState
 import kotlinx.serialization.Serializable
+import org.example.whiskr.component.create.CreatePostComponent
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import whiskr.flows.main.generated.resources.Res
@@ -34,6 +35,7 @@ interface MainFlowComponent {
 
     sealed class Child {
         class Home(val component: HomeComponent) : Child()
+        class CreatePost(val component: CreatePostComponent) : Child()
         class Explore(val component: Any) : Child()
         class AIStudio(val component: Any) : Child()
         class Games(val component: Any) : Child()
@@ -60,12 +62,20 @@ interface MainFlowComponent {
 
         @Serializable
         data object Profile : Config
+
+        @Serializable
+        data object CreatePost : Config
+
+        @Serializable
+        data class UserProfile(val userId: Long) : Config
+
+        @Serializable
+        data class MediaViewer(val media: PostMedia) : Config
     }
 
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            onSignOut: () -> Unit,
             isDarkTheme: Value<Boolean>
         ): MainFlowComponent
     }

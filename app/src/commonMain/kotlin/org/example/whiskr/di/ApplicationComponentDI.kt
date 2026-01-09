@@ -1,6 +1,5 @@
 package org.example.whiskr.di
 
-import di.HomeComponentDI
 import di.RegistrationComponent
 import di.UserComponentDI
 import org.example.whiskr.AuthFlowComponentDI
@@ -10,7 +9,7 @@ import org.example.whiskr.root.RootComponentDI
 
 interface ApplicationComponentDI :
     NetworkComponent, AuthComponent, RootComponentDI, RegistrationComponent,
-    HomeComponentDI, AuthFlowComponentDI, MainFlowComponentDI, UserComponentDI,
+    PostComponentDI, AuthFlowComponentDI, MainFlowComponentDI, UserComponentDI,
     StorageComponent {
     val rootComponentFactory: RootComponent.Factory
 }

@@ -1,8 +1,9 @@
 package org.example.whiskr.di
 
-import com.russhwolf.settings.ObservableSettings
+import org.example.whiskr.domain.MediaProcessingService
 import org.example.whiskr.DatabaseFactory
 
 actual fun createIosComponent(
-    databaseFactory: DatabaseFactory
-): IosApplicationComponentDI = InjectIosApplicationComponentDI(databaseFactory)
+    databaseFactory: DatabaseFactory,
+    mediaProcessingService: MediaProcessingService
+): IosApplicationComponentDI = InjectIosApplicationComponentDI(databaseFactory, mediaProcessingService)

@@ -35,6 +35,7 @@ fun AdaptiveMainLayout(
     onThemeToggle: (Offset) -> Unit,
     isDrawerOpen: Boolean,
     onDrawerOpenChange: (Boolean) -> Unit,
+    shouldShowNavigation: Boolean,
     content: @Composable () -> Unit
 ) {
     if (isTablet) {
@@ -104,19 +105,23 @@ fun AdaptiveMainLayout(
             Scaffold(
                 modifier = modifier.fillMaxSize(),
                 bottomBar = {
-                    MobileBottomBar(
-                        activeTab = activeTab,
-                        onTabSelected = onTabSelected
-                    )
+                    if (shouldShowNavigation) {
+                        MobileBottomBar(
+                            activeTab = activeTab,
+                            onTabSelected = onTabSelected
+                        )
+                    }
                 },
                 topBar = {
-                    MobileTopBar(
-                        avatarUrl = userState.profile?.avatarUrl,
-                        isThereUnreadNotifications = true,
-                        onAvatarClick = { scope.launch { drawerState.open() } },
-                        onNotificationsClick = {},
-                        modifier = Modifier.safeContentPadding()
-                    )
+                    if (shouldShowNavigation) {
+                        MobileTopBar(
+                            avatarUrl = userState.profile?.avatarUrl,
+                            isThereUnreadNotifications = true,
+                            onAvatarClick = { scope.launch { drawerState.open() } },
+                            onNotificationsClick = {},
+                            modifier = Modifier.safeContentPadding()
+                        )
+                    }
                 }
             ) { innerPadding ->
                 Box(

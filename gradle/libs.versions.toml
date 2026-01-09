@@ -37,9 +37,10 @@ kotlinx-coroutines = "1.10.2"
 # --- Utils ---
 kermit = "2.0.8"
 datetime = "0.7.1"
-filekit = "0.12.0"
+calf = "0.9.0"
 mokoPermission = "0.20.1"
 peekaboo = "0.5.2"
+lightCompressor = "1.3.3"
 
 # --- Testing ---
 kotest = "6.0.7"
@@ -105,12 +106,9 @@ multiplatform-settings-test = { group = "com.russhwolf", name = "multiplatform-s
 
 kvault = { module = "com.liftric:kvault", version.ref = "kvault" }
 
-# FileKit
-filekit-core = { group = "io.github.vinceglb", name = "filekit-core", version.ref = "filekit" }
-filekit-dialogs = { module = "io.github.vinceglb:filekit-dialogs", version.ref = "filekit" }
-filekit-dialogs-compose = { module = "io.github.vinceglb:filekit-dialogs-compose", version.ref = "filekit" }
-filekit-coil = { module = "io.github.vinceglb:filekit-coil", version.ref = "filekit" }
-filekit-compose = { group = "io.github.vinceglb", name = "filekit-compose", version.ref = "filekit" }
+# Calf
+calf-file-picker = { module = "com.mohamedrejeb.calf:calf-file-picker", version.ref = "calf" }
+calf-file-picker-coil = { module = "com.mohamedrejeb.calf:calf-file-picker-coil", version.ref = "calf" }
 
 # Coil
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
@@ -127,6 +125,7 @@ moko-permission = { group = "dev.icerock.moko", name = "permissions", version.re
 moko-permission-compose = { group = "dev.icerock.moko", name = "permissions-compose", version.ref = "mokoPermission" }
 peekaboo-ui = { module = "io.github.onseok:peekaboo-ui", version.ref = "peekaboo" }
 peekaboo-image-picker = { module = "io.github.onseok:peekaboo-image-picker", version.ref = "peekaboo" }
+light-compressor = { module = "com.github.AbedElazizShe:LightCompressor", version.ref = "lightCompressor" }
 
 # Testing
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

@@ -9,6 +9,7 @@ fun MainFlowComponent.Child.toTab(): MainFlowComponent.Tab = when (this) {
     is MainFlowComponent.Child.Games -> MainFlowComponent.Tab.GAMES
     is MainFlowComponent.Child.Messages -> MainFlowComponent.Tab.MESSAGES
     is MainFlowComponent.Child.Profile -> MainFlowComponent.Tab.PROFILE
+    else -> MainFlowComponent.Tab.HOME
 }
 
 fun MainFlowComponent.Tab.toConfig(): MainFlowComponent.Config = when (this) {

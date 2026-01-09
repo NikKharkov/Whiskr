@@ -1,14 +1,13 @@
 package org.example.whiskr
 
+import MediaProcessingServiceImpl
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.arkivanov.decompose.retainedComponent
-import com.russhwolf.settings.SharedPreferencesSettings
 import org.example.whiskr.di.AndroidApplicationComponentDI
 import org.example.whiskr.di.create
-import org.example.whiskr.util.WHISKR_PREFERENCES
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,9 +15,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val databaseFactory = AndroidDatabaseFactory(context = applicationContext)
+        val mediaProcessingService = MediaProcessingServiceImpl(context = applicationContext)
 
         val appComponent =
-            AndroidApplicationComponentDI::class.create(applicationContext, databaseFactory)
+            AndroidApplicationComponentDI::class.create(applicationContext, databaseFactory, mediaProcessingService)
 
         val root = retainedComponent { componentContext ->
             appComponent.rootComponentFactory(componentContext)

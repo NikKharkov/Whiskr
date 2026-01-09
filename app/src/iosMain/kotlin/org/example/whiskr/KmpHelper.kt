@@ -1,5 +1,6 @@
 package org.example.whiskr
 
+import MediaProcessingServiceImpl
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.lifecycle.destroy
@@ -11,8 +12,9 @@ import org.example.whiskr.di.createIosComponent
 object KmpHelper {
     private val lifecycle = LifecycleRegistry()
     private val databaseFactory = IosDatabaseFactory()
+    private val mediaProcessingService = MediaProcessingServiceImpl()
 
-    private val appComponent = createIosComponent(databaseFactory)
+    private val appComponent = createIosComponent(databaseFactory, mediaProcessingService)
 
     val root =
         appComponent.rootComponentFactory(

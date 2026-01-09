@@ -66,9 +66,6 @@ class DefaultRootComponent(
         RootComponent.Config.MainFlow -> RootComponent.Child.MainFlow(
             mainFlowFactory(
                 componentContext = context,
-                onSignOut = {
-                    navigation.replaceAll(RootComponent.Config.AuthFlow)
-                },
                 isDarkTheme = isDarkTheme
             )
         )

@@ -12,4 +12,5 @@ dependencies {
     commonMainImplementation(projects.features.home)
     commonMainImplementation(libs.coil.compose)
     commonMainImplementation(libs.coil.network)
+    commonMainImplementation(libs.calf.file.picker.coil)
 }

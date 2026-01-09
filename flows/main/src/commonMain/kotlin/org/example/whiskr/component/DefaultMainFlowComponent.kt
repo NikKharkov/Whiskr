@@ -5,24 +5,27 @@ import com.arkivanov.decompose.DelicateDecomposeApi
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import component.HomeComponent
 import domain.UserRepository
 import domain.UserState
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
+import org.example.whiskr.component.MainFlowComponent.Config.*
+import org.example.whiskr.component.create.CreatePostComponent
 import org.example.whiskr.util.toConfig
 
 @OptIn(DelicateDecomposeApi::class)
 @Inject
 class DefaultMainFlowComponent(
     @Assisted private val componentContext: ComponentContext,
-    @Assisted private val onSignOut: () -> Unit,
     @Assisted override val isDarkTheme: Value<Boolean>,
     private val userRepository: UserRepository,
-    private val homeFactory: HomeComponent.Factory
+    private val homeFactory: HomeComponent.Factory,
+    private val createPostFactory: CreatePostComponent.Factory
 ) : MainFlowComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<MainFlowComponent.Config>()
@@ -48,7 +51,7 @@ class DefaultMainFlowComponent(
     override val stack = childStack(
         source = navigation,
         serializer = MainFlowComponent.Config.serializer(),
-        initialConfiguration = MainFlowComponent.Config.Home,
+        initialConfiguration = Home,
         handleBackButton = true,
         childFactory = ::createChild
     )
@@ -57,19 +60,32 @@ class DefaultMainFlowComponent(
         config: MainFlowComponent.Config,
         context: ComponentContext
     ): MainFlowComponent.Child = when (config) {
-        MainFlowComponent.Config.Home -> MainFlowComponent.Child.Home(
+        Home -> MainFlowComponent.Child.Home(
             homeFactory(
                 componentContext = context,
-                onSignOut = onSignOut,
-                onRefresh = { userRepository.getMyProfile() }
+                onNavigateToCreatePost = { navigation.push(CreatePost) },
+                onNavigateToProfile = {},
+                onNavigateToMediaViewer = {}
             )
         )
 
-        MainFlowComponent.Config.AIStudio -> TODO()
-        MainFlowComponent.Config.Explore -> TODO()
-        MainFlowComponent.Config.Games -> TODO()
-        MainFlowComponent.Config.Messages -> TODO()
-        MainFlowComponent.Config.Profile -> TODO()
+        CreatePost -> MainFlowComponent.Child.CreatePost(
+            createPostFactory(
+                componentContext = context,
+                onBack = { navigation.pop() },
+                onPostCreated = {
+                    navigation.pop()
+                }
+            )
+        )
+
+        is MediaViewer -> TODO()
+        is UserProfile -> TODO()
+        AIStudio -> TODO()
+        Explore -> TODO()
+        Games -> TODO()
+        Messages -> TODO()
+        Profile -> TODO()
     }
 
     override fun onTabSelected(tab: MainFlowComponent.Tab) {

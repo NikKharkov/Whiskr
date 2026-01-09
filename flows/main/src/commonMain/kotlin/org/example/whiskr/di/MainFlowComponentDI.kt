@@ -10,7 +10,7 @@ interface MainFlowComponentDI {
     @Provides
     @Singleton
     fun provideMainFlowFactory(
-        factory: (ComponentContext, () -> Unit, Value<Boolean>) -> DefaultMainFlowComponent
+        factory: (ComponentContext, Value<Boolean>) -> DefaultMainFlowComponent
     ): MainFlowComponent.Factory {
         return MainFlowComponent.Factory(factory)
     }
