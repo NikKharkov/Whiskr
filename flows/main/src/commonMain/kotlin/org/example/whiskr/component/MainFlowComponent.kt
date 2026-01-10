@@ -7,6 +7,7 @@ import org.example.whiskr.data.PostMedia
 import domain.UserState
 import kotlinx.serialization.Serializable
 import org.example.whiskr.component.create.CreatePostComponent
+import org.example.whiskr.component.home.HomeComponent
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import whiskr.flows.main.generated.resources.Res

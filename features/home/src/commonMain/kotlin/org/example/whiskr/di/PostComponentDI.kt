@@ -3,8 +3,8 @@ package org.example.whiskr.di
 import com.arkivanov.decompose.ComponentContext
 import de.jensklingenberg.ktorfit.Ktorfit
 import me.tatarka.inject.annotations.Provides
-import org.example.whiskr.component.DefaultHomeComponent
-import org.example.whiskr.component.HomeComponent
+import org.example.whiskr.component.home.DefaultHomeComponent
+import org.example.whiskr.component.home.HomeComponent
 import org.example.whiskr.component.create.CreatePostComponent
 import org.example.whiskr.component.create.DefaultCreatePostComponent
 import org.example.whiskr.data.Post

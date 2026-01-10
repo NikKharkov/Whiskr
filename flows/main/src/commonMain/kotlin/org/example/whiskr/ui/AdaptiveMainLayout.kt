@@ -3,11 +3,14 @@ package org.example.whiskr.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -51,8 +54,9 @@ fun AdaptiveMainLayout(
                 isDarkTheme = isDarkTheme,
                 onThemeToggle = onThemeToggle,
                 modifier = Modifier
-                    .width(250.dp)
+                    .widthIn(max = 300.dp)
                     .fillMaxHeight()
+                    .systemBarsPadding()
                     .padding(vertical = 24.dp)
             )
 
@@ -119,7 +123,9 @@ fun AdaptiveMainLayout(
                             isThereUnreadNotifications = true,
                             onAvatarClick = { scope.launch { drawerState.open() } },
                             onNotificationsClick = {},
-                            modifier = Modifier.safeContentPadding()
+                            modifier = Modifier
+                                .windowInsetsPadding(WindowInsets.systemBars)
+                                .padding(vertical = 8.dp, horizontal = 16.dp)
                         )
                     }
                 }

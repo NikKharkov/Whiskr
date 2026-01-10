@@ -14,4 +14,5 @@ dependencies {
     commonMainImplementation(libs.coil.compose)
     commonMainImplementation(libs.coil.network)
     commonMainImplementation(projects.core.user)
+    commonMainImplementation(libs.media.player)
 }

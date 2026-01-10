@@ -1,4 +1,4 @@
-package org.example.whiskr.component
+package org.example.whiskr.component.home
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
@@ -8,6 +8,7 @@ import com.arkivanov.decompose.value.update
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
+import org.example.whiskr.component.componentScope
 import org.example.whiskr.component.create.CreatePostComponent
 import org.example.whiskr.data.Post
 import org.example.whiskr.data.PostMedia

@@ -21,9 +21,9 @@ fun CreatePostLayout(
     val context = LocalPlatformContext.current
 
     val launcher = rememberFilePickerLauncher(
-        type = FilePickerFileType.Image,
+        type = FilePickerFileType.ImageVideo,
         selectionMode = FilePickerSelectionMode.Multiple
-    ) { files -> component.onImagesSelected(files) }
+    ) { files -> component.onMediaSelected(files) }
 
     CreatePostInput(
         text = state.text,

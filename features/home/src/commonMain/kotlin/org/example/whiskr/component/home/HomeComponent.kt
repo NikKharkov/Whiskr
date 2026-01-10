@@ -1,4 +1,4 @@
-package org.example.whiskr.component
+package org.example.whiskr.component.home
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value

@@ -69,7 +69,7 @@ fun ThemeRevealContainer(
 
                     radiusAnim.animateTo(
                         targetValue = maxRadius,
-                        animationSpec = tween(700, easing = FastOutSlowInEasing)
+                        animationSpec = tween(1000, easing = FastOutSlowInEasing)
                     )
 
                     onToggleTheme(!isDarkTheme)

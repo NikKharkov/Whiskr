@@ -16,6 +16,7 @@ import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.component.MainFlowComponent.Config.*
 import org.example.whiskr.component.create.CreatePostComponent
+import org.example.whiskr.component.home.HomeComponent
 import org.example.whiskr.util.toConfig
 
 @OptIn(DelicateDecomposeApi::class)

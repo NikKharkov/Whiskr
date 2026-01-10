@@ -30,7 +30,7 @@ class DefaultCreatePostComponent(
         _model.update { it.copy(text = text) }
     }
 
-    override fun onImagesSelected(files: List<KmpFile>) {
+    override fun onMediaSelected(files: List<KmpFile>) {
         _model.update { state ->
             val availableSlots = 4 - state.files.size
             if (availableSlots <= 0) return@update state

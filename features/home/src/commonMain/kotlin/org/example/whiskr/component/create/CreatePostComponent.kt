@@ -10,7 +10,7 @@ interface CreatePostComponent {
     val model: Value<Model>
 
     fun onTextChanged(text: String)
-    fun onImagesSelected(files: List<KmpFile>)
+    fun onMediaSelected(files: List<KmpFile>)
     fun onRemoveFile(file: KmpFile)
     fun onSendClick(context: PlatformContext)
     fun onBackClick()

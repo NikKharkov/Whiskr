@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.media.MediaMetadataRetriever
 import android.net.Uri
+import android.util.Log
 import com.abedelazizshe.lightcompressorlibrary.CompressionListener
 import com.abedelazizshe.lightcompressorlibrary.VideoCompressor
 import com.abedelazizshe.lightcompressorlibrary.VideoQuality
@@ -11,6 +12,7 @@ import com.abedelazizshe.lightcompressorlibrary.config.AppSpecificStorageConfigu
 import com.abedelazizshe.lightcompressorlibrary.config.Configuration
 import com.mohamedrejeb.calf.io.KmpFile
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.io.IOException
 import org.example.whiskr.domain.MediaProcessingService
 import org.example.whiskr.domain.ProcessedImage
 import org.example.whiskr.domain.ProcessedVideo
@@ -18,7 +20,6 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.UUID
 import kotlin.coroutines.resumeWithException
-import kotlinx.io.IOException
 
 class MediaProcessingServiceImpl(
     private val context: Context
@@ -82,7 +83,6 @@ class MediaProcessingServiceImpl(
 
         try {
             retriever.setDataSource(context, fileUri)
-
             val widthStr = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)
             val heightStr = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)
             val rotationStr = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION)
@@ -113,10 +113,22 @@ class MediaProcessingServiceImpl(
                 mimeType = "image/jpeg"
             )
 
-            val compressedPath = compressVideo(fileUri)
+            val inputSize = context.contentResolver.openFileDescriptor(fileUri, "r")?.statSize ?: 0L
+            val sizeLimit = 4.5 * 1024 * 1024
+
+            val finalPath = if (inputSize < sizeLimit) {
+                copyFileToCache(fileUri)
+            } else {
+                try {
+                    compressVideo(fileUri)
+                } catch (e: Exception) {
+                    Log.e("MediaProcessingServiceImpl","Compression failed, using original file")
+                    copyFileToCache(fileUri)
+                }
+            }
 
             return ProcessedVideo(
-                filePath = compressedPath,
+                filePath = finalPath,
                 thumbnail = thumbnail,
                 durationSeconds = (durationMs / 1000).toInt(),
                 width = finalW,
@@ -128,6 +140,20 @@ class MediaProcessingServiceImpl(
         }
     }
 
+    private fun copyFileToCache(uri: Uri): String {
+        val outputDir = File(context.filesDir, "whiskr_videos")
+        if (!outputDir.exists()) outputDir.mkdirs()
+
+        val outputFile = File(outputDir, "${UUID.randomUUID()}.mp4")
+
+        context.contentResolver.openInputStream(uri)?.use { input ->
+            outputFile.outputStream().use { output ->
+                input.copyTo(output)
+            }
+        }
+        return outputFile.absolutePath
+    }
+
     override fun readFile(path: String): ByteArray {
         return File(path).readBytes()
     }
@@ -135,22 +161,34 @@ class MediaProcessingServiceImpl(
     private suspend fun compressVideo(sourceUri: Uri): String = suspendCancellableCoroutine { continuation ->
 
         val outputName = "${UUID.randomUUID()}.mp4"
-        val outputDir = context.cacheDir
+        val outputDir = File(context.filesDir, "whiskr_videos")
 
         VideoCompressor.start(
             context = context,
             uris = listOf(sourceUri),
             isStreamable = true,
             storageConfiguration = AppSpecificStorageConfiguration("whiskr_videos"),
+            configureWith = Configuration(
+                quality = VideoQuality.MEDIUM,
+                isMinBitrateCheckEnabled = false,
+                videoBitrateInMbps = 2,
+                disableAudio = false,
+                keepOriginalResolution = false,
+                videoHeight = 1280.0,
+                videoWidth = 720.0,
+                videoNames = listOf(outputName)
+            ),
             listener = object : CompressionListener {
                 override fun onProgress(index: Int, percent: Float) {}
 
                 override fun onStart(index: Int) {}
 
                 override fun onSuccess(index: Int, size: Long, path: String?) {
-                    val finalPath = path ?: File(outputDir, outputName).absolutePath
+                    val finalPath = path?.removeSuffix("_temp")
+                        ?: File(outputDir, outputName).absolutePath
+
                     if (continuation.isActive) {
-                        continuation.resume(finalPath) { cause, _, _ -> continuation.cancel() }
+                        continuation.resume(finalPath) { _, _, _ -> continuation.cancel() }
                     }
                 }
 
@@ -165,17 +203,7 @@ class MediaProcessingServiceImpl(
                         continuation.cancel()
                     }
                 }
-            },
-            configureWith = Configuration(
-                quality = VideoQuality.MEDIUM,
-                isMinBitrateCheckEnabled = false,
-                videoBitrateInMbps = 4,
-                disableAudio = false,
-                keepOriginalResolution = false,
-                videoHeight = 1280.0,
-                videoWidth = 720.0,
-                videoNames = emptyList()
-            )
+            }
         )
     }
 

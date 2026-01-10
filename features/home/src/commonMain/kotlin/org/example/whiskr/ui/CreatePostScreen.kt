@@ -3,7 +3,10 @@ package org.example.whiskr.ui
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +36,8 @@ fun CreatePostScreen(component: CreatePostComponent) {
                 style = WhiskrTheme.typography.body.copy(fontWeight = FontWeight.Medium),
                 modifier = Modifier
                     .customClickable(onClick = component::onBackClick)
-                    .padding(horizontal = 16.dp)
+                  //  .windowInsetsPadding(WindowInsets.systemBars)
+                    .padding(16.dp)
             )
         }
     ) { innerPadding ->
