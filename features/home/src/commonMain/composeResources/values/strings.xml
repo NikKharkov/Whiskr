@@ -1,8 +1,0 @@
-<resources>
-    <string name="add_post">Write new post</string>
-    <string name="add_image">Add image</string>
-    <string name="remove">Remove</string>
-    <string name="post">Post</string>
-    <string name="cancel">Cancel</string>
-    <string name="whats_happening">What's happening?</string>
-</resources>

@@ -6,6 +6,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.staticCompositionLocalOf
 
+val LocalIsTablet = compositionLocalOf { false }
 val LocalThemeIsTransitioning = compositionLocalOf { false }
 val LocalWhiskrColors = staticCompositionLocalOf<WhiskrColors> { error("No colors provided") }
 val LocalWhiskrTypography = staticCompositionLocalOf { typography }
@@ -16,6 +17,8 @@ fun WhiskrTheme(
     content: @Composable () -> Unit
 ) {
     val colors = if (isDarkTheme) darkPalette else lightPalette
+
+    ConfigureSystemBars(isDarkTheme)
 
     CompositionLocalProvider(
         LocalWhiskrColors provides colors,

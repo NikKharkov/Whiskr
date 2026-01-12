@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import org.example.whiskr.component.MainFlowComponent
+import org.example.whiskr.theme.LocalIsTablet
 import org.example.whiskr.ui.AdaptiveMainLayout
 import org.example.whiskr.ui.CreatePostScreen
 import org.example.whiskr.ui.HomeScreen
@@ -29,39 +30,37 @@ fun MainFlowContent(
     val user by component.userState.subscribeAsState()
     val isDrawerOpen by component.isDrawerOpen.subscribeAsState()
 
-    CompositionLocalProvider(LocalUser provides user) {
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        val isTablet = maxWidth >= 960.dp
 
-        val activeChild = stack.active.instance
-        val shouldShowBars = activeChild !is MainFlowComponent.Child.CreatePost
+        CompositionLocalProvider(LocalIsTablet provides isTablet) {
+            CompositionLocalProvider(LocalUser provides user) {
+                val shouldShowBars = stack.active.instance !is MainFlowComponent.Child.CreatePost
 
-        BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-            val isTablet = maxWidth > 600.dp
-
-            AdaptiveMainLayout(
-                isTablet = isTablet,
-                activeTab = stack.active.instance.toTab(),
-                userState = user,
-                isDarkTheme = isDarkTheme,
-                onThemeToggle = { centerOffset ->
-                    onThemeAnimationStart(centerOffset)
-                },
-                onTabSelected = component::onTabSelected,
-                isDrawerOpen = isDrawerOpen,
-                shouldShowNavigation = shouldShowBars,
-                onDrawerOpenChange = component::setDrawerOpen
-            ) {
-                Children(
-                    stack = stack,
-                    modifier = Modifier.fillMaxSize()
+                AdaptiveMainLayout(
+                    activeTab = stack.active.instance.toTab(),
+                    isDarkTheme = isDarkTheme,
+                    onThemeToggle = { centerOffset ->
+                        onThemeAnimationStart(centerOffset)
+                    },
+                    onTabSelected = component::onTabSelected,
+                    isDrawerOpen = isDrawerOpen,
+                    shouldShowNavigation = shouldShowBars,
+                    onDrawerOpenChange = component::setDrawerOpen
                 ) {
-                    when (val child = it.instance) {
-                        is MainFlowComponent.Child.Home -> HomeScreen(child.component)
-                        is MainFlowComponent.Child.Explore -> Text("Explore screen")
-                        is MainFlowComponent.Child.AIStudio -> Text("AI Studio screen")
-                        is MainFlowComponent.Child.Games -> Text("Games screen")
-                        is MainFlowComponent.Child.Messages -> Text("Messages screen")
-                        is MainFlowComponent.Child.Profile -> Text("Profile screen")
-                        is MainFlowComponent.Child.CreatePost -> CreatePostScreen(child.component)
+                    Children(
+                        stack = stack,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        when (val child = it.instance) {
+                            is MainFlowComponent.Child.Home -> HomeScreen(child.component)
+                            is MainFlowComponent.Child.Explore -> Text("Explore screen")
+                            is MainFlowComponent.Child.AIStudio -> Text("AI Studio screen")
+                            is MainFlowComponent.Child.Games -> Text("Games screen")
+                            is MainFlowComponent.Child.Messages -> Text("Messages screen")
+                            is MainFlowComponent.Child.Profile -> Text("Profile screen")
+                            is MainFlowComponent.Child.CreatePost -> CreatePostScreen(child.component)
+                        }
                     }
                 }
             }

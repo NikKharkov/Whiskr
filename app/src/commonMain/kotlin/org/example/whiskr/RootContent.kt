@@ -14,10 +14,8 @@ fun RootContent(rootComponent: RootComponent) {
 
     ThemeRevealContainer(
         isDarkTheme = isDarkTheme,
-        onToggleTheme = { newTheme ->
-            rootComponent.toggleTheme(newTheme)
-        }
-    ) { isDarkTheme, startAnimation ->
+        onToggleTheme = { newTheme -> rootComponent.toggleTheme(newTheme) }
+    ) { startAnimation ->
         WhiskrTheme(isDarkTheme = isDarkTheme) {
             Children(stack = rootComponent.stack) { child ->
                 when (val instance = child.instance) {

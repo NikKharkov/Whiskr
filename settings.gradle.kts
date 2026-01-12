@@ -38,7 +38,7 @@ include(":flows:main")
 
 include(":features:auth")
 include(":features:registration")
-include(":features:home")
+include(":features:posts")
 
 include(":core:common")
 include(":core:network")

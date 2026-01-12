@@ -9,5 +9,6 @@ android {
 }
 
 dependencies {
+    androidMainImplementation(libs.androidx.core)
     commonMainImplementation(libs.coil.compose)
 }

@@ -1,6 +1,6 @@
 package org.example.whiskr
 
-import MediaProcessingServiceImpl
+import org.example.whiskr.MediaProcessingServiceImpl
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent

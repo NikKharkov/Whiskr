@@ -13,7 +13,7 @@ dependencies {
     commonMainImplementation(libs.kvault)
     commonMainImplementation(projects.features.auth)
     commonMainImplementation(projects.features.registration)
-    commonMainImplementation(projects.features.home)
+    commonMainImplementation(projects.features.posts)
     commonMainImplementation(projects.flows.auth)
     commonMainImplementation(projects.flows.main)
     commonMainImplementation(libs.multiplatform.settings)

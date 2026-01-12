@@ -1,5 +1,6 @@
 [versions]
 agp = "8.11.2"
+core = "1.17.0"
 kotlin = "2.2.21"
 ksp = "2.2.21-2.0.4"
 composeHotReload = "1.0.0"
@@ -7,7 +8,7 @@ composeMultiplatform = "1.9.3"
 
 # --- Android ---
 android-compileSdk = "36"
-android-minSdk = "24"
+android-minSdk = "26"
 android-targetSdk = "36"
 androidx-activity = "1.12.1"
 androidx-lifecycle = "2.9.6"
@@ -30,7 +31,7 @@ kvault = "1.12.0"
 
 # --- UI Components ---
 coil = "3.3.0"
-mediaPlayer = "1.0.51"
+mediaPlayer = "1.0.50"
 
 # --- Concurrency ---
 kotlinx-coroutines = "1.10.2"
@@ -58,6 +59,7 @@ uiTooling = "1.10.0"
 [libraries]
 # Build Logic Dependencies
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+androidx-core = { module = "androidx.core:core", version.ref = "core" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeMultiplatform" }
 ksp-gradlePlugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }

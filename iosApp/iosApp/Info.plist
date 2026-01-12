@@ -21,5 +21,10 @@
 	<string>636998600750-16bbquj27h7d2t9dg2v7pvophgcgr4mg.apps.googleusercontent.com</string>
 	<key>Privacy - Camera Usage Description</key>
 	<string>This app uses camera for capturing photos.</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 </dict>
 </plist>

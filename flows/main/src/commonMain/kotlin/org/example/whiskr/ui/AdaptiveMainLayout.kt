@@ -4,9 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.widthIn
@@ -22,18 +26,20 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
-import domain.UserState
 import kotlinx.coroutines.launch
 import org.example.whiskr.component.MainFlowComponent
+import org.example.whiskr.theme.LocalIsTablet
 import org.example.whiskr.theme.WhiskrTheme
+import org.example.whiskr.ui.components.MobileBottomBar
+import org.example.whiskr.ui.components.MobileDrawerContent
+import org.example.whiskr.ui.components.MobileTopBar
+import org.example.whiskr.ui.components.TabletSidebar
 
 @Composable
 fun AdaptiveMainLayout(
     modifier: Modifier = Modifier,
-    isTablet: Boolean,
     activeTab: MainFlowComponent.Tab,
     onTabSelected: (MainFlowComponent.Tab) -> Unit,
-    userState: UserState,
     isDarkTheme: Boolean,
     onThemeToggle: (Offset) -> Unit,
     isDrawerOpen: Boolean,
@@ -41,6 +47,8 @@ fun AdaptiveMainLayout(
     shouldShowNavigation: Boolean,
     content: @Composable () -> Unit
 ) {
+    val isTablet = LocalIsTablet.current
+
     if (isTablet) {
         Row(
             modifier = modifier
@@ -50,12 +58,12 @@ fun AdaptiveMainLayout(
             TabletSidebar(
                 activeTab = activeTab,
                 onTabSelected = onTabSelected,
-                userState = userState,
                 isDarkTheme = isDarkTheme,
                 onThemeToggle = onThemeToggle,
                 modifier = Modifier
                     .widthIn(max = 300.dp)
                     .fillMaxHeight()
+                    .windowInsetsPadding(WindowInsets.displayCutout)
                     .systemBarsPadding()
                     .padding(vertical = 24.dp)
             )
@@ -66,6 +74,7 @@ fun AdaptiveMainLayout(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
+                    .windowInsetsPadding(WindowInsets.displayCutout)
             ) {
                 content()
             }
@@ -92,10 +101,9 @@ fun AdaptiveMainLayout(
 
         ModalNavigationDrawer(
             drawerState = drawerState,
-            gesturesEnabled = true,
+            gesturesEnabled = shouldShowNavigation,
             drawerContent = {
                 MobileDrawerContent(
-                    userState = userState,
                     activeTab = activeTab,
                     isDarkTheme = isDarkTheme,
                     onTabSelected = onTabSelected,
@@ -119,16 +127,19 @@ fun AdaptiveMainLayout(
                 topBar = {
                     if (shouldShowNavigation) {
                         MobileTopBar(
-                            avatarUrl = userState.profile?.avatarUrl,
                             isThereUnreadNotifications = true,
                             onAvatarClick = { scope.launch { drawerState.open() } },
                             onNotificationsClick = {},
                             modifier = Modifier
-                                .windowInsetsPadding(WindowInsets.systemBars)
-                                .padding(vertical = 8.dp, horizontal = 16.dp)
+                                .windowInsetsPadding(
+                                    WindowInsets.safeDrawing
+                                        .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Top)
+                                )
+                                .padding(horizontal = 16.dp)
                         )
                     }
-                }
+                },
+                contentWindowInsets = if (shouldShowNavigation) WindowInsets.systemBars else WindowInsets(0, 0, 0, 0),
             ) { innerPadding ->
                 Box(
                     modifier = Modifier

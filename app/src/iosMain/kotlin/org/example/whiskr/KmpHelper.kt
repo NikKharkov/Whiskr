@@ -1,6 +1,6 @@
 package org.example.whiskr
 
-import MediaProcessingServiceImpl
+import org.example.whiskr.MediaProcessingServiceImpl
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.lifecycle.destroy
