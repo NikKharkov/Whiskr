@@ -14,6 +14,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import org.example.whiskr.theme.WhiskrTheme
+import org.example.whiskr.util.toCloudStorageUrl
 import org.jetbrains.compose.resources.painterResource
 import whiskr.core.ui.generated.resources.Res
 import whiskr.core.ui.generated.resources.ic_avatar_placeholder
@@ -38,7 +39,7 @@ fun AvatarPlaceholder(
         )
 
         AsyncImage(
-            model = avatarUrl?.replace("localhost", "10.0.2.2"),
+            model = avatarUrl?.toCloudStorageUrl(),
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop

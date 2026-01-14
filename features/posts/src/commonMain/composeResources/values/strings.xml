@@ -4,6 +4,7 @@
     <string name="remove">Remove</string>
     <string name="post">Post</string>
     <string name="cancel">Cancel</string>
+    <string name="full_screen">Full screen</string>
     <string name="whats_happening">What's happening?</string>
     <string name="time_just_now">now</string>
     <string name="time_short_minute">%1$dm</string>

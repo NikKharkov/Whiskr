@@ -8,6 +8,8 @@ import de.jensklingenberg.ktorfit.http.Path
 import de.jensklingenberg.ktorfit.http.Query
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import org.example.whiskr.dto.PagedResponse
+import org.example.whiskr.dto.Post
+import org.example.whiskr.dto.UserInteraction
 
 interface PostApiService {
 

@@ -4,6 +4,7 @@ import co.touchlab.kermit.Logger
 import com.mohamedrejeb.calf.core.PlatformContext
 import com.mohamedrejeb.calf.io.KmpFile
 import com.mohamedrejeb.calf.io.getName
+import com.mohamedrejeb.calf.io.readByteArray
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
 import io.ktor.http.ContentType
@@ -11,15 +12,14 @@ import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import kotlinx.serialization.json.Json
 import me.tatarka.inject.annotations.Inject
-import org.example.whiskr.domain.MediaProcessingService
 import org.example.whiskr.domain.PostRepository
-import org.example.whiskr.domain.UploadItem
 import org.example.whiskr.dto.PagedResponse
+import org.example.whiskr.dto.Post
+import org.example.whiskr.dto.UserInteraction
 
 @Inject
 class PostRepositoryImpl(
-    private val postApiService: PostApiService,
-    private val mediaProcessingService: MediaProcessingService
+    private val postApiService: PostApiService
 ) : PostRepository {
 
     override suspend fun getFeed(page: Int): Result<PagedResponse<Post>> {
@@ -43,50 +43,21 @@ class PostRepositoryImpl(
         files: List<KmpFile>
     ): Result<Post> {
         return try {
-            val uploadItems = mutableListOf<UploadItem>()
-            var videoDuration: Int? = null
+            val preparedFiles = files.mapIndexed { index, file ->
+                val bytes = file.readByteArray(context)
+                val name = file.getName(context) ?: "file_$index"
+                val extension = name.substringAfterLast('.', "").lowercase()
 
-            files.forEachIndexed { index, file ->
-                val name = file.getName(context)?.lowercase() ?: ""
-                val isVideo = name.matches(Regex(".*\\.(mp4|mov|avi|mkv)$"))
-
-                if (isVideo) {
-                    val processed = mediaProcessingService.processVideo(file)
-
-                    if (videoDuration == null) {
-                        videoDuration = processed.durationSeconds
-                    }
-
-                    uploadItems.add(
-                        UploadItem(
-                            filePath = processed.filePath,
-                            filename = "video_${index}.mp4",
-                            mimeType = processed.mimeType
-                        )
-                    )
-
-                    uploadItems.add(
-                        UploadItem(
-                            bytes = processed.thumbnail.bytes,
-                            filename = "thumbnail_${index}.jpg",
-                            mimeType = processed.thumbnail.mimeType
-                        )
-                    )
-
-                } else {
-                    val processed = mediaProcessingService.processImage(file)
-
-                    uploadItems.add(
-                        UploadItem(
-                            bytes = processed.bytes,
-                            filename = "image_${index}.jpg",
-                            mimeType = processed.mimeType
-                        )
-                    )
+                val mimeType = when (extension) {
+                    "mp4", "mov", "avi", "mkv" -> "video/mp4"
+                    "png" -> "image/png"
+                    else -> "image/jpeg"
                 }
+
+                Triple(bytes, name, mimeType)
             }
 
-            val requestDto = CreatePostRequest(text, videoDuration)
+            val requestDto = CreatePostRequest(text)
 
             val multipartBody = MultiPartFormDataContent(
                 formData {
@@ -98,14 +69,13 @@ class PostRepositoryImpl(
                         }
                     )
 
-                    uploadItems.forEach { item ->
-                        val content = item.bytes ?: mediaProcessingService.readFile(item.filePath!!)
+                    preparedFiles.forEach { (bytes, name, mimeType) ->
                         append(
                             key = "files",
-                            value = content,
+                            value = bytes,
                             headers = Headers.build {
-                                append(HttpHeaders.ContentDisposition, "filename=\"${item.filename}\"")
-                                append(HttpHeaders.ContentType, item.mimeType)
+                                append(HttpHeaders.ContentDisposition, "filename=\"$name\"")
+                                append(HttpHeaders.ContentType, mimeType)
                             }
                         )
                     }

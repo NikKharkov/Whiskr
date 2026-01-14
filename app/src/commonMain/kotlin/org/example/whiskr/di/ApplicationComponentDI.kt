@@ -10,6 +10,6 @@ import org.example.whiskr.root.RootComponentDI
 interface ApplicationComponentDI :
     NetworkComponent, AuthComponent, RootComponentDI, RegistrationComponent,
     PostComponentDI, AuthFlowComponentDI, MainFlowComponentDI, UserComponentDI,
-    StorageComponent {
+    StorageComponent, MediaViewerDI {
     val rootComponentFactory: RootComponent.Factory
 }

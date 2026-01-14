@@ -24,8 +24,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import org.example.whiskr.data.PostStats
-import org.example.whiskr.data.UserInteraction
+import org.example.whiskr.dto.PostStats
+import org.example.whiskr.dto.UserInteraction
 import org.example.whiskr.extensions.customClickable
 import org.example.whiskr.theme.WhiskrTheme
 import org.jetbrains.compose.resources.painterResource

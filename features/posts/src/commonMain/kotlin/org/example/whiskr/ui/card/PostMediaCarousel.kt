@@ -5,10 +5,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,13 +29,21 @@ import chaintech.videoplayer.host.MediaPlayerHost
 import chaintech.videoplayer.model.VideoPlayerConfig
 import chaintech.videoplayer.ui.video.VideoPlayerComposable
 import coil3.compose.AsyncImage
-import org.example.whiskr.data.MediaType
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.dto.MediaType
+import org.example.whiskr.dto.PostMedia
+import org.example.whiskr.extensions.customClickable
 import org.example.whiskr.theme.WhiskrTheme
+import org.example.whiskr.util.toCloudStorageUrl
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import whiskr.features.posts.generated.resources.Res
+import whiskr.features.posts.generated.resources.full_screen
+import whiskr.features.posts.generated.resources.ic_full_screen
 
 @Composable
 fun PostMediaCarousel(
     medias: List<PostMedia>,
+    onMediaClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     if (medias.isEmpty()) return
@@ -40,8 +52,10 @@ fun PostMediaCarousel(
 
     Box(
         modifier = modifier
+            .widthIn(max = 500.dp)
             .fillMaxWidth()
             .aspectRatio(0.8f)
+            .heightIn(max = 500.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(color = Color.Black.copy(alpha = 0.05f))
     ) {
@@ -51,7 +65,8 @@ fun PostMediaCarousel(
         ) { index ->
             MediaCard(
                 media = medias[index],
-                shouldBePaused = pagerState.settledPage != index
+                shouldBePaused = pagerState.settledPage != index,
+                onClick = { onMediaClick(index) }
             )
         }
 
@@ -69,15 +84,19 @@ fun PostMediaCarousel(
 
 @Composable
 private fun MediaCard(
+    modifier: Modifier = Modifier,
     media: PostMedia,
-    shouldBePaused: Boolean
+    shouldBePaused: Boolean,
+    onClick: () -> Unit
 ) {
-    when(media.type) {
+    when (media.type) {
         MediaType.IMAGE -> {
             AsyncImage(
-                model = media.url.replace("localhost", "10.0.2.2"),
+                model = media.url.toCloudStorageUrl(),
                 contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
+                modifier = modifier
+                    .fillMaxSize()
+                    .customClickable(onClick = onClick),
                 contentScale = ContentScale.Crop
             )
         }
@@ -87,32 +106,45 @@ private fun MediaCard(
 
             val videoPlayerHost = remember(media.url, shouldBePaused, isMuted) {
                 MediaPlayerHost(
-                    mediaUrl = media.url.replace("localhost", "10.0.2.2"),
+                    mediaUrl = media.url.toCloudStorageUrl(),
                     isPaused = shouldBePaused,
                     isMuted = isMuted
                 )
             }
 
-            VideoPlayerComposable(
-                playerHost = videoPlayerHost,
-                playerConfig = VideoPlayerConfig(
-                    loadingIndicatorColor = Color.Transparent,
-                    isAutoHideControlEnabled = true,
-                    controlHideIntervalSeconds = 2,
-                    isSeekBarVisible = true,
-                    isDurationVisible = true,
-                    isFastForwardBackwardEnabled = false,
-                    isSpeedControlEnabled = false,
-                    isFullScreenEnabled = false,
-                    isScreenLockEnabled = false,
-                    isScreenResizeEnabled = false,
-                    isZoomEnabled = false,
-                    isMuteControlEnabled = true,
-                    iconsTintColor = Color.White,
-                    reelVerticalScrolling = true
-                ),
-                modifier = Modifier.fillMaxSize()
-            )
+            Box(modifier = modifier.fillMaxSize()) {
+                VideoPlayerComposable(
+                    playerHost = videoPlayerHost,
+                    playerConfig = VideoPlayerConfig(
+                        loadingIndicatorColor = Color.Transparent,
+                        controlHideIntervalSeconds = 2,
+                        isFastForwardBackwardEnabled = false,
+                        isSpeedControlEnabled = false,
+                        isFullScreenEnabled = false,
+                        isScreenLockEnabled = false,
+                        isScreenResizeEnabled = false,
+                        isZoomEnabled = false,
+                        iconsTintColor = Color.White
+                    ),
+                    modifier = Modifier.fillMaxSize()
+                )
+
+                Box(
+                    modifier = Modifier
+                        .padding(bottom = 20.dp, end = 20.dp)
+                        .padding(8.dp)
+                        .align(Alignment.BottomEnd)
+                ) {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_full_screen),
+                        contentDescription = stringResource(Res.string.full_screen),
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(24.dp)
+                            .customClickable(onClick = onClick)
+                    )
+                }
+            }
         }
     }
 }

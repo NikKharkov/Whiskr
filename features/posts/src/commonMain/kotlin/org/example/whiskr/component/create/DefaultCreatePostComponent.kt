@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.component.componentScope
-import org.example.whiskr.data.Post
 import org.example.whiskr.domain.PostRepository
+import org.example.whiskr.dto.Post
 
 @Inject
 class DefaultCreatePostComponent(

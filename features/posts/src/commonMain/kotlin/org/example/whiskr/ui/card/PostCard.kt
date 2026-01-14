@@ -1,14 +1,13 @@
 package org.example.whiskr.ui.card
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import org.example.whiskr.components.AvatarPlaceholder
-import org.example.whiskr.data.Post
+import org.example.whiskr.dto.Post
 import org.example.whiskr.extensions.customClickable
 import org.example.whiskr.theme.WhiskrTheme
 import org.example.whiskr.util.rememberRelativeTime
@@ -25,7 +24,7 @@ import util.LocalUser
 @Composable
 fun PostCard(
     post: Post,
-    onPostClick: () -> Unit,
+    onPostClick: (Int) -> Unit,
     onLikeClick: () -> Unit,
     onCommentClick: () -> Unit,
     onRepostClick: () -> Unit,
@@ -39,8 +38,7 @@ fun PostCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(max = 550.dp)
-            .clickable(onClick = onPostClick)
+            .wrapContentHeight()
             .padding(12.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -81,7 +79,7 @@ fun PostCard(
 
                 if (post.content != null) {
                     Text(
-                        text = post.content,
+                        text = post.content!!,
                         style = WhiskrTheme.typography.body,
                         color = WhiskrTheme.colors.onBackground
                     )
@@ -89,7 +87,11 @@ fun PostCard(
 
                 if (post.media.isNotEmpty()) {
                     PostMediaCarousel(
-                        medias = post.media
+                        medias = post.media,
+                        onMediaClick = { index ->
+                            onPostClick(index)
+                        },
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
                 }
 

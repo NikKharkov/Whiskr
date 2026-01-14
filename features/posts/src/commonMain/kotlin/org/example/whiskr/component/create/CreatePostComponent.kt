@@ -4,7 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import com.mohamedrejeb.calf.core.PlatformContext
 import com.mohamedrejeb.calf.io.KmpFile
-import org.example.whiskr.data.Post
+import org.example.whiskr.dto.Post
 
 interface CreatePostComponent {
     val model: Value<Model>

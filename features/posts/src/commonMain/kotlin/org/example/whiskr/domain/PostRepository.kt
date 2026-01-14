@@ -2,9 +2,9 @@ package org.example.whiskr.domain
 
 import com.mohamedrejeb.calf.core.PlatformContext
 import com.mohamedrejeb.calf.io.KmpFile
-import org.example.whiskr.data.Post
-import org.example.whiskr.data.UserInteraction
 import org.example.whiskr.dto.PagedResponse
+import org.example.whiskr.dto.Post
+import org.example.whiskr.dto.UserInteraction
 
 interface PostRepository {
     suspend fun getFeed(page: Int): Result<PagedResponse<Post>>

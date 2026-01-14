@@ -39,6 +39,7 @@ include(":flows:main")
 include(":features:auth")
 include(":features:registration")
 include(":features:posts")
+include(":features:media_viewer")
 
 include(":core:common")
 include(":core:network")

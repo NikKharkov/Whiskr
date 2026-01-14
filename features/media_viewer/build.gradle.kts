@@ -3,15 +3,15 @@ plugins {
 }
 
 android {
-    namespace = "org.example.whiskr.features.home"
+    namespace = "org.example.whiskr.features.mediaviewer"
 }
 
 dependencies {
     commonMainImplementation(libs.kotlinx.datetime)
-    commonMainImplementation(libs.calf.file.picker)
-    commonMainImplementation(libs.calf.file.picker.coil)
     commonMainImplementation(libs.coil.compose)
     commonMainImplementation(libs.coil.network)
-    commonMainImplementation(projects.core.user)
+    commonMainImplementation(libs.media.player)
+    commonMainImplementation(libs.zoomable)
+    commonMainImplementation(libs.filekit.compose)
     commonMainImplementation(libs.media.player)
 }

@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import chaintech.videoplayer.host.MediaPlayerHost
+import chaintech.videoplayer.model.VideoPlayerConfig
 import chaintech.videoplayer.ui.video.VideoPlayerComposable
 import coil3.compose.AsyncImage
 import com.mohamedrejeb.calf.core.LocalPlatformContext
@@ -41,8 +42,24 @@ fun MediaPreviewItem(
                 modifier = Modifier.fillMaxSize(),
                 playerHost = MediaPlayerHost(
                     mediaUrl = videoUrl,
-                    isPaused = true
-                )
+                    isPaused = false
+                ),
+                playerConfig = VideoPlayerConfig(
+                    loadingIndicatorColor = Color.Transparent,
+                    isAutoHideControlEnabled = true,
+                    controlHideIntervalSeconds = 2,
+                    isSeekBarVisible = true,
+                    isDurationVisible = true,
+                    isFastForwardBackwardEnabled = false,
+                    isSpeedControlEnabled = false,
+                    isFullScreenEnabled = false,
+                    isScreenLockEnabled = false,
+                    isScreenResizeEnabled = false,
+                    isZoomEnabled = false,
+                    isMuteControlEnabled = true,
+                    iconsTintColor = Color.White,
+                    reelVerticalScrolling = true
+                ),
             )
         } else {
             AsyncImage(

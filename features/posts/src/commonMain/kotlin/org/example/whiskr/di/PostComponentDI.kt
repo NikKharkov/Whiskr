@@ -3,17 +3,16 @@ package org.example.whiskr.di
 import com.arkivanov.decompose.ComponentContext
 import de.jensklingenberg.ktorfit.Ktorfit
 import me.tatarka.inject.annotations.Provides
-import org.example.whiskr.component.home.DefaultHomeComponent
-import org.example.whiskr.component.home.HomeComponent
 import org.example.whiskr.component.create.CreatePostComponent
 import org.example.whiskr.component.create.DefaultCreatePostComponent
-import org.example.whiskr.data.Post
+import org.example.whiskr.component.home.DefaultHomeComponent
+import org.example.whiskr.component.home.HomeComponent
 import org.example.whiskr.data.PostApiService
-import org.example.whiskr.data.PostMedia
 import org.example.whiskr.data.PostRepositoryImpl
 import org.example.whiskr.data.createPostApiService
-import org.example.whiskr.domain.MediaProcessingService
 import org.example.whiskr.domain.PostRepository
+import org.example.whiskr.dto.Post
+import org.example.whiskr.dto.PostMedia
 
 interface PostComponentDI {
 
@@ -24,11 +23,8 @@ interface PostComponentDI {
     @Provides
     @Singleton
     fun provideHomeRepository(
-        postApiService: PostApiService,
-        mediaProcessingService: MediaProcessingService
-    ): PostRepository =
-        PostRepositoryImpl(postApiService, mediaProcessingService)
-
+        postApiService: PostApiService
+    ): PostRepository = PostRepositoryImpl(postApiService)
 
     @Provides
     @Singleton
@@ -41,7 +37,7 @@ interface PostComponentDI {
     @Provides
     @Singleton
     fun providePostFactory(
-        factory: (ComponentContext, () -> Unit, (Long) -> Unit, (PostMedia) -> Unit) -> DefaultHomeComponent
+        factory: (ComponentContext, () -> Unit, (Long) -> Unit, (List<PostMedia>, Int) -> Unit) -> DefaultHomeComponent
     ): HomeComponent.Factory {
         return HomeComponent.Factory(factory)
     }

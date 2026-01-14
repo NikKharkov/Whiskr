@@ -14,9 +14,11 @@ dependencies {
     commonMainImplementation(projects.features.auth)
     commonMainImplementation(projects.features.registration)
     commonMainImplementation(projects.features.posts)
+    commonMainImplementation(projects.features.mediaViewer)
     commonMainImplementation(projects.flows.auth)
     commonMainImplementation(projects.flows.main)
     commonMainImplementation(libs.multiplatform.settings)
+    commonMainImplementation(libs.filekit.compose)
     androidMainImplementation(libs.androidx.activity.compose)
 }
 

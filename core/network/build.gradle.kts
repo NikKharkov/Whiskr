@@ -14,4 +14,5 @@ dependencies {
     commonMainImplementation(libs.kermit)
     commonMainImplementation(libs.kvault)
     commonMainImplementation(libs.ktor.client.auth)
+    commonMainImplementation(libs.kotlinx.datetime)
 }

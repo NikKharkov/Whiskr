@@ -42,7 +42,8 @@ datetime = "0.7.1"
 calf = "0.9.0"
 mokoPermission = "0.20.1"
 peekaboo = "0.5.2"
-lightCompressor = "1.3.3"
+zoomable = "2.9.0"
+filekit = "0.8.8"
 
 # --- Testing ---
 kotest = "6.0.7"
@@ -119,6 +120,7 @@ coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "
 
 #Video Player
 media-player = { module = "network.chaintech:compose-multiplatform-media-player", version.ref = "mediaPlayer"}
+
 # Authentication
 kmpauth-google = { module = "io.github.mirzemehdi:kmpauth-google", version.ref = "kmpauth" }
 kmpauth-firebase = { module = "io.github.mirzemehdi:kmpauth-firebase", version.ref = "kmpauth" }
@@ -130,7 +132,8 @@ moko-permission = { group = "dev.icerock.moko", name = "permissions", version.re
 moko-permission-compose = { group = "dev.icerock.moko", name = "permissions-compose", version.ref = "mokoPermission" }
 peekaboo-ui = { module = "io.github.onseok:peekaboo-ui", version.ref = "peekaboo" }
 peekaboo-image-picker = { module = "io.github.onseok:peekaboo-image-picker", version.ref = "peekaboo" }
-light-compressor = { module = "com.github.AbedElazizShe:LightCompressor", version.ref = "lightCompressor" }
+zoomable = { module = "net.engawapg.lib:zoomable", version.ref = "zoomable"}
+filekit-compose = { module = "io.github.vinceglb:filekit-compose", version.ref = "filekit"}
 
 # Testing
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

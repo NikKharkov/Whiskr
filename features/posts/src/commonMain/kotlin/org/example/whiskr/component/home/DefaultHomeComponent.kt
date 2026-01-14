@@ -10,16 +10,16 @@ import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.component.componentScope
 import org.example.whiskr.component.create.CreatePostComponent
-import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
 import org.example.whiskr.domain.PostRepository
+import org.example.whiskr.dto.Post
+import org.example.whiskr.dto.PostMedia
 
 @Inject
 class DefaultHomeComponent(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onNavigateToCreatePost: () -> Unit,
     @Assisted private val onNavigateToProfile: (Long) -> Unit,
-    @Assisted private val onNavigateToMediaViewer: (PostMedia) -> Unit,
+    @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
     private val postRepository: PostRepository,
     private val createPostFactory: CreatePostComponent.Factory
 ) : HomeComponent, ComponentContext by componentContext {
@@ -114,5 +114,5 @@ class DefaultHomeComponent(
 
     override fun onNavigateToCreatePostScreen() = onNavigateToCreatePost()
     override fun onProfileClick(userId: Long) = onNavigateToProfile(userId)
-    override fun onMediaClick(media: PostMedia) = onNavigateToMediaViewer(media)
+    override fun onMediaClick(media: List<PostMedia>, index: Int) = onNavigateToMediaViewer(media, index)
 }

@@ -16,6 +16,7 @@ import org.example.whiskr.theme.LocalIsTablet
 import org.example.whiskr.ui.AdaptiveMainLayout
 import org.example.whiskr.ui.CreatePostScreen
 import org.example.whiskr.ui.HomeScreen
+import org.example.whiskr.ui.MediaViewerScreen
 import org.example.whiskr.util.InitCoil
 import org.example.whiskr.util.toTab
 import util.LocalUser
@@ -35,7 +36,7 @@ fun MainFlowContent(
 
         CompositionLocalProvider(LocalIsTablet provides isTablet) {
             CompositionLocalProvider(LocalUser provides user) {
-                val shouldShowBars = stack.active.instance !is MainFlowComponent.Child.CreatePost
+                val shouldShowBars = stack.active.instance !is MainFlowComponent.Child.CreatePost && stack.active.instance !is MainFlowComponent.Child.MediaViewer
 
                 AdaptiveMainLayout(
                     activeTab = stack.active.instance.toTab(),
@@ -60,6 +61,7 @@ fun MainFlowContent(
                             is MainFlowComponent.Child.Messages -> Text("Messages screen")
                             is MainFlowComponent.Child.Profile -> Text("Profile screen")
                             is MainFlowComponent.Child.CreatePost -> CreatePostScreen(child.component)
+                            is MainFlowComponent.Child.MediaViewer -> MediaViewerScreen(child.component)
                         }
                     }
                 }

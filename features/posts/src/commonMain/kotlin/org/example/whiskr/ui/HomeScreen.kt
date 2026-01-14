@@ -74,7 +74,9 @@ fun HomeScreen(
             items(model.items) { post ->
                 PostCard(
                     post = post,
-                    onPostClick = { /* TODO */ },
+                    onPostClick = { index ->
+                        component.onMediaClick(post.media, index)
+                    },
                     onProfileClick = { component.onProfileClick(post.author.id) },
                     onLikeClick = { component.onLikeClick(post.id) },
                     onCommentClick = { /* TODO */ },

@@ -26,7 +26,8 @@ class DefaultMainFlowComponent(
     @Assisted override val isDarkTheme: Value<Boolean>,
     private val userRepository: UserRepository,
     private val homeFactory: HomeComponent.Factory,
-    private val createPostFactory: CreatePostComponent.Factory
+    private val createPostFactory: CreatePostComponent.Factory,
+    private val mediaViewerFactory: MediaViewerComponent.Factory
 ) : MainFlowComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<MainFlowComponent.Config>()
@@ -66,7 +67,9 @@ class DefaultMainFlowComponent(
                 componentContext = context,
                 onNavigateToCreatePost = { navigation.push(CreatePost) },
                 onNavigateToProfile = {},
-                onNavigateToMediaViewer = {}
+                onNavigateToMediaViewer = { mediaList, index ->
+                    navigation.push(MediaViewer(mediaList, index))
+                }
             )
         )
 
@@ -80,7 +83,15 @@ class DefaultMainFlowComponent(
             )
         )
 
-        is MediaViewer -> TODO()
+        is MediaViewer -> MainFlowComponent.Child.MediaViewer(
+            mediaViewerFactory(
+                componentContext = context,
+                mediaList = config.media,
+                initialIndex = config.index,
+                onFinished = { navigation.pop() }
+            )
+        )
+
         is UserProfile -> TODO()
         AIStudio -> TODO()
         Explore -> TODO()

@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 import org.example.whiskr.theme.WhiskrTheme
@@ -21,6 +22,7 @@ fun SimpleTopBar(
     modifier: Modifier = Modifier,
     icon: Painter,
     onIconClick: () -> Unit,
+    iconTint: Color = WhiskrTheme.colors.onBackground,
     title: @Composable () -> Unit
 ) {
     Row(
@@ -31,7 +33,7 @@ fun SimpleTopBar(
         Icon(
             painter = icon,
             contentDescription = null,
-            tint = WhiskrTheme.colors.onBackground,
+            tint = iconTint,
             modifier = Modifier
                 .size(24.dp)
                 .clip(CircleShape)

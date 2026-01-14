@@ -3,8 +3,8 @@ package org.example.whiskr.component.home
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import org.example.whiskr.component.create.CreatePostComponent
-import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.dto.Post
+import org.example.whiskr.dto.PostMedia
 
 interface HomeComponent {
     val model: Value<Model>
@@ -16,8 +16,7 @@ interface HomeComponent {
     fun onLikeClick(postId: Long)
     fun onNavigateToCreatePostScreen()
     fun onProfileClick(userId: Long)
-    fun onMediaClick(media: PostMedia)
-
+    fun onMediaClick(media: List<PostMedia>, index: Int)
     data class Model(
         val items: List<Post> = emptyList(),
         val isLoading: Boolean = true,
@@ -32,7 +31,7 @@ interface HomeComponent {
             componentContext: ComponentContext,
             onNavigateToCreatePost: () -> Unit,
             onNavigateToProfile: (Long) -> Unit,
-            onNavigateToMediaViewer: (PostMedia) -> Unit
+            onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit
         ): HomeComponent
     }
 }
