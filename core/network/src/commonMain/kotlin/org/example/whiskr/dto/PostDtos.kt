@@ -11,6 +11,7 @@ data class Post(
     val type: PostType,
     val createdAt: LocalDateTime,
     val media: List<PostMedia>,
+    val hashtags: Set<String>,
     val stats: PostStats,
     val interaction: UserInteraction,
     val parentPost: Post? = null

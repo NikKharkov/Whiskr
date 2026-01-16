@@ -1,15 +1,24 @@
 package org.example.whiskr.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,6 +45,8 @@ fun HomeScreen(
     val user = LocalUser.current
     val isTablet = LocalIsTablet.current
 
+    val pullRefreshState = rememberPullToRefreshState()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         containerColor = WhiskrTheme.colors.background,
@@ -55,36 +66,77 @@ fun HomeScreen(
             }
         }
     ) { innerPadding ->
-        LazyColumn(
+        PullToRefreshBox(
+            state = pullRefreshState,
+            isRefreshing = model.isRefreshing,
+            onRefresh = component::onRefresh,
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            indicator = {
+                PullToRefreshDefaults.Indicator(
+                    state = pullRefreshState,
+                    isRefreshing = model.isRefreshing,
+                    containerColor = WhiskrTheme.colors.surface,
+                    color = WhiskrTheme.colors.primary,
+                    modifier = Modifier.align(Alignment.TopCenter)
+                )
+            }
         ) {
-            if (isTablet) {
-                item {
-                    CreatePostLayout(
-                        component = component.createPostComponent,
-                        userAvatar = user?.profile?.avatarUrl
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                if (isTablet) {
+                    item {
+                        CreatePostLayout(
+                            component = component.createPostComponent,
+                            userAvatar = user?.profile?.avatarUrl
+                        )
+                        HorizontalDivider(thickness = 1.dp, color = WhiskrTheme.colors.outline)
+                    }
+                }
+
+                itemsIndexed(
+                    items = model.items,
+                    key = { _, post -> post.id }
+                ) { index, post ->
+
+                    if (index >= model.items.lastIndex - 3 && !model.isLoadingMore && !model.isEndOfList) {
+                        LaunchedEffect(Unit) {
+                            component.onLoadMore()
+                        }
+                    }
+
+                    PostCard(
+                        post = post,
+                        onPostClick = { mediaIndex ->
+                            component.onMediaClick(post.media, mediaIndex)
+                        },
+                        onProfileClick = { component.onProfileClick(post.author.id) },
+                        onLikeClick = { component.onLikeClick(post.id) },
+                        onCommentClick = { /* TODO */ },
+                        onRepostClick = { /* TODO */ },
+                        onShareClick = { /* TODO */ }
                     )
 
                     HorizontalDivider(thickness = 1.dp, color = WhiskrTheme.colors.outline)
                 }
-            }
 
-            items(model.items) { post ->
-                PostCard(
-                    post = post,
-                    onPostClick = { index ->
-                        component.onMediaClick(post.media, index)
-                    },
-                    onProfileClick = { component.onProfileClick(post.author.id) },
-                    onLikeClick = { component.onLikeClick(post.id) },
-                    onCommentClick = { /* TODO */ },
-                    onRepostClick = { /* TODO */ },
-                    onShareClick = { /* TODO */ }
-                )
-
-                HorizontalDivider(thickness = 1.dp, color = WhiskrTheme.colors.outline)
+                if (model.isLoadingMore) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(
+                                color = WhiskrTheme.colors.primary,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
+                    }
+                }
             }
         }
     }
