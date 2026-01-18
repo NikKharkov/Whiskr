@@ -5,8 +5,12 @@ import de.jensklingenberg.ktorfit.Ktorfit
 import me.tatarka.inject.annotations.Provides
 import org.example.whiskr.component.create.CreatePostComponent
 import org.example.whiskr.component.create.DefaultCreatePostComponent
+import org.example.whiskr.component.details.DefaultPostDetailsComponent
+import org.example.whiskr.component.details.PostDetailsComponent
 import org.example.whiskr.component.home.DefaultHomeComponent
 import org.example.whiskr.component.home.HomeComponent
+import org.example.whiskr.component.reply.CreateReplyComponent
+import org.example.whiskr.component.reply.DefaultCreateReplyComponent
 import org.example.whiskr.data.PostApiService
 import org.example.whiskr.data.PostRepositoryImpl
 import org.example.whiskr.data.createPostApiService
@@ -37,8 +41,24 @@ interface PostComponentDI {
     @Provides
     @Singleton
     fun providePostFactory(
-        factory: (ComponentContext, () -> Unit, (Long) -> Unit, (List<PostMedia>, Int) -> Unit) -> DefaultHomeComponent
+        factory: (ComponentContext, () -> Unit, (Long) -> Unit, (Post) -> Unit, (List<PostMedia>, Int) -> Unit) -> DefaultHomeComponent
     ): HomeComponent.Factory {
         return HomeComponent.Factory(factory)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCreateReplyFactory(
+        factory: (ComponentContext, Post, (Post) -> Unit, () -> Unit) -> DefaultCreateReplyComponent
+    ): CreateReplyComponent.Factory {
+        return CreateReplyComponent.Factory(factory)
+    }
+
+    @Provides
+    @Singleton
+    fun providePostDetailsFactory(
+        factory: (ComponentContext, Post, (Post) -> Unit,(List<PostMedia>, Int) -> Unit, () -> Unit) -> DefaultPostDetailsComponent
+    ): PostDetailsComponent.Factory {
+        return PostDetailsComponent.Factory(factory)
     }
 }

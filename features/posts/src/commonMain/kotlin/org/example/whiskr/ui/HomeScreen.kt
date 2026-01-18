@@ -28,7 +28,7 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import org.example.whiskr.component.home.HomeComponent
 import org.example.whiskr.theme.LocalIsTablet
 import org.example.whiskr.theme.WhiskrTheme
-import org.example.whiskr.ui.card.PostCard
+import org.example.whiskr.ui.components.PostCard
 import org.example.whiskr.ui.components.CreatePostLayout
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -114,7 +114,7 @@ fun HomeScreen(
                         },
                         onProfileClick = { component.onProfileClick(post.author.id) },
                         onLikeClick = { component.onLikeClick(post.id) },
-                        onCommentClick = { /* TODO */ },
+                        onCommentClick = { component.onCommentsClick(post) },
                         onRepostClick = { /* TODO */ },
                         onShareClick = { /* TODO */ }
                     )

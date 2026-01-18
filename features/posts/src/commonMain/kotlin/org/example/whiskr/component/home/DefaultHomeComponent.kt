@@ -19,6 +19,7 @@ class DefaultHomeComponent(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onNavigateToCreatePost: () -> Unit,
     @Assisted private val onNavigateToProfile: (Long) -> Unit,
+    @Assisted private val onNavigateToComments: (Post) -> Unit,
     @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
     private val postRepository: PostRepository,
     private val createPostFactory: CreatePostComponent.Factory
@@ -40,6 +41,8 @@ class DefaultHomeComponent(
 
     init {
         loadFeed(isRefresh = true)
+        observeNewPosts()
+        observePostUpdates()
     }
 
     override fun onRefresh() {
@@ -68,6 +71,35 @@ class DefaultHomeComponent(
         }
     }
 
+    private fun observeNewPosts() {
+        scope.launch {
+            postRepository.newPost.collect { newPost ->
+                _model.update { state ->
+                     if (newPost.parentPost != null) {
+                         return@update state
+                     }
+
+                    if (state.items.any { it.id == newPost.id }) return@update state
+
+                    state.copy(items = listOf(newPost) + state.items)
+                }
+            }
+        }
+    }
+
+    private fun observePostUpdates() {
+        scope.launch {
+            postRepository.postUpdated.collect { updatedPost ->
+                _model.update { state ->
+                    val newItems = state.items.map { currentPost ->
+                        if (currentPost.id == updatedPost.id) updatedPost else currentPost
+                    }
+                    state.copy(items = newItems)
+                }
+            }
+        }
+    }
+
     override fun onLoadMore() {
         val state = _model.value
         if (state.isLoadingMore || state.isEndOfList) return
@@ -92,7 +124,7 @@ class DefaultHomeComponent(
     }
 
     override fun onLikeClick(postId: Long) {
-        updatePostInList(postId) { post ->
+        updatePost(postId) { post ->
             val newLiked = !post.interaction.isLiked
             val newCount = post.stats.likesCount + (if (newLiked) 1 else -1)
             post.copy(
@@ -103,16 +135,17 @@ class DefaultHomeComponent(
 
         scope.launch {
             postRepository.toggleLike(postId).onFailure {
-                updatePostInList(postId) { post -> post }
+                updatePost(postId) { post -> post }
             }
         }
     }
 
-    private fun updatePostInList(postId: Long, transform: (Post) -> Post) {
-        _model.update { s -> s.copy(items = s.items.map { if (it.id == postId) transform(it) else it }) }
+    private fun updatePost(postId: Long, transform: (Post) -> Post) {
+        _model.update { stats -> stats.copy(items = stats.items.map { if (it.id == postId) transform(it) else it }) }
     }
 
     override fun onNavigateToCreatePostScreen() = onNavigateToCreatePost()
     override fun onProfileClick(userId: Long) = onNavigateToProfile(userId)
     override fun onMediaClick(media: List<PostMedia>, index: Int) = onNavigateToMediaViewer(media, index)
+    override fun onCommentsClick(post: Post) = onNavigateToComments(post)
 }

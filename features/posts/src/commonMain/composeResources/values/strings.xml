@@ -4,6 +4,11 @@
     <string name="remove">Remove</string>
     <string name="post">Post</string>
     <string name="cancel">Cancel</string>
+    <string name="reply">Reply</string>
+    <string name="reposts">Reposts</string>
+    <string name="likes">Likes</string>
+    <string name="reply_placeholder">Post your reply</string>
+    <string name="replying_to">Replying to</string>
     <string name="full_screen">Full screen</string>
     <string name="whats_happening">What's happening?</string>
     <string name="time_just_now">now</string>

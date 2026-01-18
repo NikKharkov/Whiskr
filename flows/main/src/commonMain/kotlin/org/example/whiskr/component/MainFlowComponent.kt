@@ -6,7 +6,10 @@ import com.arkivanov.decompose.value.Value
 import domain.UserState
 import kotlinx.serialization.Serializable
 import org.example.whiskr.component.create.CreatePostComponent
+import org.example.whiskr.component.details.PostDetailsComponent
 import org.example.whiskr.component.home.HomeComponent
+import org.example.whiskr.component.reply.CreateReplyComponent
+import org.example.whiskr.dto.Post
 import org.example.whiskr.dto.PostMedia
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
@@ -33,10 +36,13 @@ interface MainFlowComponent {
 
     fun setDrawerOpen(isOpen: Boolean)
     fun onTabSelected(tab: Tab)
+    fun onPostClick()
 
     sealed class Child {
         class Home(val component: HomeComponent) : Child()
         class CreatePost(val component: CreatePostComponent) : Child()
+        class CreateReply(val component: CreateReplyComponent) : Child()
+        class PostDetails(val component: PostDetailsComponent) : Child()
         class MediaViewer(val component: MediaViewerComponent) : Child()
         class Explore(val component: Any) : Child()
         class AIStudio(val component: Any) : Child()
@@ -67,6 +73,12 @@ interface MainFlowComponent {
 
         @Serializable
         data object CreatePost : Config
+
+        @Serializable
+        data class CreateReply(val targetPost: Post) : Config
+
+        @Serializable
+        data class PostDetails(val post: Post) : Config
 
         @Serializable
         data class UserProfile(val userId: Long) : Config

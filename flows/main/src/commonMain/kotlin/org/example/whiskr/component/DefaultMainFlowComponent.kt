@@ -16,7 +16,9 @@ import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.component.MainFlowComponent.Config.*
 import org.example.whiskr.component.create.CreatePostComponent
+import org.example.whiskr.component.details.PostDetailsComponent
 import org.example.whiskr.component.home.HomeComponent
+import org.example.whiskr.component.reply.CreateReplyComponent
 import org.example.whiskr.util.toConfig
 
 @OptIn(DelicateDecomposeApi::class)
@@ -27,6 +29,8 @@ class DefaultMainFlowComponent(
     private val userRepository: UserRepository,
     private val homeFactory: HomeComponent.Factory,
     private val createPostFactory: CreatePostComponent.Factory,
+    private val createReplyFactory: CreateReplyComponent.Factory,
+    private val postDetailsFactory: PostDetailsComponent.Factory,
     private val mediaViewerFactory: MediaViewerComponent.Factory
 ) : MainFlowComponent, ComponentContext by componentContext {
 
@@ -69,6 +73,9 @@ class DefaultMainFlowComponent(
                 onNavigateToProfile = {},
                 onNavigateToMediaViewer = { mediaList, index ->
                     navigation.push(MediaViewer(mediaList, index))
+                },
+                onNavigateToComments = { post ->
+                    navigation.push(PostDetails(post))
                 }
             )
         )
@@ -79,6 +86,29 @@ class DefaultMainFlowComponent(
                 onBack = { navigation.pop() },
                 onPostCreated = {
                     navigation.pop()
+                }
+            )
+        )
+
+        is CreateReply -> MainFlowComponent.Child.CreateReply(
+            createReplyFactory(
+                componentContext = context,
+                targetPost = config.targetPost,
+                onBack = { navigation.pop() },
+                onReplyCreated = { navigation.pop() }
+            )
+        )
+
+        is PostDetails -> MainFlowComponent.Child.PostDetails(
+            postDetailsFactory(
+                componentContext = context,
+                post = config.post,
+                onBack = { navigation.pop() },
+                onNavigateToReply = { postToReply ->
+                    navigation.push(CreateReply(targetPost = postToReply))
+                },
+                onNavigateToMediaViewer = { mediaList, index ->
+                    navigation.push(MediaViewer(mediaList, index))
                 }
             )
         )
@@ -103,4 +133,6 @@ class DefaultMainFlowComponent(
     override fun onTabSelected(tab: MainFlowComponent.Tab) {
         navigation.bringToFront(tab.toConfig())
     }
+
+    override fun onPostClick() = navigation.push(CreatePost)
 }

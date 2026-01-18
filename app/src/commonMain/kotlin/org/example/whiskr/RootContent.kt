@@ -7,6 +7,7 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import org.example.whiskr.root.RootComponent
 import org.example.whiskr.theme.ThemeRevealContainer
 import org.example.whiskr.theme.WhiskrTheme
+import org.example.whiskr.util.InitCoil
 
 @Composable
 fun RootContent(rootComponent: RootComponent) {
@@ -34,4 +35,6 @@ fun RootContent(rootComponent: RootComponent) {
             }
         }
     }
+
+    InitCoil()
 }

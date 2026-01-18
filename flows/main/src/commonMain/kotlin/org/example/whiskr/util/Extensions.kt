@@ -20,3 +20,12 @@ fun MainFlowComponent.Tab.toConfig(): MainFlowComponent.Config = when (this) {
     MainFlowComponent.Tab.MESSAGES -> MainFlowComponent.Config.Messages
     MainFlowComponent.Tab.PROFILE -> MainFlowComponent.Config.Profile
 }
+
+val MainFlowComponent.Child.showsNavigation: Boolean
+    get() = when (this) {
+        is MainFlowComponent.Child.CreatePost,
+        is MainFlowComponent.Child.CreateReply,
+        is MainFlowComponent.Child.PostDetails,
+        is MainFlowComponent.Child.MediaViewer -> false
+        else -> true
+    }

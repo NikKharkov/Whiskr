@@ -17,6 +17,8 @@ interface HomeComponent {
     fun onNavigateToCreatePostScreen()
     fun onProfileClick(userId: Long)
     fun onMediaClick(media: List<PostMedia>, index: Int)
+    fun onCommentsClick(post: Post)
+
     data class Model(
         val items: List<Post> = emptyList(),
         val isLoading: Boolean = true,
@@ -31,6 +33,7 @@ interface HomeComponent {
             componentContext: ComponentContext,
             onNavigateToCreatePost: () -> Unit,
             onNavigateToProfile: (Long) -> Unit,
+            onNavigateToComments: (Post) -> Unit,
             onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit
         ): HomeComponent
     }

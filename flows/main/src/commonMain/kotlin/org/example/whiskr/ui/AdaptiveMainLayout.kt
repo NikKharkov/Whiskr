@@ -44,6 +44,7 @@ fun AdaptiveMainLayout(
     onThemeToggle: (Offset) -> Unit,
     isDrawerOpen: Boolean,
     onDrawerOpenChange: (Boolean) -> Unit,
+    onPostClick: () -> Unit,
     shouldShowNavigation: Boolean,
     content: @Composable () -> Unit
 ) {
@@ -60,6 +61,7 @@ fun AdaptiveMainLayout(
                 onTabSelected = onTabSelected,
                 isDarkTheme = isDarkTheme,
                 onThemeToggle = onThemeToggle,
+                onPostClick = onPostClick,
                 modifier = Modifier
                     .widthIn(max = 300.dp)
                     .fillMaxHeight()

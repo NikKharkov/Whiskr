@@ -29,4 +29,15 @@ interface PostApiService {
 
     @POST("post/create")
     suspend fun createPost(@Body body: MultiPartFormDataContent): Post
+
+    @Headers("Content-Type: application/json")
+    @POST("post/reply")
+    suspend fun replyToPost(@Body request: CreateReplyRequest): Post
+
+    @GET("post/{postId}/replies")
+    suspend fun getReplies(
+        @Path("postId") postId: Long,
+        @Query("page") page: Int,
+        @Query("size") size: Int = 20
+    ): PagedResponse<Post>
 }

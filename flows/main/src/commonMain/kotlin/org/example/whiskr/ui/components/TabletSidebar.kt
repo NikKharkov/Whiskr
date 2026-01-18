@@ -32,6 +32,7 @@ fun TabletSidebar(
     activeTab: MainFlowComponent.Tab,
     isDarkTheme: Boolean,
     onThemeToggle: (Offset) -> Unit,
+    onPostClick: () -> Unit,
     onTabSelected: (MainFlowComponent.Tab) -> Unit
 ) {
     Column(
@@ -75,7 +76,7 @@ fun TabletSidebar(
             text = stringResource(Res.string.post),
             contentColor = Color.White,
             modifier = Modifier.fillMaxWidth(),
-            onClick = { TODO("Go to POST Screen") }
+            onClick = onPostClick
         )
 
         SidebarProfileItem(
