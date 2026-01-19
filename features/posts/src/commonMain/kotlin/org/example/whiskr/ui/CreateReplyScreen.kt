@@ -21,21 +21,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.mohamedrejeb.calf.core.LocalPlatformContext
 import org.example.whiskr.component.reply.CreateReplyComponent
 import org.example.whiskr.components.AvatarPlaceholder
-import org.example.whiskr.extensions.customClickable
 import org.example.whiskr.theme.WhiskrTheme
+import org.example.whiskr.ui.components.ComposerTopBar
 import org.example.whiskr.ui.components.CreatePostInput
 import org.example.whiskr.util.rememberRelativeTime
 import org.jetbrains.compose.resources.stringResource
 import util.LocalUser
 import whiskr.features.posts.generated.resources.Res
-import whiskr.features.posts.generated.resources.cancel
+import whiskr.features.posts.generated.resources.reply
 import whiskr.features.posts.generated.resources.reply_placeholder
 import whiskr.features.posts.generated.resources.replying_to
 
@@ -49,14 +48,13 @@ fun CreateReplyScreen(
 
     Scaffold(
         topBar = {
-            Text(
-                text = stringResource(Res.string.cancel),
-                style = WhiskrTheme.typography.body.copy(fontWeight = FontWeight.Medium),
-                color = WhiskrTheme.colors.onBackground,
-                modifier = Modifier
-                    .statusBarsPadding()
-                    .customClickable(onClick = component::onBackClick)
-                    .padding(horizontal = 16.dp, vertical = 12.dp)
+            ComposerTopBar(
+                onCancel = component::onBackClick,
+                onSend = { component.onSendClick(context) },
+                isSending = model.isSending,
+                isSendEnabled = model.text.isNotBlank() || model.files.isNotEmpty(),
+                actionLabel = stringResource(Res.string.reply),
+                modifier = Modifier.statusBarsPadding()
             )
         },
         containerColor = WhiskrTheme.colors.background,

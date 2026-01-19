@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
@@ -90,7 +91,8 @@ fun HomeScreen(
                     item {
                         CreatePostLayout(
                             component = component.createPostComponent,
-                            userAvatar = user?.profile?.avatarUrl
+                            userAvatar = user?.profile?.avatarUrl,
+                            modifier = Modifier.statusBarsPadding()
                         )
                         HorizontalDivider(thickness = 1.dp, color = WhiskrTheme.colors.outline)
                     }

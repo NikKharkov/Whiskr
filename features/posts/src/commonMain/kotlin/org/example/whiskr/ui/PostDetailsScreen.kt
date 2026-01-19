@@ -27,7 +27,7 @@ import org.example.whiskr.component.details.PostDetailsComponent
 import org.example.whiskr.components.SimpleTopBar
 import org.example.whiskr.theme.WhiskrTheme
 import org.example.whiskr.ui.components.PostCard
-import org.example.whiskr.ui.components.PostDetailsHero
+import org.example.whiskr.ui.components.ParentPost
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import whiskr.features.posts.generated.resources.Res
@@ -80,7 +80,7 @@ fun PostDetailsScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             item {
-                PostDetailsHero(
+                ParentPost(
                     post = model.post,
                     onLikeClick = { component.onLikeClick(model.post.id) },
                     onMediaClick = { mediaIndex ->

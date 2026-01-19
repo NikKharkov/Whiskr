@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -62,7 +63,8 @@ fun CreatePostLayout(
         onTextChanged = component::onTextChanged,
         onFilesSelected = component::onMediaSelected,
         onRemoveFile = component::onRemoveFile,
-        onSendClick = { component.onSendClick(context) }
+        onSendClick = { component.onSendClick(context) },
+        showSendButton = true
     )
 }
 
@@ -77,6 +79,7 @@ fun CreatePostInput(
     onFilesSelected: (List<KmpFile>) -> Unit,
     onRemoveFile: (KmpFile) -> Unit,
     onSendClick: () -> Unit,
+    showSendButton: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val launcher = rememberFilePickerLauncher(
@@ -156,14 +159,18 @@ fun CreatePostInput(
                         }
                 )
 
-                WhiskrButton(
-                    onClick = onSendClick,
-                    enabled = !isSending && (text.isNotBlank() || files.isNotEmpty()),
-                    text = stringResource(Res.string.post),
-                    isLoading = isSending,
-                    contentColor = Color.White,
-                    modifier = Modifier.widthIn(min = 100.dp)
-                )
+                if (showSendButton) {
+                    WhiskrButton(
+                        onClick = onSendClick,
+                        enabled = !isSending && (text.isNotBlank() || files.isNotEmpty()),
+                        text = stringResource(Res.string.post),
+                        isLoading = isSending,
+                        contentColor = Color.White,
+                        modifier = Modifier.widthIn(min = 100.dp)
+                    )
+                } else {
+                    Spacer(modifier = Modifier.size(24.dp))
+                }
             }
         }
     }

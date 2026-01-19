@@ -37,7 +37,7 @@ import whiskr.features.posts.generated.resources.likes
 import whiskr.features.posts.generated.resources.reposts
 
 @Composable
-fun PostDetailsHero(
+fun ParentPost(
     post: Post,
     onLikeClick: () -> Unit,
     onCommentsClick: () -> Unit,
