@@ -21,6 +21,11 @@ interface PostRepository {
         text: String?,
         files: List<KmpFile>
     ): Result<Post>
-    suspend fun replyToPost(targetPostId: Long, text: String): Result<Post>
+    suspend fun replyToPost(
+        context: PlatformContext,
+        targetPostId: Long,
+        text: String,
+        files: List<KmpFile>
+    ): Result<Post>
     suspend fun getReplies(postId: Long, page: Int): Result<PagedResponse<Post>>
 }

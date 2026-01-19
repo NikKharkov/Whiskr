@@ -5,6 +5,8 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.update
+import com.mohamedrejeb.calf.core.PlatformContext
+import com.mohamedrejeb.calf.io.KmpFile
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
@@ -30,17 +32,33 @@ class DefaultCreateReplyComponent(
         _model.update { it.copy(text = text) }
     }
 
-    override fun onSendClick() {
+    override fun onMediaSelected(files: List<KmpFile>) {
+        _model.update { state ->
+            val availableSlots = 10 - state.files.size
+            if (availableSlots <= 0) return@update state
+            state.copy(files = state.files + files.take(availableSlots))
+        }
+    }
+
+    override fun onRemoveFile(file: KmpFile) {
+        _model.update { it.copy(files = it.files - file) }
+    }
+
+    override fun onSendClick(context: PlatformContext) {
         val state = _model.value
-        if (state.text.isBlank()) return
-        if (state.isSending) return
+        if ((state.text.isBlank() && state.files.isEmpty()) || state.isSending) return
 
         scope.launch {
             _model.update { it.copy(isSending = true) }
 
-            postRepository.replyToPost(targetPostId = post.id, text = state.text)
+            postRepository.replyToPost(
+                context = context,
+                targetPostId = post.id,
+                text = state.text,
+                files = state.files
+            )
                 .onSuccess { newReply ->
-                    _model.update { it.copy(isSending = false, text = "") }
+                    _model.update { it.copy(isSending = false, text = "", files = emptyList()) }
                     onReplyCreated(newReply)
                 }
                 .onFailure { error ->

@@ -30,9 +30,8 @@ interface PostApiService {
     @POST("post/create")
     suspend fun createPost(@Body body: MultiPartFormDataContent): Post
 
-    @Headers("Content-Type: application/json")
     @POST("post/reply")
-    suspend fun replyToPost(@Body request: CreateReplyRequest): Post
+    suspend fun replyToPost(@Body body: MultiPartFormDataContent): Post
 
     @GET("post/{postId}/replies")
     suspend fun getReplies(

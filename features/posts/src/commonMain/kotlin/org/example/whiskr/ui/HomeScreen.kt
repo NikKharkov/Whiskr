@@ -28,8 +28,8 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import org.example.whiskr.component.home.HomeComponent
 import org.example.whiskr.theme.LocalIsTablet
 import org.example.whiskr.theme.WhiskrTheme
-import org.example.whiskr.ui.components.PostCard
 import org.example.whiskr.ui.components.CreatePostLayout
+import org.example.whiskr.ui.components.PostCard
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import util.LocalUser

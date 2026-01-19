@@ -1,6 +1,7 @@
 package org.example.whiskr.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,16 +13,16 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
@@ -38,7 +39,6 @@ import org.example.whiskr.theme.WhiskrTheme
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import whiskr.features.posts.generated.resources.Res
-import whiskr.features.posts.generated.resources.add_image
 import whiskr.features.posts.generated.resources.ic_gallery
 import whiskr.features.posts.generated.resources.post
 import whiskr.features.posts.generated.resources.whats_happening
@@ -49,83 +49,83 @@ fun CreatePostLayout(
     userAvatar: String?,
     modifier: Modifier = Modifier
 ) {
-    val state by component.model.subscribeAsState()
+    val model by component.model.subscribeAsState()
     val context = LocalPlatformContext.current
 
-    val launcher = rememberFilePickerLauncher(
-        type = FilePickerFileType.ImageVideo,
-        selectionMode = FilePickerSelectionMode.Multiple
-    ) { files -> component.onMediaSelected(files) }
-
     CreatePostInput(
-        text = state.text,
-        userAvatar = userAvatar,
-        selectedFiles = state.files,
-        isSending = state.isSending,
-        onTextChange = component::onTextChanged,
+        modifier = modifier.fillMaxWidth(),
+        myAvatarUrl = userAvatar,
+        text = model.text,
+        files = model.files,
+        isSending = model.isSending,
+        placeholderText = stringResource(Res.string.whats_happening),
+        onTextChanged = component::onTextChanged,
+        onFilesSelected = component::onMediaSelected,
         onRemoveFile = component::onRemoveFile,
-        onPickImagesClick = {
-            if (state.files.size < 10) launcher.launch()
-        },
-        onSendClick = { component.onSendClick(context) },
-        modifier = modifier
+        onSendClick = { component.onSendClick(context) }
     )
 }
 
 @Composable
-private fun CreatePostInput(
+fun CreatePostInput(
+    myAvatarUrl: String?,
     text: String,
-    userAvatar: String?,
-    onTextChange: (String) -> Unit,
-    selectedFiles: List<KmpFile>,
-    onRemoveFile: (KmpFile) -> Unit,
-    onPickImagesClick: () -> Unit,
-    onSendClick: () -> Unit,
+    files: List<KmpFile>,
     isSending: Boolean,
+    placeholderText: String,
+    onTextChanged: (String) -> Unit,
+    onFilesSelected: (List<KmpFile>) -> Unit,
+    onRemoveFile: (KmpFile) -> Unit,
+    onSendClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val launcher = rememberFilePickerLauncher(
+        type = FilePickerFileType.ImageVideo,
+        selectionMode = FilePickerSelectionMode.Multiple,
+        onResult = onFilesSelected
+    )
+
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.Top
     ) {
-        AvatarPlaceholder(
-            avatarUrl = userAvatar,
-            modifier = Modifier.padding(top = 4.dp)
-        )
+        AvatarPlaceholder(avatarUrl = myAvatarUrl)
 
         Column(
             modifier = Modifier.weight(1f)
         ) {
-            TextField(
-                value = text,
-                onValueChange = onTextChange,
-                textStyle = WhiskrTheme.typography.body,
-                placeholder = {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                if (text.isEmpty()) {
                     Text(
-                        text = stringResource(Res.string.whats_happening),
+                        text = placeholderText,
                         color = WhiskrTheme.colors.secondary,
-                        style = WhiskrTheme.typography.h3.copy(fontWeight = FontWeight.Normal)
+                        style = WhiskrTheme.typography.h3.copy(fontWeight = FontWeight.Normal),
+                        modifier = Modifier.padding(top = 8.dp)
                     )
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = Color.Transparent,
-                    unfocusedContainerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    focusedTextColor = WhiskrTheme.colors.onBackground,
-                )
-            )
+                }
 
-            if (selectedFiles.isNotEmpty()) {
+                BasicTextField(
+                    value = text,
+                    onValueChange = onTextChanged,
+                    textStyle = WhiskrTheme.typography.body.copy(
+                        color = WhiskrTheme.colors.onBackground
+                    ),
+                    cursorBrush = SolidColor(WhiskrTheme.colors.primary),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp)
+                )
+            }
+
+            if (files.isNotEmpty()) {
                 LazyRow(
-                    modifier = Modifier.padding(top = 8.dp),
+                    modifier = Modifier.padding(top = 12.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(selectedFiles) { file ->
+                    items(files) { file ->
                         MediaPreviewItem(
                             file = file,
                             onRemove = { onRemoveFile(file) },
@@ -141,22 +141,24 @@ private fun CreatePostInput(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 12.dp),
+                    .padding(top = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
                     painter = painterResource(Res.drawable.ic_gallery),
-                    contentDescription = stringResource(Res.string.add_image),
-                    tint = WhiskrTheme.colors.primary,
+                    contentDescription = "Add media",
+                    tint = if (files.size >= 10) WhiskrTheme.colors.secondary else WhiskrTheme.colors.primary,
                     modifier = Modifier
                         .size(24.dp)
-                        .customClickable(onClick = onPickImagesClick)
+                        .customClickable {
+                            if (files.size < 10) launcher.launch()
+                        }
                 )
 
                 WhiskrButton(
                     onClick = onSendClick,
-                    enabled = !isSending && (text.isNotBlank() || selectedFiles.isNotEmpty()),
+                    enabled = !isSending && (text.isNotBlank() || files.isNotEmpty()),
                     text = stringResource(Res.string.post),
                     isLoading = isSending,
                     contentColor = Color.White,

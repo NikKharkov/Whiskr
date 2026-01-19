@@ -46,16 +46,6 @@ class PostRepositoryImpl(
         }
     }
 
-    override suspend fun replyToPost(targetPostId: Long, text: String): Result<Post> {
-        return runCatching {
-            val request = CreateReplyRequest(targetPostId, text)
-            val response = postApiService.replyToPost(request)
-
-            _newPost.emit(response)
-            response
-        }
-    }
-
     override suspend fun getReplies(postId: Long, page: Int): Result<PagedResponse<Post>> {
         return runCatching {
             postApiService.getReplies(postId = postId, page = page)
@@ -72,52 +62,92 @@ class PostRepositoryImpl(
         files: List<KmpFile>
     ): Result<Post> {
         return try {
-            val preparedFiles = files.mapIndexed { index, file ->
-                val bytes = file.readByteArray(context)
-                val name = file.getName(context) ?: "file_$index"
-                val extension = name.substringAfterLast('.', "").lowercase()
-
-                val mimeType = when (extension) {
-                    "mp4", "mov", "avi", "mkv" -> "video/mp4"
-                    "png" -> "image/png"
-                    else -> "image/jpeg"
-                }
-
-                Triple(bytes, name, mimeType)
-            }
-
             val requestDto = CreatePostRequest(text)
 
-            val multipartBody = MultiPartFormDataContent(
-                formData {
-                    append(
-                        key = "request",
-                        value = Json.encodeToString(requestDto),
-                        headers = Headers.build {
-                            append(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                        }
-                    )
-
-                    preparedFiles.forEach { (bytes, name, mimeType) ->
-                        append(
-                            key = "files",
-                            value = bytes,
-                            headers = Headers.build {
-                                append(HttpHeaders.ContentDisposition, "filename=\"$name\"")
-                                append(HttpHeaders.ContentType, mimeType)
-                            }
-                        )
-                    }
-                }
+            val multipartBody = buildMultipartRequest(
+                context = context,
+                jsonPartName = "request",
+                jsonPartContent = Json.encodeToString(requestDto),
+                files = files
             )
 
             val response = postApiService.createPost(multipartBody)
-            Logger.d { "Content sent successfully" }
+            Logger.d { "Post created successfully" }
             _newPost.emit(response)
             Result.success(response)
         } catch (e: Exception) {
-            Logger.e(e) { "Error sending content" }
+            Logger.e(e) { "Error creating post" }
             Result.failure(e)
         }
+    }
+
+    override suspend fun replyToPost(
+        context: PlatformContext,
+        targetPostId: Long,
+        text: String,
+        files: List<KmpFile>
+    ): Result<Post> {
+        return try {
+            val requestDto = CreateReplyRequest(targetPostId, text)
+
+            val multipartBody = buildMultipartRequest(
+                context = context,
+                jsonPartName = "request",
+                jsonPartContent = Json.encodeToString(requestDto),
+                files = files
+            )
+
+            val response = postApiService.replyToPost(multipartBody)
+
+            _newPost.emit(response)
+            Result.success(response)
+        } catch (e: Exception) {
+            Logger.e(e) { "Error creating reply" }
+            Result.failure(e)
+        }
+    }
+
+    private suspend fun buildMultipartRequest(
+        context: PlatformContext,
+        jsonPartName: String,
+        jsonPartContent: String,
+        files: List<KmpFile>
+    ): MultiPartFormDataContent {
+        val preparedFiles = files.mapIndexed { index, file ->
+            val bytes = file.readByteArray(context)
+            val name = file.getName(context) ?: "file_$index"
+            val extension = name.substringAfterLast('.', "").lowercase()
+
+            val mimeType = when (extension) {
+                "mp4", "mov", "avi", "mkv" -> "video/mp4"
+                "png" -> "image/png"
+                else -> "image/jpeg"
+            }
+
+            Triple(bytes, name, mimeType)
+        }
+
+        return MultiPartFormDataContent(
+            formData {
+                append(
+                    key = jsonPartName,
+                    value = jsonPartContent,
+                    headers = Headers.build {
+                        append(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    }
+                )
+
+                preparedFiles.forEach { (bytes, name, mimeType) ->
+                    append(
+                        key = "files",
+                        value = bytes,
+                        headers = Headers.build {
+                            append(HttpHeaders.ContentDisposition, "filename=\"$name\"")
+                            append(HttpHeaders.ContentType, mimeType)
+                        }
+                    )
+                }
+            }
+        )
     }
 }
