@@ -96,10 +96,7 @@ fun HomeScreen(
                     }
                 }
 
-                itemsIndexed(
-                    items = model.items,
-                    key = { _, post -> post.id }
-                ) { index, post ->
+                itemsIndexed(items = model.items) { index, post ->
 
                     if (index >= model.items.lastIndex - 3 && !model.isLoadingMore && !model.isEndOfList) {
                         LaunchedEffect(Unit) {

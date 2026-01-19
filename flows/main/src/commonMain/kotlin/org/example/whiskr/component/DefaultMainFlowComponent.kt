@@ -107,6 +107,9 @@ class DefaultMainFlowComponent(
                 onNavigateToReply = { postToReply ->
                     navigation.push(CreateReply(targetPost = postToReply))
                 },
+                onNavigateToPostDetails = { post ->
+                    navigation.push(PostDetails(post))
+                },
                 onNavigateToMediaViewer = { mediaList, index ->
                     navigation.push(MediaViewer(mediaList, index))
                 }

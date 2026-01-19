@@ -1,19 +1,24 @@
 package org.example.whiskr.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -81,7 +86,7 @@ fun PostDetailsScreen(
                     onMediaClick = { mediaIndex ->
                         component.onMediaClick(model.post.media, mediaIndex)
                     },
-                    onCommentsClick = { TODO() },
+                    onCommentsClick = { component.onReplyClick(model.post) },
                     onRepostClick = { /* ... */ },
                     onShareClick = { /* ... */ },
                     onProfileClick = { /* ... */ }
@@ -90,17 +95,21 @@ fun PostDetailsScreen(
                 HorizontalDivider(thickness = 1.dp, color = WhiskrTheme.colors.outline)
             }
 
-            items(
-                items = model.replies,
-                key = { it.id }
-            ) { reply ->
+            itemsIndexed(items = model.replies) { index, reply ->
+
+                if (index >= model.replies.lastIndex - 3 && !model.isLoadingMore && !model.isEndOfList) {
+                    LaunchedEffect(Unit) {
+                        component.onLoadMore()
+                    }
+                }
+
                 PostCard(
                     post = reply,
                     onPostClick = { mediaIndex ->
                         component.onMediaClick(reply.media, mediaIndex)
                     },
                     onLikeClick = { component.onLikeClick(reply.id) },
-                    onCommentClick = { component.onReplyClick(reply) },
+                    onCommentClick = { component.onPostClick(reply) },
                     onRepostClick = { /* ... */ },
                     onShareClick = { /* ... */ },
                     onProfileClick = { /* ... */ }
@@ -111,6 +120,22 @@ fun PostDetailsScreen(
                     color = WhiskrTheme.colors.outline.copy(alpha = 0.5f),
                     modifier = Modifier.padding(start = 64.dp)
                 )
+            }
+
+            if (model.isLoadingMore) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(
+                            color = WhiskrTheme.colors.primary,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
             }
         }
     }

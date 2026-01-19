@@ -9,14 +9,19 @@ interface PostDetailsComponent {
     val model: Value<Model>
 
     fun onBackClick()
+    fun onLoadMore()
     fun onReplyClick(post: Post)
+    fun onPostClick(post: Post)
     fun onLikeClick(postId: Long)
     fun onMediaClick(media: List<PostMedia>, index: Int)
 
     data class Model(
         val post: Post,
         val replies: List<Post> = emptyList(),
-        val isLoadingReplies: Boolean = false
+        val isLoading: Boolean = false,
+        val isLoadingMore: Boolean = false,
+        val isEndOfList: Boolean = false,
+        val currentPage: Int
     )
 
     fun interface Factory {
@@ -24,6 +29,7 @@ interface PostDetailsComponent {
             componentContext: ComponentContext,
             post: Post,
             onNavigateToReply: (Post) -> Unit,
+            onNavigateToPostDetails: (Post) -> Unit,
             onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
             onBack: () -> Unit
         ): PostDetailsComponent

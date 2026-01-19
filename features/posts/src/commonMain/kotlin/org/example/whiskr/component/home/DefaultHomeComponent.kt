@@ -5,12 +5,15 @@ import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.update
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.component.componentScope
 import org.example.whiskr.component.create.CreatePostComponent
 import org.example.whiskr.domain.PostRepository
+import org.example.whiskr.domain.RepoEvent
 import org.example.whiskr.dto.Post
 import org.example.whiskr.dto.PostMedia
 
@@ -26,22 +29,20 @@ class DefaultHomeComponent(
 ) : HomeComponent, ComponentContext by componentContext {
 
     private val scope = componentScope()
-    private val _model = MutableValue(HomeComponent.Model())
+
+    private val _model = MutableValue(HomeComponent.Model(currentPage = 0))
     override val model: Value<HomeComponent.Model> = _model
 
     override val createPostComponent: CreatePostComponent = createPostFactory(
         componentContext = childContext("EmbeddedCreatePost"),
         onPostCreated = { newPost ->
-            _model.update { it.copy(items = listOf(newPost) + it.items) }
+            handleNewPost(newPost)
         },
         onBack = {}
     )
 
-    private var currentPage = 0
-
     init {
         loadFeed(isRefresh = true)
-        observeNewPosts()
         observePostUpdates()
     }
 
@@ -49,99 +50,113 @@ class DefaultHomeComponent(
         loadFeed(isRefresh = true)
     }
 
-    private fun loadFeed(isRefresh: Boolean) {
-        if (_model.value.isLoading && !isRefresh) return
-
-        scope.launch {
-            if (isRefresh) _model.update { it.copy(isRefreshing = true, isError = false) }
-
-            postRepository.getFeed(0).onSuccess { page ->
-                currentPage = 0
-                _model.update {
-                    it.copy(
-                        items = page.content,
-                        isRefreshing = false,
-                        isLoading = false,
-                        isEndOfList = page.last
-                    )
-                }
-            }.onFailure {
-                _model.update { it.copy(isRefreshing = false, isError = true, isLoading = false) }
-            }
-        }
+    override fun onLoadMore() {
+        if (_model.value.isLoadingMore || _model.value.isEndOfList) return
+        loadFeed(isRefresh = false)
     }
 
-    private fun observeNewPosts() {
+    private fun loadFeed(isRefresh: Boolean) {
         scope.launch {
-            postRepository.newPost.collect { newPost ->
-                _model.update { state ->
-                     if (newPost.parentPost != null) {
-                         return@update state
-                     }
-
-                    if (state.items.any { it.id == newPost.id }) return@update state
-
-                    state.copy(items = listOf(newPost) + state.items)
+            _model.update { state ->
+                if (isRefresh) {
+                    state.copy(isRefreshing = true, isError = false)
+                } else {
+                    state.copy(isLoadingMore = true, isError = false)
                 }
             }
+
+            val targetPage = if (isRefresh) 0 else _model.value.currentPage + 1
+
+            postRepository.getFeed(targetPage)
+                .onSuccess { page ->
+                    _model.update { state ->
+                        val newItems = if (isRefresh) page.content else state.items + page.content
+                        state.copy(
+                            items = newItems,
+                            currentPage = targetPage,
+                            isRefreshing = false,
+                            isLoadingMore = false,
+                            isLoading = false,
+                            isEndOfList = page.last
+                        )
+                    }
+                }
+                .onFailure {
+                    _model.update { state ->
+                        state.copy(
+                            isRefreshing = false,
+                            isLoadingMore = false,
+                            isLoading = false,
+                            isError = true
+                        )
+                    }
+                }
         }
     }
 
     private fun observePostUpdates() {
         scope.launch {
-            postRepository.postUpdated.collect { updatedPost ->
-                _model.update { state ->
-                    val newItems = state.items.map { currentPost ->
-                        if (currentPost.id == updatedPost.id) updatedPost else currentPost
-                    }
-                    state.copy(items = newItems)
+            merge(
+                postRepository.newPost.map { RepoEvent.NewPost(it) },
+                postRepository.postUpdated.map { RepoEvent.PostUpdated(it) }
+            ).collect { event ->
+                when (event) {
+                    is RepoEvent.NewPost -> handleNewPost(event.post)
+                    is RepoEvent.PostUpdated -> handlePostUpdated(event.post)
                 }
             }
         }
     }
 
-    override fun onLoadMore() {
-        val state = _model.value
-        if (state.isLoadingMore || state.isEndOfList) return
+    private fun handleNewPost(newPost: Post) {
+        _model.update { state ->
+            if (newPost.parentPost != null) return@update state
+            if (state.items.any { it.id == newPost.id }) return@update state
 
-        scope.launch {
-            _model.update { it.copy(isLoadingMore = true) }
-            val nextPage = currentPage + 1
+            state.copy(items = listOf(newPost) + state.items)
+        }
+    }
 
-            postRepository.getFeed(nextPage).onSuccess { page ->
-                currentPage = nextPage
-                _model.update {
-                    it.copy(
-                        items = it.items + page.content,
-                        isLoadingMore = false,
-                        isEndOfList = page.last
-                    )
-                }
-            }.onFailure {
-                _model.update { it.copy(isLoadingMore = false) }
+    private fun handlePostUpdated(updatedPost: Post) {
+        _model.update { state ->
+            val index = state.items.indexOfFirst { it.id == updatedPost.id }
+            if (index == -1) return@update state
+
+            val newItems = state.items.toMutableList().apply {
+                set(index, updatedPost)
             }
+            state.copy(items = newItems)
         }
     }
 
     override fun onLikeClick(postId: Long) {
-        updatePost(postId) { post ->
+        var postToNotify: Post? = null
+
+        _model.update { state ->
+            val index = state.items.indexOfFirst { it.id == postId }
+            if (index == -1) return@update state
+
+            val post = state.items[index]
             val newLiked = !post.interaction.isLiked
             val newCount = post.stats.likesCount + (if (newLiked) 1 else -1)
-            post.copy(
+
+            val updatedPost = post.copy(
                 interaction = post.interaction.copy(isLiked = newLiked),
                 stats = post.stats.copy(likesCount = newCount)
             )
+
+            postToNotify = updatedPost
+
+            val newItems = state.items.toMutableList().apply { set(index, updatedPost) }
+            state.copy(items = newItems)
         }
 
-        scope.launch {
-            postRepository.toggleLike(postId).onFailure {
-                updatePost(postId) { post -> post }
+        postToNotify?.let { updatedPost ->
+            scope.launch {
+                postRepository.notifyPostUpdated(updatedPost)
+                postRepository.toggleLike(postId)
             }
         }
-    }
-
-    private fun updatePost(postId: Long, transform: (Post) -> Post) {
-        _model.update { stats -> stats.copy(items = stats.items.map { if (it.id == postId) transform(it) else it }) }
     }
 
     override fun onNavigateToCreatePostScreen() = onNavigateToCreatePost()

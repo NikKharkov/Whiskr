@@ -25,7 +25,8 @@ interface HomeComponent {
         val isError: Boolean = false,
         val isRefreshing: Boolean = false,
         val isLoadingMore: Boolean = false,
-        val isEndOfList: Boolean = false
+        val isEndOfList: Boolean = false,
+        val currentPage: Int
     )
 
     fun interface Factory {

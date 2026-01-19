@@ -44,20 +44,23 @@ class DefaultCreatePostComponent(
 
     override fun onSendClick(context: PlatformContext) {
         val state = _model.value
-        if (state.text.isBlank() && state.files.isEmpty()) return
-        if (state.isSending) return
+        if ((state.text.isBlank() && state.files.isEmpty()) || state.isSending) return
 
         scope.launch {
             _model.update { it.copy(isSending = true) }
 
-            postRepository.createPost(context, state.text.ifBlank { null }, state.files)
+            val textToSend = state.text.trim().ifBlank { null }
+
+            postRepository.createPost(context, textToSend, state.files)
                 .onSuccess { newPost ->
-                    _model.update { it.copy(isSending = false, text = "", files = emptyList()) }
+                    _model.update {
+                        it.copy(isSending = false, text = "", files = emptyList())
+                    }
                     onPostCreated(newPost)
                 }
-                .onFailure {
-                    Logger.e(it) { "Failed to create post" }
-                    _model.update { s -> s.copy(isSending = false) }
+                .onFailure { error ->
+                    Logger.e(error) { "Failed to create post" }
+                    _model.update { it.copy(isSending = false) }
                 }
         }
     }
