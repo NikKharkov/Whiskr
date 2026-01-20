@@ -14,6 +14,7 @@ import org.example.whiskr.component.componentScope
 import org.example.whiskr.component.create.CreatePostComponent
 import org.example.whiskr.domain.PostRepository
 import org.example.whiskr.domain.RepoEvent
+import org.example.whiskr.domain.ShareService
 import org.example.whiskr.dto.Post
 import org.example.whiskr.dto.PostMedia
 
@@ -25,6 +26,7 @@ class DefaultHomeComponent(
     @Assisted private val onNavigateToComments: (Post) -> Unit,
     @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
     private val postRepository: PostRepository,
+    private val shareService: ShareService,
     private val createPostFactory: CreatePostComponent.Factory
 ) : HomeComponent, ComponentContext by componentContext {
 
@@ -99,6 +101,12 @@ class DefaultHomeComponent(
             postRepository.notifyPostUpdated(updatedPost)
             postRepository.toggleLike(postId)
         }
+    }
+
+    override fun onShareClick(post: Post) {
+        val link = "whiskr://app/post/${post.id}"
+        val text = "Check out this post by ${post.author.displayName}:\n$link"
+        shareService.share(text)
     }
 
     override fun onNavigateToCreatePostScreen() = onNavigateToCreatePost()

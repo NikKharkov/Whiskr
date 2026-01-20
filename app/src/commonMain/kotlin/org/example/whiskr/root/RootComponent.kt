@@ -3,7 +3,6 @@ package org.example.whiskr.root
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.serialization.Serializable
 import org.example.whiskr.AuthFlowComponent
 import org.example.whiskr.component.MainFlowComponent
@@ -13,6 +12,7 @@ interface RootComponent {
     val isDarkTheme: Value<Boolean>
 
     fun toggleTheme(isDark: Boolean)
+    fun onDeepLink(url: String)
 
     @Serializable
     sealed interface Config {
@@ -26,6 +26,9 @@ interface RootComponent {
     }
 
     fun interface Factory {
-        operator fun invoke(componentContext: ComponentContext): RootComponent
+        operator fun invoke(
+            componentContext: ComponentContext,
+            deepLink: String?
+        ): RootComponent
     }
 }

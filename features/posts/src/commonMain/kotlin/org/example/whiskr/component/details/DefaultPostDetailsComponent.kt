@@ -13,42 +13,65 @@ import org.example.whiskr.PagingDelegate
 import org.example.whiskr.component.componentScope
 import org.example.whiskr.domain.PostRepository
 import org.example.whiskr.domain.RepoEvent
+import org.example.whiskr.domain.ShareService
 import org.example.whiskr.dto.Post
 import org.example.whiskr.dto.PostMedia
 
 @Inject
 class DefaultPostDetailsComponent(
     @Assisted componentContext: ComponentContext,
-    @Assisted val post: Post,
+    @Assisted private val postId: Long,
     @Assisted private val onNavigateToReply: (Post) -> Unit,
     @Assisted private val onNavigateToPostDetails: (Post) -> Unit,
     @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
     @Assisted private val onBack: () -> Unit,
-    private val postRepository: PostRepository
+    private val postRepository: PostRepository,
+    private val shareService: ShareService
 ) : PostDetailsComponent, ComponentContext by componentContext {
 
     private val scope = componentScope()
 
-    private val headerPost = MutableValue(post)
+    private data class HeaderState(
+        val post: Post? = null,
+        val isLoading: Boolean = true,
+        val isError: Boolean = false
+    )
+
+    private val headerState = MutableValue(HeaderState())
 
     private val pagingDelegate = PagingDelegate(
         scope = scope,
-        loader = { page -> postRepository.getReplies(postId = post.id, page = page) }
+        loader = { page -> postRepository.getReplies(postId = postId, page = page) }
     )
 
     override val model: Value<PostDetailsComponent.Model> = combine(
-        headerPost,
+        headerState,
         pagingDelegate.state
     ) { header, listState ->
         PostDetailsComponent.Model(
-            post = header,
+            post = header.post,
+            isLoadingPost = header.isLoading,
+            isError = header.isError,
             listState = listState
         )
     }
 
     init {
+        loadHeaderPost()
         pagingDelegate.firstLoad()
         observePostUpdates()
+    }
+
+    private fun loadHeaderPost() {
+        scope.launch {
+            postRepository.getPostById(postId)
+                .onSuccess { post ->
+                    headerState.value = HeaderState(post = post, isLoading = false)
+                }
+                .onFailure {
+                    headerState.value = HeaderState(isLoading = false, isError = true)
+                }
+        }
     }
 
     override fun onLoadMore() = pagingDelegate.loadMore()
@@ -68,7 +91,7 @@ class DefaultPostDetailsComponent(
     }
 
     private fun handleNewPost(newPost: Post) {
-        val currentHeader = headerPost.value
+        val currentHeader = headerState.value.post ?: return
 
         if (newPost.parentPost?.id != currentHeader.id) return
 
@@ -79,15 +102,17 @@ class DefaultPostDetailsComponent(
             stats = currentHeader.stats.copy(repliesCount = currentHeader.stats.repliesCount + 1)
         )
 
-        headerPost.value = updatedHeader
+        headerState.value = headerState.value.copy(post = updatedHeader)
         pagingDelegate.prependItem(newPost)
 
         scope.launch { postRepository.notifyPostUpdated(updatedHeader) }
     }
 
     private fun handlePostUpdate(updatedPost: Post) {
-        if (headerPost.value.id == updatedPost.id) {
-            headerPost.value = updatedPost
+        val currentHeader = headerState.value.post
+
+        if (currentHeader?.id == updatedPost.id) {
+            headerState.value = headerState.value.copy(post = updatedPost)
         }
 
         pagingDelegate.updateItems { list ->
@@ -96,10 +121,10 @@ class DefaultPostDetailsComponent(
     }
 
     override fun onLikeClick(postId: Long) {
-        val currentHeader = headerPost.value
+        val currentHeader = headerState.value.post
         val currentReplies = pagingDelegate.state.value.items
 
-        val targetPost = if (currentHeader.id == postId) {
+        val targetPost = if (currentHeader?.id == postId) {
             currentHeader
         } else {
             currentReplies.find { it.id == postId }
@@ -113,8 +138,8 @@ class DefaultPostDetailsComponent(
             stats = targetPost.stats.copy(likesCount = newCount)
         )
 
-        if (currentHeader.id == postId) {
-            headerPost.value = updatedPost
+        if (currentHeader?.id == postId) {
+            headerState.value = headerState.value.copy(post = updatedPost)
         } else {
             pagingDelegate.updateItems { list ->
                 list.map { if (it.id == postId) updatedPost else it }
@@ -125,6 +150,12 @@ class DefaultPostDetailsComponent(
             postRepository.notifyPostUpdated(updatedPost)
             postRepository.toggleLike(postId)
         }
+    }
+
+    override fun onShareClick(post: Post) {
+        val link = "whiskr://app/post/${post.id}"
+        val text = "Check out this post by ${post.author.displayName}:\n$link"
+        shareService.share(text)
     }
 
     override fun onBackClick() = onBack()

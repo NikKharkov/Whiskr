@@ -116,7 +116,7 @@ fun HomeScreen(
                         onLikeClick = { component.onLikeClick(post.id) },
                         onCommentClick = { component.onCommentsClick(post) },
                         onRepostClick = { /* TODO */ },
-                        onShareClick = { /* TODO */ }
+                        onShareClick = { component.onShareClick(post) }
                     )
 
                     HorizontalDivider(thickness = 1.dp, color = WhiskrTheme.colors.outline)

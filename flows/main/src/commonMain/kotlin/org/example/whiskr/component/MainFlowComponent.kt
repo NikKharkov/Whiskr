@@ -37,6 +37,7 @@ interface MainFlowComponent {
     fun setDrawerOpen(isOpen: Boolean)
     fun onTabSelected(tab: Tab)
     fun onPostClick()
+    fun onDeepLink(link: String)
 
     sealed class Child {
         class Home(val component: HomeComponent) : Child()
@@ -78,7 +79,7 @@ interface MainFlowComponent {
         data class CreateReply(val targetPost: Post) : Config
 
         @Serializable
-        data class PostDetails(val post: Post) : Config
+        data class PostDetails(val postId: Long) : Config
 
         @Serializable
         data class UserProfile(val userId: Long) : Config
@@ -93,7 +94,8 @@ interface MainFlowComponent {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            isDarkTheme: Value<Boolean>
+            isDarkTheme: Value<Boolean>,
+            deepLink: String?
         ): MainFlowComponent
     }
 

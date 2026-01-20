@@ -19,6 +19,7 @@ interface HomeComponent {
     fun onProfileClick(userId: Long)
     fun onMediaClick(media: List<PostMedia>, index: Int)
     fun onCommentsClick(post: Post)
+    fun onShareClick(post: Post)
 
     data class Model(
         val listState: PagingDelegate.State<Post>,

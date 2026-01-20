@@ -4,6 +4,7 @@ import com.liftric.kvault.KVault
 import de.jensklingenberg.ktorfit.Ktorfit
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
@@ -41,6 +42,12 @@ interface NetworkComponent {
         tokenStorage: TokenStorage
     ): HttpClient {
         return HttpClient {
+
+            install(HttpTimeout) {
+                requestTimeoutMillis = 300_000
+                connectTimeoutMillis = 15_000
+                socketTimeoutMillis = 300_000
+            }
 
             install(ContentNegotiation) {
                 json(json)

@@ -1,6 +1,7 @@
 package org.example.whiskr.ui
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,14 +27,15 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import org.example.whiskr.component.details.PostDetailsComponent
 import org.example.whiskr.components.SimpleTopBar
 import org.example.whiskr.theme.WhiskrTheme
-import org.example.whiskr.ui.components.PostCard
 import org.example.whiskr.ui.components.ParentPost
+import org.example.whiskr.ui.components.PostCard
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import whiskr.features.posts.generated.resources.Res
 import whiskr.features.posts.generated.resources.ic_arrow_back
 import whiskr.features.posts.generated.resources.ic_comments
 import whiskr.features.posts.generated.resources.post
+import whiskr.features.posts.generated.resources.post_error
 import whiskr.features.posts.generated.resources.reply
 
 @Composable
@@ -62,17 +64,19 @@ fun PostDetailsScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = { component.onReplyClick(model.post) },
-                containerColor = WhiskrTheme.colors.primary,
-                contentColor = Color.White,
-                shape = CircleShape
-            ) {
-                Icon(
-                    painter = painterResource(Res.drawable.ic_comments),
-                    contentDescription = stringResource(Res.string.reply),
-                    modifier = Modifier.size(24.dp)
-                )
+            model.post?.let { post ->
+                FloatingActionButton(
+                    onClick = { component.onReplyClick(post) },
+                    containerColor = WhiskrTheme.colors.primary,
+                    contentColor = Color.White,
+                    shape = CircleShape
+                ) {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_comments),
+                        contentDescription = stringResource(Res.string.reply),
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
             }
         }
     ) { innerPadding ->
@@ -80,61 +84,99 @@ fun PostDetailsScreen(
             contentPadding = innerPadding,
             modifier = Modifier.fillMaxSize()
         ) {
-            item {
-                ParentPost(
-                    post = model.post,
-                    onLikeClick = { component.onLikeClick(model.post.id) },
-                    onMediaClick = { mediaIndex ->
-                        component.onMediaClick(model.post.media, mediaIndex)
-                    },
-                    onCommentsClick = { component.onReplyClick(model.post) },
-                    onRepostClick = { /* ... */ },
-                    onShareClick = { /* ... */ },
-                    onProfileClick = { /* ... */ }
-                )
+            item(key = "header") {
+                when {
+                    model.isLoadingPost -> {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 32.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(
+                                color = WhiskrTheme.colors.primary
+                            )
+                        }
+                    }
 
-                HorizontalDivider(thickness = 1.dp, color = WhiskrTheme.colors.outline)
-            }
+                    model.isError -> {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(32.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(Res.string.post_error),
+                                style = WhiskrTheme.typography.h3,
+                                color = WhiskrTheme.colors.error
+                            )
+                        }
+                    }
 
-            itemsIndexed(items = state.items) { index, reply ->
+                    model.post != null -> {
+                        val post = model.post!!
 
-                if (index >= state.items.lastIndex - 3 && !state.isLoadingMore && !state.isEndOfList) {
-                    LaunchedEffect(Unit) {
-                        component.onLoadMore()
+                        Column {
+                            ParentPost(
+                                post = post,
+                                onLikeClick = { component.onLikeClick(post.id) },
+                                onMediaClick = { mediaIndex ->
+                                    component.onMediaClick(post.media, mediaIndex)
+                                },
+                                onCommentsClick = { component.onReplyClick(post) },
+                                onRepostClick = { /* ... */ },
+                                onShareClick = { component.onShareClick(post) },
+                                onProfileClick = { /* ... */ }
+                            )
+
+                            HorizontalDivider(thickness = 1.dp, color = WhiskrTheme.colors.outline)
+                        }
                     }
                 }
-
-                PostCard(
-                    post = reply,
-                    onPostClick = { mediaIndex ->
-                        component.onMediaClick(reply.media, mediaIndex)
-                    },
-                    onLikeClick = { component.onLikeClick(reply.id) },
-                    onCommentClick = { component.onPostClick(reply) },
-                    onRepostClick = { /* ... */ },
-                    onShareClick = { /* ... */ },
-                    onProfileClick = { /* ... */ }
-                )
-
-                HorizontalDivider(
-                    thickness = 0.5.dp,
-                    color = WhiskrTheme.colors.outline.copy(alpha = 0.5f),
-                    modifier = Modifier.padding(start = 64.dp)
-                )
             }
 
-            if (state.isLoadingMore) {
-                item {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(
-                            color = WhiskrTheme.colors.primary,
-                            modifier = Modifier.size(24.dp)
-                        )
+            if (model.post != null) {
+                itemsIndexed(items = state.items, key = { _, item -> item.id }) { index, reply ->
+
+                    if (index >= state.items.lastIndex - 3 && !state.isLoadingMore && !state.isEndOfList) {
+                        LaunchedEffect(Unit) {
+                            component.onLoadMore()
+                        }
+                    }
+
+                    PostCard(
+                        post = reply,
+                        onPostClick = { mediaIndex ->
+                            component.onMediaClick(reply.media, mediaIndex)
+                        },
+                        onLikeClick = { component.onLikeClick(reply.id) },
+                        onCommentClick = { component.onPostClick(reply) },
+                        onRepostClick = { /* ... */ },
+                        onShareClick = { component.onShareClick(reply) },
+                        onProfileClick = { /* ... */ }
+                    )
+
+                    HorizontalDivider(
+                        thickness = 0.5.dp,
+                        color = WhiskrTheme.colors.outline.copy(alpha = 0.5f),
+                        modifier = Modifier.padding(start = 64.dp)
+                    )
+                }
+
+                if (state.isLoadingMore) {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator(
+                                color = WhiskrTheme.colors.primary,
+                                modifier = Modifier.size(24.dp)
+                            )
+                        }
                     }
                 }
             }

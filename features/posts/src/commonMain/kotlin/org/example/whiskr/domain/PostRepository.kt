@@ -16,6 +16,7 @@ interface PostRepository {
     suspend fun getFeed(page: Int): Result<PagedResponse<Post>>
     suspend fun toggleLike(postId: Long): Result<UserInteraction>
     suspend fun createRepost(originalPostId: Long, quote: String?): Result<Post>
+    suspend fun getPostById(postId: Long): Result<Post>
     suspend fun createPost(
         context: PlatformContext,
         text: String?,

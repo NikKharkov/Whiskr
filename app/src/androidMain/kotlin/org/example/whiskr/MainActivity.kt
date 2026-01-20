@@ -1,5 +1,6 @@
 package org.example.whiskr
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,25 +9,41 @@ import com.arkivanov.decompose.retainedComponent
 import io.github.vinceglb.filekit.core.FileKit
 import org.example.whiskr.di.AndroidApplicationComponentDI
 import org.example.whiskr.di.create
+import org.example.whiskr.root.RootComponent
 
 class MainActivity : ComponentActivity() {
+
+    private var rootComponent: RootComponent? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        val databaseFactory = AndroidDatabaseFactory(context = applicationContext)
+        val databaseFactory = AndroidDatabaseFactory(applicationContext)
+        val shareService = AndroidShareService(applicationContext)
+        val initialDeepLink = intent?.data?.toString()
 
         val appComponent =
-            AndroidApplicationComponentDI::class.create(applicationContext, databaseFactory)
+            AndroidApplicationComponentDI::class.create(applicationContext, databaseFactory, shareService)
 
         val root = retainedComponent { componentContext ->
-            appComponent.rootComponentFactory(componentContext)
+            appComponent.rootComponentFactory(componentContext, initialDeepLink)
         }
+
+        rootComponent = root
 
         FileKit.init(this)
 
         setContent {
             RootContent(root)
+        }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        val newLink = intent.data?.toString()
+        if (newLink != null) {
+            rootComponent?.onDeepLink(newLink)
         }
     }
 }

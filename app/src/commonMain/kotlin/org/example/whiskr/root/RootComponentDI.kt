@@ -9,7 +9,7 @@ interface RootComponentDI {
     @Provides
     @Singleton
     fun provideRootFactory(
-        factory: (ComponentContext) -> DefaultRootComponent,
+        factory: (ComponentContext, String?) -> DefaultRootComponent,
         database: DatabaseFactory
     ): RootComponent.Factory {
         return RootComponent.Factory(factory)

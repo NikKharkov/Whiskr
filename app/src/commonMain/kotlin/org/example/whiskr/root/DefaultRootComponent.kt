@@ -18,6 +18,7 @@ import org.example.whiskr.preferences.UserPreferences
 @Inject
 class DefaultRootComponent(
     @Assisted componentContext: ComponentContext,
+    @Assisted private val deepLink: String?,
     private val tokenStorage: TokenStorage,
     private val userPreferences: UserPreferences,
     private val authFlowFactory: AuthFlowComponent.Factory,
@@ -49,6 +50,19 @@ class DefaultRootComponent(
         scope.launch { userPreferences.setDarkTheme(isDark) }
     }
 
+    override fun onDeepLink(url: String) {
+        val activeChild = stack.value.active.instance
+        when (activeChild) {
+            is RootComponent.Child.MainFlow -> {
+                activeChild.component.onDeepLink(url)
+            }
+
+            is RootComponent.Child.AuthFlow -> {
+
+            }
+        }
+    }
+
     private fun createChild(
         config: RootComponent.Config,
         context: ComponentContext
@@ -66,7 +80,8 @@ class DefaultRootComponent(
         RootComponent.Config.MainFlow -> RootComponent.Child.MainFlow(
             mainFlowFactory(
                 componentContext = context,
-                isDarkTheme = isDarkTheme
+                isDarkTheme = isDarkTheme,
+                deepLink = deepLink
             )
         )
     }

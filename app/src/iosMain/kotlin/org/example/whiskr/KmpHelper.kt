@@ -11,11 +11,14 @@ import org.example.whiskr.di.createIosComponent
 object KmpHelper {
     private val lifecycle = LifecycleRegistry()
     private val databaseFactory = IosDatabaseFactory()
-    private val appComponent = createIosComponent(databaseFactory)
+    private val shareService = IosShareService()
+
+    private val appComponent = createIosComponent(databaseFactory, shareService)
 
     val root =
         appComponent.rootComponentFactory(
-            DefaultComponentContext(lifecycle = lifecycle)
+            componentContext = DefaultComponentContext(lifecycle = lifecycle),
+            deepLink = null
         )
 
     fun resume() {
@@ -32,5 +35,9 @@ object KmpHelper {
 
     fun destroy() {
         lifecycle.destroy()
+    }
+
+    fun handleDeepLink(url: String) {
+        root.onDeepLink(url)
     }
 }

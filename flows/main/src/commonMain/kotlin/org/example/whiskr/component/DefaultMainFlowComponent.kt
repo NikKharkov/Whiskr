@@ -14,7 +14,17 @@ import domain.UserState
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
-import org.example.whiskr.component.MainFlowComponent.Config.*
+import org.example.whiskr.component.MainFlowComponent.Config.AIStudio
+import org.example.whiskr.component.MainFlowComponent.Config.CreatePost
+import org.example.whiskr.component.MainFlowComponent.Config.CreateReply
+import org.example.whiskr.component.MainFlowComponent.Config.Explore
+import org.example.whiskr.component.MainFlowComponent.Config.Games
+import org.example.whiskr.component.MainFlowComponent.Config.Home
+import org.example.whiskr.component.MainFlowComponent.Config.MediaViewer
+import org.example.whiskr.component.MainFlowComponent.Config.Messages
+import org.example.whiskr.component.MainFlowComponent.Config.PostDetails
+import org.example.whiskr.component.MainFlowComponent.Config.Profile
+import org.example.whiskr.component.MainFlowComponent.Config.UserProfile
 import org.example.whiskr.component.create.CreatePostComponent
 import org.example.whiskr.component.details.PostDetailsComponent
 import org.example.whiskr.component.home.HomeComponent
@@ -26,6 +36,7 @@ import org.example.whiskr.util.toConfig
 class DefaultMainFlowComponent(
     @Assisted private val componentContext: ComponentContext,
     @Assisted override val isDarkTheme: Value<Boolean>,
+    @Assisted private val deepLink: String?,
     private val userRepository: UserRepository,
     private val homeFactory: HomeComponent.Factory,
     private val createPostFactory: CreatePostComponent.Factory,
@@ -57,7 +68,7 @@ class DefaultMainFlowComponent(
     override val stack = childStack(
         source = navigation,
         serializer = MainFlowComponent.Config.serializer(),
-        initialConfiguration = Home,
+        initialStack = { getInitialStack(deepLink) },
         handleBackButton = true,
         childFactory = ::createChild
     )
@@ -75,7 +86,7 @@ class DefaultMainFlowComponent(
                     navigation.push(MediaViewer(mediaList, index))
                 },
                 onNavigateToComments = { post ->
-                    navigation.push(PostDetails(post))
+                    navigation.push(PostDetails(postId = post.id))
                 }
             )
         )
@@ -84,9 +95,7 @@ class DefaultMainFlowComponent(
             createPostFactory(
                 componentContext = context,
                 onBack = { navigation.pop() },
-                onPostCreated = {
-                    navigation.pop()
-                }
+                onPostCreated = { navigation.pop() }
             )
         )
 
@@ -102,13 +111,13 @@ class DefaultMainFlowComponent(
         is PostDetails -> MainFlowComponent.Child.PostDetails(
             postDetailsFactory(
                 componentContext = context,
-                post = config.post,
+                postId = config.postId,
                 onBack = { navigation.pop() },
                 onNavigateToReply = { postToReply ->
                     navigation.push(CreateReply(targetPost = postToReply))
                 },
                 onNavigateToPostDetails = { post ->
-                    navigation.push(PostDetails(post))
+                    navigation.push(PostDetails(postId = post.id))
                 },
                 onNavigateToMediaViewer = { mediaList, index ->
                     navigation.push(MediaViewer(mediaList, index))
@@ -131,6 +140,30 @@ class DefaultMainFlowComponent(
         Games -> TODO()
         Messages -> TODO()
         Profile -> TODO()
+    }
+
+    override fun onDeepLink(link: String) {
+        val newStack = getInitialStack(link)
+        if (newStack.size > 1) {
+            val destination = newStack.last()
+            navigation.push(destination)
+        }
+    }
+
+    private fun getInitialStack(link: String?): List<MainFlowComponent.Config> {
+        if (link == null) return listOf(Home)
+
+        if (link.contains("post")) {
+            val id = link.substringAfterLast("/").toLongOrNull()
+
+            if (id != null) {
+                return listOf(
+                    Home,
+                    PostDetails(postId = id)
+                )
+            }
+        }
+        return listOf(Home)
     }
 
     override fun onTabSelected(tab: MainFlowComponent.Tab) {

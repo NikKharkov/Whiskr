@@ -57,7 +57,7 @@ interface PostComponentDI {
     @Provides
     @Singleton
     fun providePostDetailsFactory(
-        factory: (ComponentContext, Post, (Post) -> Unit, (Post) -> Unit, (List<PostMedia>, Int) -> Unit, () -> Unit) -> DefaultPostDetailsComponent
+        factory: (ComponentContext, Long, (Post) -> Unit, (Post) -> Unit, (List<PostMedia>, Int) -> Unit, () -> Unit) -> DefaultPostDetailsComponent
     ): PostDetailsComponent.Factory {
         return PostDetailsComponent.Factory(factory)
     }

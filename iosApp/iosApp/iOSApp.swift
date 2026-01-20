@@ -23,6 +23,9 @@ struct iOSApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(component: holder.root)
+                .onOpenURL { url in
+                    KmpHelper.shared.handleDeepLink(url: url.absoluteString)
+                }
                 .onChange(of: scenePhase) { newPhase in
                     switch newPhase {
                     case .background:

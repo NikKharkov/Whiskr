@@ -7,6 +7,7 @@
     <string name="reply">Reply</string>
     <string name="reposts">Reposts</string>
     <string name="likes">Likes</string>
+    <string name="post_error">Post not found or deleted</string>
     <string name="reply_placeholder">Post your reply</string>
     <string name="replying_to">Replying to</string>
     <string name="full_screen">Full screen</string>

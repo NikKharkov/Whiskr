@@ -15,16 +15,19 @@ interface PostDetailsComponent {
     fun onPostClick(post: Post)
     fun onLikeClick(postId: Long)
     fun onMediaClick(media: List<PostMedia>, index: Int)
+    fun onShareClick(post: Post)
 
     data class Model(
-        val post: Post,
+        val post: Post?,
+        val isLoadingPost: Boolean,
+        val isError: Boolean,
         val listState: PagingDelegate.State<Post>
     )
 
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            post: Post,
+            postId: Long,
             onNavigateToReply: (Post) -> Unit,
             onNavigateToPostDetails: (Post) -> Unit,
             onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
