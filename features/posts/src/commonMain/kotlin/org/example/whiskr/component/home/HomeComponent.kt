@@ -2,6 +2,7 @@ package org.example.whiskr.component.home
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
+import org.example.whiskr.PagingDelegate
 import org.example.whiskr.component.create.CreatePostComponent
 import org.example.whiskr.dto.Post
 import org.example.whiskr.dto.PostMedia
@@ -20,13 +21,7 @@ interface HomeComponent {
     fun onCommentsClick(post: Post)
 
     data class Model(
-        val items: List<Post> = emptyList(),
-        val isLoading: Boolean = true,
-        val isError: Boolean = false,
-        val isRefreshing: Boolean = false,
-        val isLoadingMore: Boolean = false,
-        val isEndOfList: Boolean = false,
-        val currentPage: Int
+        val listState: PagingDelegate.State<Post>,
     )
 
     fun interface Factory {

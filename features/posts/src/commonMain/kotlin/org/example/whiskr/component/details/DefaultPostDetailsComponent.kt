@@ -1,14 +1,15 @@
 package org.example.whiskr.component.details
 
+import com.arkivanov.decompose.Cancellation
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.decompose.value.update
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
+import org.example.whiskr.PagingDelegate
 import org.example.whiskr.component.componentScope
 import org.example.whiskr.domain.PostRepository
 import org.example.whiskr.domain.RepoEvent
@@ -26,53 +27,31 @@ class DefaultPostDetailsComponent(
     private val postRepository: PostRepository
 ) : PostDetailsComponent, ComponentContext by componentContext {
 
-    private val _model = MutableValue(PostDetailsComponent.Model(post = post, currentPage = 0))
-    override val model: Value<PostDetailsComponent.Model> = _model
     private val scope = componentScope()
 
+    private val headerPost = MutableValue(post)
+
+    private val pagingDelegate = PagingDelegate(
+        scope = scope,
+        loader = { page -> postRepository.getReplies(postId = post.id, page = page) }
+    )
+
+    override val model: Value<PostDetailsComponent.Model> = combine(
+        headerPost,
+        pagingDelegate.state
+    ) { header, listState ->
+        PostDetailsComponent.Model(
+            post = header,
+            listState = listState
+        )
+    }
+
     init {
-        loadReplies()
+        pagingDelegate.firstLoad()
         observePostUpdates()
     }
 
-    private fun loadReplies() {
-        scope.launch {
-            _model.update { it.copy(isLoading = true) }
-            postRepository.getReplies(postId = post.id, page = 0)
-                .onSuccess { paged ->
-                    _model.update { it.copy(isLoading = false, replies = paged.content) }
-                }
-                .onFailure {
-                    _model.update { it.copy(isLoading = false) }
-                }
-        }
-    }
-
-    override fun onLoadMore() {
-        val state = _model.value
-        if (state.isLoadingMore || state.isEndOfList) return
-
-        scope.launch {
-            _model.update { it.copy(isLoadingMore = true) }
-
-            val nextPage = state.currentPage + 1
-
-            postRepository.getReplies(postId = post.id, page = nextPage)
-                .onSuccess { paged ->
-                    _model.update {
-                        it.copy(
-                            replies = it.replies + paged.content,
-                            isLoadingMore = false,
-                            isEndOfList = paged.last,
-                            currentPage = nextPage
-                        )
-                    }
-                }
-                .onFailure {
-                    _model.update { it.copy(isLoadingMore = false) }
-                }
-        }
-    }
+    override fun onLoadMore() = pagingDelegate.loadMore()
 
     private fun observePostUpdates() {
         scope.launch {
@@ -80,87 +59,99 @@ class DefaultPostDetailsComponent(
                 postRepository.newPost.map { RepoEvent.NewPost(it) },
                 postRepository.postUpdated.map { RepoEvent.PostUpdated(it) }
             ).collect { event ->
-                _model.update { state ->
-                    when (event) {
-                        is RepoEvent.NewPost -> handleNewPost(state, event.post)
-                        is RepoEvent.PostUpdated -> handlePostUpdate(state, event.post)
-                    }
+                when (event) {
+                    is RepoEvent.NewPost -> handleNewPost(event.post)
+                    is RepoEvent.PostUpdated -> handlePostUpdate(event.post)
                 }
             }
         }
     }
 
-    private fun handleNewPost(
-        state: PostDetailsComponent.Model,
-        newPost: Post
-    ): PostDetailsComponent.Model {
-        val parentId = newPost.parentPost?.id
-        if (parentId != state.post.id) return state
+    private fun handleNewPost(newPost: Post) {
+        val currentHeader = headerPost.value
 
-        if (state.replies.any { it.id == newPost.id }) return state
+        if (newPost.parentPost?.id != currentHeader.id) return
 
-        val updatedPost = state.post.copy(
-            stats = state.post.stats.copy(repliesCount = state.post.stats.repliesCount + 1)
+        val currentReplies = pagingDelegate.state.value.items
+        if (currentReplies.any { it.id == newPost.id }) return
+
+        val updatedHeader = currentHeader.copy(
+            stats = currentHeader.stats.copy(repliesCount = currentHeader.stats.repliesCount + 1)
         )
 
-        scope.launch { postRepository.notifyPostUpdated(updatedPost) }
+        headerPost.value = updatedHeader
+        pagingDelegate.prependItem(newPost)
 
-        return state.copy(
-            post = updatedPost,
-            replies = listOf(newPost) + state.replies
-        )
+        scope.launch { postRepository.notifyPostUpdated(updatedHeader) }
     }
 
-    private fun handlePostUpdate(
-        state: PostDetailsComponent.Model,
-        updatedPost: Post
-    ): PostDetailsComponent.Model {
-        val newPost = if (state.post.id == updatedPost.id) updatedPost else state.post
-        val newReplies = state.replies.map { if (it.id == updatedPost.id) updatedPost else it }
+    private fun handlePostUpdate(updatedPost: Post) {
+        if (headerPost.value.id == updatedPost.id) {
+            headerPost.value = updatedPost
+        }
 
-        return state.copy(
-            post = newPost,
-            replies = newReplies
-        )
+        pagingDelegate.updateItems { list ->
+            list.map { if (it.id == updatedPost.id) updatedPost else it }
+        }
     }
 
     override fun onLikeClick(postId: Long) {
-        var postToNotify: Post? = null
+        val currentHeader = headerPost.value
+        val currentReplies = pagingDelegate.state.value.items
 
-        _model.update { state ->
-            val targetPost =
-                if (state.post.id == postId) state.post else state.replies.find { it.id == postId }
+        val targetPost = if (currentHeader.id == postId) {
+            currentHeader
+        } else {
+            currentReplies.find { it.id == postId }
+        } ?: return
 
-            if (targetPost == null) return@update state
+        val newLiked = !targetPost.interaction.isLiked
+        val newCount = targetPost.stats.likesCount + (if (newLiked) 1 else -1)
 
-            val newLiked = !targetPost.interaction.isLiked
-            val newCount = targetPost.stats.likesCount + (if (newLiked) 1 else -1)
+        val updatedPost = targetPost.copy(
+            interaction = targetPost.interaction.copy(isLiked = newLiked),
+            stats = targetPost.stats.copy(likesCount = newCount)
+        )
 
-            val updatedPost = targetPost.copy(
-                interaction = targetPost.interaction.copy(isLiked = newLiked),
-                stats = targetPost.stats.copy(likesCount = newCount)
-            )
-
-            postToNotify = updatedPost
-
-            if (state.post.id == postId) {
-                state.copy(post = updatedPost)
-            } else {
-                state.copy(replies = state.replies.map { if (it.id == postId) updatedPost else it })
+        if (currentHeader.id == postId) {
+            headerPost.value = updatedPost
+        } else {
+            pagingDelegate.updateItems { list ->
+                list.map { if (it.id == postId) updatedPost else it }
             }
         }
 
-        postToNotify?.let { updatedPost ->
-            scope.launch {
-                postRepository.notifyPostUpdated(updatedPost)
-                postRepository.toggleLike(postId)
-            }
+        scope.launch {
+            postRepository.notifyPostUpdated(updatedPost)
+            postRepository.toggleLike(postId)
         }
     }
 
     override fun onBackClick() = onBack()
     override fun onReplyClick(post: Post) = onNavigateToReply(post)
     override fun onPostClick(post: Post) = onNavigateToPostDetails(post)
-    override fun onMediaClick(media: List<PostMedia>, index: Int) =
-        onNavigateToMediaViewer(media, index)
+    override fun onMediaClick(media: List<PostMedia>, index: Int) = onNavigateToMediaViewer(media, index)
+
+    private fun <T1 : Any, T2 : Any, R : Any> combine(
+        value1: Value<T1>,
+        value2: Value<T2>,
+        transform: (T1, T2) -> R
+    ): Value<R> {
+        return object : Value<R>() {
+            override val value: R
+                get() = transform(value1.value, value2.value)
+
+            override fun subscribe(observer: (R) -> Unit): Cancellation {
+                val callback = { _: Any? -> observer(value) }
+
+                val c1 = value1.subscribe(callback)
+                val c2 = value2.subscribe(callback)
+
+                return Cancellation {
+                    c1.cancel()
+                    c2.cancel()
+                }
+            }
+        }
+    }
 }

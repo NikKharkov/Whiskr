@@ -1,16 +1,14 @@
 package org.example.whiskr.component.create
 
-import co.touchlab.kermit.Logger
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.decompose.value.update
+import com.arkivanov.decompose.value.operator.map
 import com.mohamedrejeb.calf.core.PlatformContext
 import com.mohamedrejeb.calf.io.KmpFile
-import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.component.componentScope
+import org.example.whiskr.data.PostInputDelegate
 import org.example.whiskr.domain.PostRepository
 import org.example.whiskr.dto.Post
 
@@ -22,48 +20,27 @@ class DefaultCreatePostComponent(
     private val postRepository: PostRepository
 ) : CreatePostComponent, ComponentContext by componentContext {
 
-    private val scope = componentScope()
-    private val _model = MutableValue(CreatePostComponent.Model())
-    override val model: Value<CreatePostComponent.Model> = _model
+    private val inputDelegate = PostInputDelegate(componentScope())
 
-    override fun onTextChanged(text: String) {
-        _model.update { it.copy(text = text) }
+    override val model: Value<CreatePostComponent.Model> = inputDelegate.state.map { inputState ->
+        CreatePostComponent.Model(
+            text = inputState.text,
+            files = inputState.files,
+            isSending = inputState.isSending
+        )
     }
 
-    override fun onMediaSelected(files: List<KmpFile>) {
-        _model.update { state ->
-            val availableSlots = 10 - state.files.size
-            if (availableSlots <= 0) return@update state
-            state.copy(files = state.files + files.take(availableSlots))
-        }
-    }
-
-    override fun onRemoveFile(file: KmpFile) {
-        _model.update { it.copy(files = it.files - file) }
-    }
+    override fun onTextChanged(text: String) = inputDelegate.onTextChanged(text)
+    override fun onMediaSelected(files: List<KmpFile>) = inputDelegate.onMediaSelected(files)
+    override fun onRemoveFile(file: KmpFile) = inputDelegate.onRemoveFile(file)
+    override fun onBackClick() = onBack()
 
     override fun onSendClick(context: PlatformContext) {
-        val state = _model.value
-        if ((state.text.isBlank() && state.files.isEmpty()) || state.isSending) return
-
-        scope.launch {
-            _model.update { it.copy(isSending = true) }
-
-            val textToSend = state.text.trim().ifBlank { null }
-
-            postRepository.createPost(context, textToSend, state.files)
-                .onSuccess { newPost ->
-                    _model.update {
-                        it.copy(isSending = false, text = "", files = emptyList())
-                    }
-                    onPostCreated(newPost)
-                }
-                .onFailure { error ->
-                    Logger.e(error) { "Failed to create post" }
-                    _model.update { it.copy(isSending = false) }
-                }
-        }
+        inputDelegate.submit(
+            action = { text, files ->
+                postRepository.createPost(context, text, files)
+            },
+            onSuccess = onPostCreated
+        )
     }
-
-    override fun onBackClick() = onBack()
 }

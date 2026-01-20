@@ -53,8 +53,8 @@ fun ComposerTopBar(
             text = actionLabel,
             isLoading = isSending,
             shape = CircleShape,
-            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
-            modifier = Modifier.height(32.dp),
+            contentPadding = PaddingValues(horizontal = 32.dp, vertical = 8.dp),
+            modifier = Modifier.height(50.dp),
             contentColor = Color.White
         )
     }

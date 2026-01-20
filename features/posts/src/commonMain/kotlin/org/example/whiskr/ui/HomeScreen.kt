@@ -43,6 +43,7 @@ fun HomeScreen(
     component: HomeComponent
 ) {
     val model by component.model.subscribeAsState()
+    val state = model.listState
     val user = LocalUser.current
     val isTablet = LocalIsTablet.current
 
@@ -69,13 +70,13 @@ fun HomeScreen(
     ) { innerPadding ->
         PullToRefreshBox(
             state = pullRefreshState,
-            isRefreshing = model.isRefreshing,
+            isRefreshing = state.isRefreshing,
             onRefresh = component::onRefresh,
             modifier = Modifier.fillMaxSize(),
             indicator = {
                 PullToRefreshDefaults.Indicator(
                     state = pullRefreshState,
-                    isRefreshing = model.isRefreshing,
+                    isRefreshing = state.isRefreshing,
                     containerColor = WhiskrTheme.colors.surface,
                     color = WhiskrTheme.colors.primary,
                     modifier = Modifier.align(Alignment.TopCenter)
@@ -98,9 +99,9 @@ fun HomeScreen(
                     }
                 }
 
-                itemsIndexed(items = model.items) { index, post ->
+                itemsIndexed(items = state.items) { index, post ->
 
-                    if (index >= model.items.lastIndex - 3 && !model.isLoadingMore && !model.isEndOfList) {
+                    if (index >= state.items.lastIndex - 3 && !state.isLoadingMore && !state.isEndOfList) {
                         LaunchedEffect(Unit) {
                             component.onLoadMore()
                         }
@@ -121,7 +122,7 @@ fun HomeScreen(
                     HorizontalDivider(thickness = 1.dp, color = WhiskrTheme.colors.outline)
                 }
 
-                if (model.isLoadingMore) {
+                if (state.isLoadingMore) {
                     item {
                         Box(
                             modifier = Modifier

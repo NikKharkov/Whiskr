@@ -41,6 +41,7 @@ fun PostDetailsScreen(
     component: PostDetailsComponent
 ) {
     val model by component.model.subscribeAsState()
+    val state = model.listState
 
     Scaffold(
         containerColor = WhiskrTheme.colors.background,
@@ -95,9 +96,9 @@ fun PostDetailsScreen(
                 HorizontalDivider(thickness = 1.dp, color = WhiskrTheme.colors.outline)
             }
 
-            itemsIndexed(items = model.replies) { index, reply ->
+            itemsIndexed(items = state.items) { index, reply ->
 
-                if (index >= model.replies.lastIndex - 3 && !model.isLoadingMore && !model.isEndOfList) {
+                if (index >= state.items.lastIndex - 3 && !state.isLoadingMore && !state.isEndOfList) {
                     LaunchedEffect(Unit) {
                         component.onLoadMore()
                     }
@@ -122,7 +123,7 @@ fun PostDetailsScreen(
                 )
             }
 
-            if (model.isLoadingMore) {
+            if (state.isLoadingMore) {
                 item {
                     Box(
                         modifier = Modifier

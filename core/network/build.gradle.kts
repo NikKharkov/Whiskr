@@ -3,6 +3,7 @@ plugins {
     id("whiskr.kmp")
     id("whiskr.network")
     id("whiskr.di")
+    id("whiskr.navigation")
 }
 
 android {

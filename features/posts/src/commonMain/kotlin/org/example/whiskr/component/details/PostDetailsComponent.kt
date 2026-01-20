@@ -2,6 +2,7 @@ package org.example.whiskr.component.details
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
+import org.example.whiskr.PagingDelegate
 import org.example.whiskr.dto.Post
 import org.example.whiskr.dto.PostMedia
 
@@ -17,11 +18,7 @@ interface PostDetailsComponent {
 
     data class Model(
         val post: Post,
-        val replies: List<Post> = emptyList(),
-        val isLoading: Boolean = false,
-        val isLoadingMore: Boolean = false,
-        val isEndOfList: Boolean = false,
-        val currentPage: Int
+        val listState: PagingDelegate.State<Post>
     )
 
     fun interface Factory {
