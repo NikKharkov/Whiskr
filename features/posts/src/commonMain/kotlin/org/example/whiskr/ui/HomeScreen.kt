@@ -1,16 +1,10 @@
 package org.example.whiskr.ui
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -19,7 +13,6 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import org.example.whiskr.component.home.HomeComponent
+import org.example.whiskr.layouts.pagingItems
 import org.example.whiskr.theme.LocalIsTablet
 import org.example.whiskr.theme.WhiskrTheme
 import org.example.whiskr.ui.components.CreatePostLayout
@@ -99,14 +93,15 @@ fun HomeScreen(
                     }
                 }
 
-                itemsIndexed(items = state.items) { index, post ->
-
-                    if (index >= state.items.lastIndex - 3 && !state.isLoadingMore && !state.isEndOfList) {
-                        LaunchedEffect(Unit) {
-                            component.onLoadMore()
-                        }
+                pagingItems(
+                    items = state.items,
+                    isLoadingMore = state.isLoadingMore,
+                    isEndOfList = state.isEndOfList,
+                    onLoadMore = component::onLoadMore,
+                    separatorContent = { _, _ ->
+                        HorizontalDivider(thickness = 1.dp, color = WhiskrTheme.colors.outline)
                     }
-
+                ) { index, post ->
                     PostCard(
                         post = post,
                         onPostClick = { mediaIndex ->
@@ -118,24 +113,6 @@ fun HomeScreen(
                         onRepostClick = { /* TODO */ },
                         onShareClick = { component.onShareClick(post) }
                     )
-
-                    HorizontalDivider(thickness = 1.dp, color = WhiskrTheme.colors.outline)
-                }
-
-                if (state.isLoadingMore) {
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator(
-                                color = WhiskrTheme.colors.primary,
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
-                    }
                 }
             }
         }

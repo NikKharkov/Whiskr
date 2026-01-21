@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
@@ -17,7 +16,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import org.example.whiskr.component.details.PostDetailsComponent
 import org.example.whiskr.components.SimpleTopBar
+import org.example.whiskr.layouts.pagingItems
 import org.example.whiskr.theme.WhiskrTheme
 import org.example.whiskr.ui.components.ParentPost
 import org.example.whiskr.ui.components.PostCard
@@ -137,14 +136,20 @@ fun PostDetailsScreen(
             }
 
             if (model.post != null) {
-                itemsIndexed(items = state.items, key = { _, item -> item.id }) { index, reply ->
-
-                    if (index >= state.items.lastIndex - 3 && !state.isLoadingMore && !state.isEndOfList) {
-                        LaunchedEffect(Unit) {
-                            component.onLoadMore()
-                        }
+                pagingItems(
+                    items = state.items,
+                    isLoadingMore = state.isLoadingMore,
+                    isEndOfList = state.isEndOfList,
+                    onLoadMore = component::onLoadMore,
+                    key = { it.id },
+                    separatorContent = { _, _ ->
+                        HorizontalDivider(
+                            thickness = 0.5.dp,
+                            color = WhiskrTheme.colors.outline.copy(alpha = 0.5f),
+                            modifier = Modifier.padding(start = 64.dp)
+                        )
                     }
-
+                ) { _, reply ->
                     PostCard(
                         post = reply,
                         onPostClick = { mediaIndex ->
@@ -156,28 +161,6 @@ fun PostDetailsScreen(
                         onShareClick = { component.onShareClick(reply) },
                         onProfileClick = { /* ... */ }
                     )
-
-                    HorizontalDivider(
-                        thickness = 0.5.dp,
-                        color = WhiskrTheme.colors.outline.copy(alpha = 0.5f),
-                        modifier = Modifier.padding(start = 64.dp)
-                    )
-                }
-
-                if (state.isLoadingMore) {
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator(
-                                color = WhiskrTheme.colors.primary,
-                                modifier = Modifier.size(24.dp)
-                            )
-                        }
-                    }
                 }
             }
         }
