@@ -9,6 +9,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         
         FirebaseApp.configure()
         StripeAPI.defaultPublishableKey = "pk_test_51SqLqAD9IFbFeS4YHydYpaVu3ot9Xspu6MYQCiQcbO4Zh5ELSQyc9Dim0aWLtZ0JHMPF7ZLX3VcgaB9TY7h1Pbq100onTcH6mb"
+        StripeBridge.initialize()
+        
         return true
     }
 }

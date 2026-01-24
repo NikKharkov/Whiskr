@@ -67,6 +67,16 @@ class DefaultStoreComponent(
         }
     }
 
+    override fun onPurchaseSuccessful() {
+        onPaymentSheetShown()
+
+        scope.launch {
+            billingRepository.getWallet().onSuccess { newWallet ->
+                _model.value = _model.value.copy(wallet = newWallet)
+            }
+        }
+    }
+
     override fun onPaymentSheetShown() {
         _model.value = _model.value.copy(paymentLaunchSecret = null)
     }

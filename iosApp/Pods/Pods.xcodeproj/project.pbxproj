@@ -9,18 +9,17 @@
 /* Begin PBXAggregateTarget section */
 		0F5BEB6A881C8168658A3A78BBBD2DB6 /* app */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = A4033372C0A5AC535C36A431AD1FB9B5 /* Build configuration list for PBXAggregateTarget "app" */;
+			buildConfigurationList = 35A31CE375AD83C54F6EC5C231686D08 /* Build configuration list for PBXAggregateTarget "app" */;
 			buildPhases = (
-				57E2FDD4A43287967E513ED25F6C4F61 /* [CP-User] Build app */,
+				BDC958A51399EC746E216575CB2994CF /* [CP-User] Build app */,
 			);
 			dependencies = (
-				54CAF73BA1DA66D71287E5BA3E9840EB /* PBXTargetDependency */,
-				CF9BD140B2F67DC3B78091F835DF40E8 /* PBXTargetDependency */,
-				628F5F738C025651BE0B767B2A1CD02A /* PBXTargetDependency */,
-				B71138A080F1EAE24DCAFDEC6338DD4B /* PBXTargetDependency */,
-				CC1F1FF78A9811971187D0E1EE8ED2FB /* PBXTargetDependency */,
-				D3F2330C246A00D76E82FF8D395CBDC5 /* PBXTargetDependency */,
-				BDD7686DB5F849618552AF910D1AA576 /* PBXTargetDependency */,
+				1848F470119B4D585EC1A3F4F8AF56B7 /* PBXTargetDependency */,
+				02E23586E0EDEE7C8A5E716A19D57759 /* PBXTargetDependency */,
+				EE1980E937C76D750AC7F11F6503DFE8 /* PBXTargetDependency */,
+				0FC26C8B0CBD42BD7D9C7CCB4F2DF0A3 /* PBXTargetDependency */,
+				A9814EDECC12A00155E75ED9D3756367 /* PBXTargetDependency */,
+				2321C80F2611BC8D8E034D4B798F268A /* PBXTargetDependency */,
 			);
 			name = app;
 		};
@@ -2129,13 +2128,6 @@
 			remoteGlobalIDString = D676E21115185671D7258A56944ABE98;
 			remoteInfo = GTMSessionFetcher;
 		};
-		01E0CE3C993CB123EDD7A3FADA5EC139 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6AE4A3D573DED275B034E20506596C62;
-			remoteInfo = FirebaseAuth;
-		};
 		0263E8AD2A8DD2065E90858C04243E14 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
@@ -2171,12 +2163,26 @@
 			remoteGlobalIDString = 8D7F5D5DD528D21A72DC87ADA5B12E2D;
 			remoteInfo = GoogleUtilities;
 		};
+		0A24166B489FD28A0B8AABC6C3F4E73A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 28907903AF6DD0AD321D92CD660E7E23;
+			remoteInfo = FBSDKCoreKit;
+		};
 		0E30083BCD8D46EEC70D16D03BA6221F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 21FB29F43C8A2A81ABFE8C478370070E;
 			remoteInfo = "FirebaseMessaging-FirebaseMessaging_Privacy";
+		};
+		0F1E87DD7D4DE2D39490E285E0DA2978 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CAD3534FC55B0333104E5117C0A9A324;
+			remoteInfo = GoogleSignIn;
 		};
 		12F0B0E833FE43DE0B1D34CBFE67CC40 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2283,13 +2289,6 @@
 			remoteGlobalIDString = 25E9E9A17BC3F670357D7385C521E48E;
 			remoteInfo = FirebaseCoreInternal;
 		};
-		380BA1148187D6FE05CE33CA12921F82 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 28907903AF6DD0AD321D92CD660E7E23;
-			remoteInfo = FBSDKCoreKit;
-		};
 		38C5C49ACFE5A257CF61DF0DF08FE047 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
@@ -2394,13 +2393,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 5C642AA10FB29936669CC269F42079C6;
 			remoteInfo = AppAuth;
-		};
-		6EA5229166167A3ABA203201FBD5334D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 4402AFF83DBDC4DD07E198685FDC2DF2;
-			remoteInfo = FirebaseCore;
 		};
 		71E04ABF180751D2C0492DF67019ABA0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2528,6 +2520,13 @@
 			remoteGlobalIDString = 8EA62FEAB23070050EFD4D4508D659E5;
 			remoteInfo = FBSDKCoreKit_Basics;
 		};
+		9F8B06243E098C72DC57961E3F79C49F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5895B432FE4D2F6826C8FF25A09DB6D2;
+			remoteInfo = FirebaseMessaging;
+		};
 		A154403EC0F1EF6FFFDB0752836B74C9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
@@ -2605,6 +2604,13 @@
 			remoteGlobalIDString = 28907903AF6DD0AD321D92CD660E7E23;
 			remoteInfo = FBSDKCoreKit;
 		};
+		C709B06C3351756C69420CF705D7F67D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 10C5885FCB0908EF785774EE52473DAB;
+			remoteInfo = FBSDKLoginKit;
+		};
 		CAABA9D213962654FE2AD7C0C247385C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
@@ -2647,6 +2653,13 @@
 			remoteGlobalIDString = 4D8F98DC20531ADC27AFBAEF36BF6957;
 			remoteInfo = StripeUICore;
 		};
+		D9C88A4D5C23A6DA1CF2E7B8A2DAC451 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6AE4A3D573DED275B034E20506596C62;
+			remoteInfo = FirebaseAuth;
+		};
 		DC9DBD73F7497142B014CF5C7FDAD665 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
@@ -2675,26 +2688,12 @@
 			remoteGlobalIDString = DD28B439BE8B17D9339D9B526F144347;
 			remoteInfo = FirebaseAppCheckInterop;
 		};
-		E356C5A4D52F901C2EBD0D6F1B831DFC /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0445F0377FE8B5ECF996B7F76B35E886;
-			remoteInfo = StripePaymentSheet;
-		};
 		E43CF3E35E0687002356E162C21CE6A8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 91ECFC81736C2875C7A5B90E324EDF11;
 			remoteInfo = StripeCore;
-		};
-		E55A40EA67D5242BC4BE81BE330EB3F4 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5895B432FE4D2F6826C8FF25A09DB6D2;
-			remoteInfo = FirebaseMessaging;
 		};
 		E69DC1ABCE7F6FFB93560FA14E2F0DD8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2717,12 +2716,12 @@
 			remoteGlobalIDString = C672DA1BB64EB6EBFE2D39B56AC39B5E;
 			remoteInfo = "StripePaymentsUI-StripePaymentsUI";
 		};
-		EB953614A84A79CCC620B0E53E5AEE37 /* PBXContainerItemProxy */ = {
+		EC8F585AA39974FDFAE251B72D737A30 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = CAD3534FC55B0333104E5117C0A9A324;
-			remoteInfo = GoogleSignIn;
+			remoteGlobalIDString = 4402AFF83DBDC4DD07E198685FDC2DF2;
+			remoteInfo = FirebaseCore;
 		};
 		F1BF2A492D747B6359839D2182EDA229 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -2744,13 +2743,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 1BFBEDBF7E03729D43C96530EE190825;
 			remoteInfo = "PromisesObjC-FBLPromises_Privacy";
-		};
-		FA7B03E87DB70E659D838B391944BC05 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 10C5885FCB0908EF785774EE52473DAB;
-			remoteInfo = FBSDKLoginKit;
 		};
 		FB071C556D431F1D796386EB9AF99BD8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -10740,16 +10732,6 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/FBSDKLoginKit/FBSDKLoginKit-xcframeworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		57E2FDD4A43287967E513ED25F6C4F61 /* [CP-User] Build app */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			name = "[CP-User] Build app";
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "                if [ \"YES\" = \"$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED\" ]; then\n                  echo \"Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \"YES\"\"\n                  exit 0\n                fi\n                set -ev\n                REPO_ROOT=\"$PODS_TARGET_SRCROOT\"\n                \"$REPO_ROOT/../gradlew\" -p \"$REPO_ROOT\" $KOTLIN_PROJECT_PATH:syncFramework                     -Pkotlin.native.cocoapods.platform=$PLATFORM_NAME                     -Pkotlin.native.cocoapods.archs=\"$ARCHS\"                     -Pkotlin.native.cocoapods.configuration=\"$CONFIGURATION\"\n";
-		};
 		A261CEA870C48433C3575F1CCC2BB166 /* [CP] Copy XCFrameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -10766,6 +10748,16 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/FBAEMKit/FBAEMKit-xcframeworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		BDC958A51399EC746E216575CB2994CF /* [CP-User] Build app */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			name = "[CP-User] Build app";
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "                if [ \"YES\" = \"$OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED\" ]; then\n                  echo \"Skipping Gradle build task invocation due to OVERRIDE_KOTLIN_BUILD_IDE_SUPPORTED environment variable set to \"YES\"\"\n                  exit 0\n                fi\n                set -ev\n                REPO_ROOT=\"$PODS_TARGET_SRCROOT\"\n                \"$REPO_ROOT/../gradlew\" -p \"$REPO_ROOT\" $KOTLIN_PROJECT_PATH:syncFramework                     -Pkotlin.native.cocoapods.platform=$PLATFORM_NAME                     -Pkotlin.native.cocoapods.archs=\"$ARCHS\"                     -Pkotlin.native.cocoapods.configuration=\"$CONFIGURATION\"\n";
 		};
 		C05801FB1115AB56CF9E73BB6786A73A /* [CP] Copy XCFrameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -12068,6 +12060,12 @@
 			target = D994236C73AC9E758404DF574DAB4A9F /* FirebaseAuth-FirebaseAuth_Privacy */;
 			targetProxy = B10B0F7110053ED0A63F896430918D32 /* PBXContainerItemProxy */;
 		};
+		02E23586E0EDEE7C8A5E716A19D57759 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FBSDKLoginKit;
+			target = 10C5885FCB0908EF785774EE52473DAB /* FBSDKLoginKit */;
+			targetProxy = C709B06C3351756C69420CF705D7F67D /* PBXContainerItemProxy */;
+		};
 		05624449D65202ABB19481DEFD0CF7F6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "FirebaseCore-FirebaseCore_Privacy";
@@ -12086,6 +12084,12 @@
 			target = 4ABF6280BC22DEDA043B55DE2B2A6F8B /* StripePaymentsUI */;
 			targetProxy = 30DD80439F1CD47598C086D168C15009 /* PBXContainerItemProxy */;
 		};
+		0FC26C8B0CBD42BD7D9C7CCB4F2DF0A3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FirebaseCore;
+			target = 4402AFF83DBDC4DD07E198685FDC2DF2 /* FirebaseCore */;
+			targetProxy = EC8F585AA39974FDFAE251B72D737A30 /* PBXContainerItemProxy */;
+		};
 		14678523CB5E668643DB56ACBE001424 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = FBAEMKit;
@@ -12103,6 +12107,12 @@
 			name = FBSDKLoginKit;
 			target = 10C5885FCB0908EF785774EE52473DAB /* FBSDKLoginKit */;
 			targetProxy = 8BD5182CD4A3D0AFF4364FCC7A07DAB0 /* PBXContainerItemProxy */;
+		};
+		1848F470119B4D585EC1A3F4F8AF56B7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FBSDKCoreKit;
+			target = 28907903AF6DD0AD321D92CD660E7E23 /* FBSDKCoreKit */;
+			targetProxy = 0A24166B489FD28A0B8AABC6C3F4E73A /* PBXContainerItemProxy */;
 		};
 		18D6A52A2555A7B9659359967DA88408 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -12139,6 +12149,12 @@
 			name = nanopb;
 			target = D2B5E7DCCBBFB32341D857D01211A1A3 /* nanopb */;
 			targetProxy = 0263E8AD2A8DD2065E90858C04243E14 /* PBXContainerItemProxy */;
+		};
+		2321C80F2611BC8D8E034D4B798F268A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GoogleSignIn;
+			target = CAD3534FC55B0333104E5117C0A9A324 /* GoogleSignIn */;
+			targetProxy = 0F1E87DD7D4DE2D39490E285E0DA2978 /* PBXContainerItemProxy */;
 		};
 		23A2ADD7D59901AA7FA3B02FFFDFB513 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -12230,12 +12246,6 @@
 			target = 91ECFC81736C2875C7A5B90E324EDF11 /* StripeCore */;
 			targetProxy = E43CF3E35E0687002356E162C21CE6A8 /* PBXContainerItemProxy */;
 		};
-		54CAF73BA1DA66D71287E5BA3E9840EB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FBSDKCoreKit;
-			target = 28907903AF6DD0AD321D92CD660E7E23 /* FBSDKCoreKit */;
-			targetProxy = 380BA1148187D6FE05CE33CA12921F82 /* PBXContainerItemProxy */;
-		};
 		58E1F28B451B22D0C08BA6B020448A1F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = AppAuth;
@@ -12253,12 +12263,6 @@
 			name = GTMAppAuth;
 			target = 8627999EF1D5E93E13DAFF580DA8CDCF /* GTMAppAuth */;
 			targetProxy = A26A15568ADF0E4DFD779E169952DB89 /* PBXContainerItemProxy */;
-		};
-		628F5F738C025651BE0B767B2A1CD02A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FirebaseAuth;
-			target = 6AE4A3D573DED275B034E20506596C62 /* FirebaseAuth */;
-			targetProxy = 01E0CE3C993CB123EDD7A3FADA5EC139 /* PBXContainerItemProxy */;
 		};
 		6297B84F3C8200D772D4A1518156CCE5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -12392,6 +12396,12 @@
 			target = D2B5E7DCCBBFB32341D857D01211A1A3 /* nanopb */;
 			targetProxy = 7B68E76201A3A95A7994F8DC04D687E1 /* PBXContainerItemProxy */;
 		};
+		A9814EDECC12A00155E75ED9D3756367 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FirebaseMessaging;
+			target = 5895B432FE4D2F6826C8FF25A09DB6D2 /* FirebaseMessaging */;
+			targetProxy = 9F8B06243E098C72DC57961E3F79C49F /* PBXContainerItemProxy */;
+		};
 		AF6E89A4F39D22D2939BA29E69E2CE50 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "StripePaymentSheet-StripePaymentSheet";
@@ -12403,12 +12413,6 @@
 			name = GoogleUtilities;
 			target = 8D7F5D5DD528D21A72DC87ADA5B12E2D /* GoogleUtilities */;
 			targetProxy = 09FCF67D3833A672B6D74610087D1F11 /* PBXContainerItemProxy */;
-		};
-		B71138A080F1EAE24DCAFDEC6338DD4B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FirebaseCore;
-			target = 4402AFF83DBDC4DD07E198685FDC2DF2 /* FirebaseCore */;
-			targetProxy = 6EA5229166167A3ABA203201FBD5334D /* PBXContainerItemProxy */;
 		};
 		B850121BBD03C248F195ADC7312EA0A6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -12434,12 +12438,6 @@
 			target = 8D7F5D5DD528D21A72DC87ADA5B12E2D /* GoogleUtilities */;
 			targetProxy = 1EE47F0B463328DA24E1FD03FDB18E8B /* PBXContainerItemProxy */;
 		};
-		BDD7686DB5F849618552AF910D1AA576 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = StripePaymentSheet;
-			target = 0445F0377FE8B5ECF996B7F76B35E886 /* StripePaymentSheet */;
-			targetProxy = E356C5A4D52F901C2EBD0D6F1B831DFC /* PBXContainerItemProxy */;
-		};
 		C135C632895D6B0EB1F4B7382785A55F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = StripePayments;
@@ -12458,12 +12456,6 @@
 			target = A0A5CD13661B8CFFE84656B60459EEF6 /* StripeApplePay */;
 			targetProxy = 317B878C087E9C978EE8C8A937551D62 /* PBXContainerItemProxy */;
 		};
-		CC1F1FF78A9811971187D0E1EE8ED2FB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FirebaseMessaging;
-			target = 5895B432FE4D2F6826C8FF25A09DB6D2 /* FirebaseMessaging */;
-			targetProxy = E55A40EA67D5242BC4BE81BE330EB3F4 /* PBXContainerItemProxy */;
-		};
 		CD381E6F5CF84F010C6198C026A2BE4A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = FirebaseAuth;
@@ -12475,12 +12467,6 @@
 			name = GTMSessionFetcher;
 			target = D676E21115185671D7258A56944ABE98 /* GTMSessionFetcher */;
 			targetProxy = 1FEE6F64393D5E057CBB3F37012810A8 /* PBXContainerItemProxy */;
-		};
-		CF9BD140B2F67DC3B78091F835DF40E8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FBSDKLoginKit;
-			target = 10C5885FCB0908EF785774EE52473DAB /* FBSDKLoginKit */;
-			targetProxy = FA7B03E87DB70E659D838B391944BC05 /* PBXContainerItemProxy */;
 		};
 		D0A4017FAF8ED8FA9C6CA3E2CE02649F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -12505,12 +12491,6 @@
 			name = StripeApplePay;
 			target = A0A5CD13661B8CFFE84656B60459EEF6 /* StripeApplePay */;
 			targetProxy = 931EA74E73457A0B8716240B2CC3AF56 /* PBXContainerItemProxy */;
-		};
-		D3F2330C246A00D76E82FF8D395CBDC5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = GoogleSignIn;
-			target = CAD3534FC55B0333104E5117C0A9A324 /* GoogleSignIn */;
-			targetProxy = EB953614A84A79CCC620B0E53E5AEE37 /* PBXContainerItemProxy */;
 		};
 		D7115D796E728F1E72FDEE173564E6FB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -12547,6 +12527,12 @@
 			name = "AppAuth-AppAuthCore_Privacy";
 			target = 3B932EC9659D505694902B50F4EB3D8B /* AppAuth-AppAuthCore_Privacy */;
 			targetProxy = D363FB9E901B80E471B4C270E602743F /* PBXContainerItemProxy */;
+		};
+		EE1980E937C76D750AC7F11F6503DFE8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FirebaseAuth;
+			target = 6AE4A3D573DED275B034E20506596C62 /* FirebaseAuth */;
+			targetProxy = D9C88A4D5C23A6DA1CF2E7B8A2DAC451 /* PBXContainerItemProxy */;
 		};
 		F4F2E0473AB1046E4333F5DDE3A2E2BF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -13191,26 +13177,6 @@
 			};
 			name = Debug;
 		};
-		4CA244B7950EB393ABB9706AA21496A5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 28F9711ECF28CD5A10286B1E2178D131 /* app.release.xcconfig */;
-			buildSettings = {
-				ARCHS = arm64;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		5380535EE383CBB66FEB58941993BEC0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A2CAB52AC618C1DE96AAF4594FD4E578 /* FirebaseMessaging.release.xcconfig */;
@@ -13711,6 +13677,26 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
+		};
+		7F66E83733145AC1B93E9D4D3FA0E342 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28F9711ECF28CD5A10286B1E2178D131 /* app.release.xcconfig */;
+			buildSettings = {
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
 		};
 		894655758D2DF8E71EF5BF8FCA8F0BD6 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -14491,25 +14477,6 @@
 			};
 			name = Release;
 		};
-		C824160C829A90D605B37E997056733D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6D76EF997EFC4593318BD17B296B4C33 /* app.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = arm64;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
 		CB0C5375FFE6492C929431E275252C35 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CE6DE16A01978C0D17F7FFD18156F496 /* FirebaseCoreInternal.release.xcconfig */;
@@ -14652,6 +14619,25 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		D10A6252927659D7298D1E31523689C4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6D76EF997EFC4593318BD17B296B4C33 /* app.debug.xcconfig */;
+			buildSettings = {
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -15375,6 +15361,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		35A31CE375AD83C54F6EC5C231686D08 /* Build configuration list for PBXAggregateTarget "app" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D10A6252927659D7298D1E31523689C4 /* Debug */,
+				7F66E83733145AC1B93E9D4D3FA0E342 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		394C56180B05D26C9A57F2835C949C34 /* Build configuration list for PBXNativeTarget "StripeApplePay" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -15506,15 +15501,6 @@
 			buildConfigurations = (
 				40D68121C165E2CD2E2ECCC75158AF68 /* Debug */,
 				65FA2E8B62CB86749401C0E6F86FD657 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A4033372C0A5AC535C36A431AD1FB9B5 /* Build configuration list for PBXAggregateTarget "app" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C824160C829A90D605B37E997056733D /* Debug */,
-				4CA244B7950EB393ABB9706AA21496A5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

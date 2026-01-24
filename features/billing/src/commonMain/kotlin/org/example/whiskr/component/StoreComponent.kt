@@ -11,6 +11,7 @@ interface StoreComponent {
     val model: Value<Model>
 
     fun onProductClicked(productKey: BillingProductKey)
+    fun onPurchaseSuccessful()
     fun onBackClicked()
     fun onPaymentSheetShown()
 

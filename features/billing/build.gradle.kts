@@ -9,5 +9,5 @@ android {
 dependencies {
     commonMainImplementation(libs.kotlinx.datetime)
 
-    androidMainImplementation(libs.stripe.android)
+    androidMainApi(libs.stripe.android)
 }
