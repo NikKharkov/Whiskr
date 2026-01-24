@@ -4,15 +4,12 @@ import com.arkivanov.decompose.Cancellation
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
-import org.example.whiskr.PagingDelegate
 import org.example.whiskr.component.componentScope
+import org.example.whiskr.delegates.PostFeedDelegate
 import org.example.whiskr.domain.PostRepository
-import org.example.whiskr.domain.RepoEvent
 import org.example.whiskr.domain.ShareService
 import org.example.whiskr.dto.Post
 import org.example.whiskr.dto.PostMedia
@@ -25,6 +22,7 @@ class DefaultPostDetailsComponent(
     @Assisted private val onNavigateToPostDetails: (Post) -> Unit,
     @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
     @Assisted private val onBack: () -> Unit,
+    @Assisted private val onNavigateToHashtag: (String) -> Unit,
     private val postRepository: PostRepository,
     private val shareService: ShareService
 ) : PostDetailsComponent, ComponentContext by componentContext {
@@ -36,17 +34,21 @@ class DefaultPostDetailsComponent(
         val isLoading: Boolean = true,
         val isError: Boolean = false
     )
-
     private val headerState = MutableValue(HeaderState())
 
-    private val pagingDelegate = PagingDelegate(
-        scope = scope,
-        loader = { page -> postRepository.getReplies(postId = postId, page = page) }
-    )
+    private val feedDelegate: PostFeedDelegate by lazy {
+        PostFeedDelegate(
+            scope = scope,
+            postRepository = postRepository,
+            shareService = shareService,
+            loader = { page -> postRepository.getReplies(postId = postId, page = page) },
+            onNewPost = { newPost -> handleNewReply(newPost) }
+        )
+    }
 
     override val model: Value<PostDetailsComponent.Model> = combine(
         headerState,
-        pagingDelegate.state
+        feedDelegate.state
     ) { header, listState ->
         PostDetailsComponent.Model(
             post = header.post,
@@ -58,8 +60,7 @@ class DefaultPostDetailsComponent(
 
     init {
         loadHeaderPost()
-        pagingDelegate.firstLoad()
-        observePostUpdates()
+        observeHeaderUpdates()
     }
 
     private fun loadHeaderPost() {
@@ -74,94 +75,66 @@ class DefaultPostDetailsComponent(
         }
     }
 
-    override fun onLoadMore() = pagingDelegate.loadMore()
-
-    private fun observePostUpdates() {
+    private fun observeHeaderUpdates() {
         scope.launch {
-            merge(
-                postRepository.newPost.map { RepoEvent.NewPost(it) },
-                postRepository.postUpdated.map { RepoEvent.PostUpdated(it) }
-            ).collect { event ->
-                when (event) {
-                    is RepoEvent.NewPost -> handleNewPost(event.post)
-                    is RepoEvent.PostUpdated -> handlePostUpdate(event.post)
+            postRepository.postUpdated.collect { updatedPost ->
+                val currentHeader = headerState.value.post
+                if (currentHeader?.id == updatedPost.id) {
+                    headerState.value = headerState.value.copy(post = updatedPost)
                 }
             }
         }
     }
 
-    private fun handleNewPost(newPost: Post) {
+    private fun handleNewReply(newPost: Post) {
         val currentHeader = headerState.value.post ?: return
 
         if (newPost.parentPost?.id != currentHeader.id) return
 
-        val currentReplies = pagingDelegate.state.value.items
-        if (currentReplies.any { it.id == newPost.id }) return
-
         val updatedHeader = currentHeader.copy(
             stats = currentHeader.stats.copy(repliesCount = currentHeader.stats.repliesCount + 1)
         )
-
         headerState.value = headerState.value.copy(post = updatedHeader)
-        pagingDelegate.prependItem(newPost)
+
+        feedDelegate.prependItem(newPost)
 
         scope.launch { postRepository.notifyPostUpdated(updatedHeader) }
     }
 
-    private fun handlePostUpdate(updatedPost: Post) {
-        val currentHeader = headerState.value.post
-
-        if (currentHeader?.id == updatedPost.id) {
-            headerState.value = headerState.value.copy(post = updatedPost)
-        }
-
-        pagingDelegate.updateItems { list ->
-            list.map { if (it.id == updatedPost.id) updatedPost else it }
-        }
-    }
-
     override fun onLikeClick(postId: Long) {
         val currentHeader = headerState.value.post
-        val currentReplies = pagingDelegate.state.value.items
-
-        val targetPost = if (currentHeader?.id == postId) {
-            currentHeader
-        } else {
-            currentReplies.find { it.id == postId }
-        } ?: return
-
-        val newLiked = !targetPost.interaction.isLiked
-        val newCount = targetPost.stats.likesCount + (if (newLiked) 1 else -1)
-
-        val updatedPost = targetPost.copy(
-            interaction = targetPost.interaction.copy(isLiked = newLiked),
-            stats = targetPost.stats.copy(likesCount = newCount)
-        )
 
         if (currentHeader?.id == postId) {
-            headerState.value = headerState.value.copy(post = updatedPost)
-        } else {
-            pagingDelegate.updateItems { list ->
-                list.map { if (it.id == postId) updatedPost else it }
-            }
-        }
+            val newLiked = !currentHeader.interaction.isLiked
+            val newCount = currentHeader.stats.likesCount + (if (newLiked) 1 else -1)
 
-        scope.launch {
-            postRepository.notifyPostUpdated(updatedPost)
-            postRepository.toggleLike(postId)
+            val updatedPost = currentHeader.copy(
+                interaction = currentHeader.interaction.copy(isLiked = newLiked),
+                stats = currentHeader.stats.copy(likesCount = newCount)
+            )
+
+            headerState.value = headerState.value.copy(post = updatedPost)
+
+            scope.launch {
+                postRepository.notifyPostUpdated(updatedPost)
+                postRepository.toggleLike(postId)
+            }
+        } else {
+            feedDelegate.onLikeClick(postId)
         }
     }
 
     override fun onShareClick(post: Post) {
-        val link = "whiskr://app/post/${post.id}"
-        val text = "Check out this post by ${post.author.displayName}:\n$link"
-        shareService.share(text)
+        feedDelegate.onShareClick(post)
     }
+
+    override fun onLoadMore() = feedDelegate.onLoadMore()
 
     override fun onBackClick() = onBack()
     override fun onReplyClick(post: Post) = onNavigateToReply(post)
-    override fun onPostClick(post: Post) = onNavigateToPostDetails(post)
+    override fun onCommentsClick(post: Post) = onNavigateToPostDetails(post)
     override fun onMediaClick(media: List<PostMedia>, index: Int) = onNavigateToMediaViewer(media, index)
+    override fun onHashtagClick(tag: String) = onNavigateToHashtag(tag)
 
     private fun <T1 : Any, T2 : Any, R : Any> combine(
         value1: Value<T1>,
@@ -174,14 +147,9 @@ class DefaultPostDetailsComponent(
 
             override fun subscribe(observer: (R) -> Unit): Cancellation {
                 val callback = { _: Any? -> observer(value) }
-
                 val c1 = value1.subscribe(callback)
                 val c2 = value2.subscribe(callback)
-
-                return Cancellation {
-                    c1.cancel()
-                    c2.cancel()
-                }
+                return Cancellation { c1.cancel(); c2.cancel() }
             }
         }
     }

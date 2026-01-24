@@ -7,6 +7,7 @@ target 'iosApp' do
 
   pod 'app', :path => '../app'
 
+  pod 'StripePaymentSheet'
   pod 'FirebaseCore'
   pod 'FirebaseAuth'
   pod 'FirebaseMessaging'

@@ -31,6 +31,9 @@
     ],
     "GoogleSignIn": [
       "7.1.0"
+    ],
+    "StripePaymentSheet": [
+      "23.2.0"
     ]
   },
   "xcconfig": {

@@ -3,7 +3,7 @@ package org.example.whiskr.di
 import org.example.whiskr.DatabaseFactory
 import org.example.whiskr.domain.ShareService
 
-actual fun createIosComponent(
+actual fun createIosModule(
     databaseFactory: DatabaseFactory,
     shareService: ShareService
-): IosApplicationComponentDI = InjectIosApplicationComponentDI(databaseFactory, shareService)
+): IosApplicationModule = InjectIosApplicationComponentDI(databaseFactory, shareService)

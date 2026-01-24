@@ -6,7 +6,7 @@ import org.example.whiskr.component.DefaultMediaViewerComponent
 import org.example.whiskr.component.MediaViewerComponent
 import org.example.whiskr.dto.PostMedia
 
-interface MediaViewerDI {
+interface MediaViewerModule {
 
     @Provides
     @Singleton

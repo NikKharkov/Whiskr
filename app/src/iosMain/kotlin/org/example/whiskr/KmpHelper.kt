@@ -6,14 +6,13 @@ import com.arkivanov.essenty.lifecycle.destroy
 import com.arkivanov.essenty.lifecycle.pause
 import com.arkivanov.essenty.lifecycle.resume
 import com.arkivanov.essenty.lifecycle.stop
-import org.example.whiskr.di.createIosComponent
+import org.example.whiskr.di.createIosModule
 
 object KmpHelper {
     private val lifecycle = LifecycleRegistry()
     private val databaseFactory = IosDatabaseFactory()
     private val shareService = IosShareService()
-
-    private val appComponent = createIosComponent(databaseFactory, shareService)
+    private val appComponent = createIosModule(databaseFactory, shareService)
 
     val root =
         appComponent.rootComponentFactory(

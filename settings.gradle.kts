@@ -40,6 +40,7 @@ include(":features:auth")
 include(":features:registration")
 include(":features:posts")
 include(":features:media_viewer")
+include(":features:billing")
 
 include(":core:common")
 include(":core:network")

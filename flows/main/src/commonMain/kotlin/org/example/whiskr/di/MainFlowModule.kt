@@ -6,7 +6,7 @@ import me.tatarka.inject.annotations.Provides
 import org.example.whiskr.component.DefaultMainFlowComponent
 import org.example.whiskr.component.MainFlowComponent
 
-interface MainFlowComponentDI {
+interface MainFlowModule {
     @Provides
     @Singleton
     fun provideMainFlowFactory(

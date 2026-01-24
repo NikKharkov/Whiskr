@@ -15,6 +15,7 @@ Pod::Spec.new do |spec|
     spec.dependency 'FirebaseCore', '10.22.0'
     spec.dependency 'FirebaseMessaging', '10.22.0'
     spec.dependency 'GoogleSignIn', '7.1.0'
+    spec.dependency 'StripePaymentSheet', '23.2.0'
                 
     if !Dir.exist?('build/cocoapods/framework/ComposeApp.framework') || Dir.empty?('build/cocoapods/framework/ComposeApp.framework')
         raise "

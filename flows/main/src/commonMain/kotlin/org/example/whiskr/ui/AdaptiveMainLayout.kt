@@ -111,7 +111,10 @@ fun AdaptiveMainLayout(
                     onTabSelected = onTabSelected,
                     onThemeToggle = onThemeToggle,
                     onCloseDrawer = {
-                        onDrawerOpenChange(false)
+                        scope.launch {
+                            drawerState.close()
+                            onDrawerOpenChange(false)
+                        }
                     }
                 )
             }

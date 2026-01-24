@@ -15,7 +15,7 @@ import org.example.whiskr.data.AuthRepositoryImpl
 import org.example.whiskr.data.createAuthApiService
 import org.example.whiskr.domain.AuthRepository
 
-interface AuthComponent {
+interface AuthModule {
     @Provides
     @Singleton
     fun provideAuthRepository(

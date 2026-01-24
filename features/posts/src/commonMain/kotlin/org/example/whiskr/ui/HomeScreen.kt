@@ -111,7 +111,8 @@ fun HomeScreen(
                         onLikeClick = { component.onLikeClick(post.id) },
                         onCommentClick = { component.onCommentsClick(post) },
                         onRepostClick = { /* TODO */ },
-                        onShareClick = { component.onShareClick(post) }
+                        onShareClick = { component.onShareClick(post) },
+                        onHashtagClick = { tag -> component.onHashtagClick(tag) }
                     )
                 }
             }

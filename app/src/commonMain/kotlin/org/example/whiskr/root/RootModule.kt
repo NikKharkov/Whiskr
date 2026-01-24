@@ -5,7 +5,7 @@ import me.tatarka.inject.annotations.Provides
 import org.example.whiskr.DatabaseFactory
 import org.example.whiskr.di.Singleton
 
-interface RootComponentDI {
+interface RootModule {
     @Provides
     @Singleton
     fun provideRootFactory(

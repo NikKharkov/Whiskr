@@ -25,7 +25,7 @@ import org.example.whiskr.dto.RefreshTokenRequestDto
 import org.example.whiskr.util.BASE_URL
 import co.touchlab.kermit.Logger as KermitLogger
 
-interface NetworkComponent {
+interface NetworkModule {
 
     @Provides
     @Singleton

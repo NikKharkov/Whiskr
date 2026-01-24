@@ -1,4 +1,4 @@
-package org.example.whiskr.data
+package org.example.whiskr.delegates
 
 import co.touchlab.kermit.Logger
 import com.arkivanov.decompose.value.MutableValue

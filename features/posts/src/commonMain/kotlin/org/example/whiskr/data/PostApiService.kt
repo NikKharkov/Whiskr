@@ -36,7 +36,14 @@ interface PostApiService {
     @GET("post/{postId}")
     suspend fun getPostById(@Path("postId") postId: Long): Post
 
-    @GET("post/{postId}/replies")
+    @GET("post/hashtag/{tag}")
+    suspend fun getPostsByHashtag(
+        @Path("tag") tag: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int = 20
+    ): PagedResponse<Post>
+
+    @GET("/post/{postId}/replies")
     suspend fun getReplies(
         @Path("postId") postId: Long,
         @Query("page") page: Int,

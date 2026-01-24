@@ -57,6 +57,9 @@ gms-plugin = "4.4.4"
 kmpauth = "2.4.0-alpha05"
 uiTooling = "1.10.0"
 
+# --- Stripe ---
+stripe-android = "22.6.1"
+
 [libraries]
 # Build Logic Dependencies
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
@@ -125,6 +128,9 @@ media-player = { module = "network.chaintech:compose-multiplatform-media-player"
 kmpauth-google = { module = "io.github.mirzemehdi:kmpauth-google", version.ref = "kmpauth" }
 kmpauth-firebase = { module = "io.github.mirzemehdi:kmpauth-firebase", version.ref = "kmpauth" }
 kmpauth-uihelper = { module = "io.github.mirzemehdi:kmpauth-uihelper", version.ref = "kmpauth" }
+
+# Billing
+stripe-android = { module = "com.stripe:stripe-android", version.ref = "stripe-android" }
 
 # Utils
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }

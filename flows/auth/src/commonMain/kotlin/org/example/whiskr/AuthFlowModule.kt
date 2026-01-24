@@ -4,7 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import me.tatarka.inject.annotations.Provides
 import org.example.whiskr.di.Singleton
 
-interface AuthFlowComponentDI {
+interface AuthFlowModule {
     @Provides
     @Singleton
     fun provideAuthFlowFactory(

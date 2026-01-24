@@ -7,6 +7,7 @@ import domain.UserState
 import kotlinx.serialization.Serializable
 import org.example.whiskr.component.create.CreatePostComponent
 import org.example.whiskr.component.details.PostDetailsComponent
+import org.example.whiskr.component.hashtags.HashtagsComponent
 import org.example.whiskr.component.home.HomeComponent
 import org.example.whiskr.component.reply.CreateReplyComponent
 import org.example.whiskr.dto.Post
@@ -20,12 +21,14 @@ import whiskr.flows.main.generated.resources.ic_games
 import whiskr.flows.main.generated.resources.ic_home
 import whiskr.flows.main.generated.resources.ic_messages
 import whiskr.flows.main.generated.resources.ic_profile
+import whiskr.flows.main.generated.resources.ic_store
 import whiskr.flows.main.generated.resources.tab_ai
 import whiskr.flows.main.generated.resources.tab_explore
 import whiskr.flows.main.generated.resources.tab_games
 import whiskr.flows.main.generated.resources.tab_home
 import whiskr.flows.main.generated.resources.tab_messages
 import whiskr.flows.main.generated.resources.tab_profile
+import whiskr.flows.main.generated.resources.tab_store
 
 interface MainFlowComponent {
 
@@ -44,7 +47,9 @@ interface MainFlowComponent {
         class CreatePost(val component: CreatePostComponent) : Child()
         class CreateReply(val component: CreateReplyComponent) : Child()
         class PostDetails(val component: PostDetailsComponent) : Child()
+        class HashtagsFeed(val component: HashtagsComponent) : Child()
         class MediaViewer(val component: MediaViewerComponent) : Child()
+        class Store(val component: StoreComponent) : Child()
         class Explore(val component: Any) : Child()
         class AIStudio(val component: Any) : Child()
         class Games(val component: Any) : Child()
@@ -85,10 +90,16 @@ interface MainFlowComponent {
         data class UserProfile(val userId: Long) : Config
 
         @Serializable
+        data class HashtagsFeed(val hashtag: String) : Config
+
+        @Serializable
         data class MediaViewer(
             val media: List<PostMedia>,
             val index: Int
         ) : Config
+
+        @Serializable
+        data object Store : Config
     }
 
     fun interface Factory {
@@ -109,6 +120,7 @@ interface MainFlowComponent {
         AI_STUDIO(Res.string.tab_ai, Res.drawable.ic_ai),
         GAMES(Res.string.tab_games, Res.drawable.ic_games),
         PROFILE(Res.string.tab_profile, Res.drawable.ic_profile, false),
-        MESSAGES(Res.string.tab_messages, Res.drawable.ic_messages)
+        MESSAGES(Res.string.tab_messages, Res.drawable.ic_messages),
+        STORE(Res.string.tab_store, Res.drawable.ic_store, false)
     }
 }

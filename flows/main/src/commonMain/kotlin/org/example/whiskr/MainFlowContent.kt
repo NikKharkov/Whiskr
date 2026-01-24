@@ -16,9 +16,11 @@ import org.example.whiskr.theme.LocalIsTablet
 import org.example.whiskr.ui.AdaptiveMainLayout
 import org.example.whiskr.ui.CreatePostScreen
 import org.example.whiskr.ui.CreateReplyScreen
+import org.example.whiskr.ui.HashtagFeedScreen
 import org.example.whiskr.ui.HomeScreen
 import org.example.whiskr.ui.MediaViewerScreen
 import org.example.whiskr.ui.PostDetailsScreen
+import org.example.whiskr.ui.StoreScreen
 import org.example.whiskr.util.showsNavigation
 import org.example.whiskr.util.toTab
 import util.LocalUser
@@ -66,6 +68,8 @@ fun MainFlowContent(
                             is MainFlowComponent.Child.CreateReply -> CreateReplyScreen(child.component)
                             is MainFlowComponent.Child.PostDetails -> PostDetailsScreen(child.component)
                             is MainFlowComponent.Child.MediaViewer -> MediaViewerScreen(child.component)
+                            is MainFlowComponent.Child.HashtagsFeed -> HashtagFeedScreen(child.component)
+                            is MainFlowComponent.Child.Store -> StoreScreen(child.component)
                         }
                     }
                 }

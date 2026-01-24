@@ -2,6 +2,7 @@ package org.example.whiskr.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,15 +31,20 @@ fun SimpleTopBar(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Icon(
-            painter = icon,
-            contentDescription = null,
-            tint = iconTint,
+        Box(
             modifier = Modifier
-                .size(24.dp)
+                .size(48.dp)
                 .clip(CircleShape)
-                .clickable(onClick = onIconClick)
-        )
+                .clickable(onClick = onIconClick),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                painter = icon,
+                contentDescription = null,
+                tint = iconTint,
+                modifier = Modifier.size(24.dp)
+            )
+        }
 
         title()
 

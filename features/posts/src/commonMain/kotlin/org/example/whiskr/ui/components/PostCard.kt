@@ -32,6 +32,7 @@ fun PostCard(
     onRepostClick: () -> Unit,
     onShareClick: () -> Unit,
     onProfileClick: () -> Unit,
+    onHashtagClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val formattedTime = rememberRelativeTime(post.createdAt)
@@ -106,7 +107,8 @@ fun PostCard(
                             Text(
                                 text = "#$tag",
                                 style = WhiskrTheme.typography.body,
-                                color = WhiskrTheme.colors.primary
+                                color = WhiskrTheme.colors.primary,
+                                modifier = Modifier.customClickable(onClick = { onHashtagClick(tag) })
                             )
                         }
                     }

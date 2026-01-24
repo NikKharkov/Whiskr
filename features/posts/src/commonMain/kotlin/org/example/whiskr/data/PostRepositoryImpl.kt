@@ -50,6 +50,12 @@ class PostRepositoryImpl(
         return runCatching { postApiService.getPostById(postId) }
     }
 
+    override suspend fun getPostsByHashtag(tag: String, page: Int): Result<PagedResponse<Post>> {
+        return runCatching {
+            postApiService.getPostsByHashtag(tag, page)
+        }
+    }
+
     override suspend fun getReplies(postId: Long, page: Int): Result<PagedResponse<Post>> {
         return runCatching {
             postApiService.getReplies(postId = postId, page = page)

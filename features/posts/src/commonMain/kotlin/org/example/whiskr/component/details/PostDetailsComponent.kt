@@ -12,10 +12,11 @@ interface PostDetailsComponent {
     fun onBackClick()
     fun onLoadMore()
     fun onReplyClick(post: Post)
-    fun onPostClick(post: Post)
+    fun onCommentsClick(post: Post)
     fun onLikeClick(postId: Long)
     fun onMediaClick(media: List<PostMedia>, index: Int)
     fun onShareClick(post: Post)
+    fun onHashtagClick(tag: String)
 
     data class Model(
         val post: Post?,
@@ -31,7 +32,8 @@ interface PostDetailsComponent {
             onNavigateToReply: (Post) -> Unit,
             onNavigateToPostDetails: (Post) -> Unit,
             onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
-            onBack: () -> Unit
+            onBack: () -> Unit,
+            onNavigateToHashtag: (String) -> Unit
         ): PostDetailsComponent
     }
 }

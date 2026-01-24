@@ -27,6 +27,7 @@ import org.example.whiskr.component.MainFlowComponent.Config.Profile
 import org.example.whiskr.component.MainFlowComponent.Config.UserProfile
 import org.example.whiskr.component.create.CreatePostComponent
 import org.example.whiskr.component.details.PostDetailsComponent
+import org.example.whiskr.component.hashtags.HashtagsComponent
 import org.example.whiskr.component.home.HomeComponent
 import org.example.whiskr.component.reply.CreateReplyComponent
 import org.example.whiskr.util.toConfig
@@ -42,7 +43,9 @@ class DefaultMainFlowComponent(
     private val createPostFactory: CreatePostComponent.Factory,
     private val createReplyFactory: CreateReplyComponent.Factory,
     private val postDetailsFactory: PostDetailsComponent.Factory,
-    private val mediaViewerFactory: MediaViewerComponent.Factory
+    private val mediaViewerFactory: MediaViewerComponent.Factory,
+    private val hashtagsFactory: HashtagsComponent.Factory,
+    private val storeFactory: StoreComponent.Factory
 ) : MainFlowComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<MainFlowComponent.Config>()
@@ -87,6 +90,9 @@ class DefaultMainFlowComponent(
                 },
                 onNavigateToComments = { post ->
                     navigation.push(PostDetails(postId = post.id))
+                },
+                onNavigateToHashtag = { tag ->
+                    navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
                 }
             )
         )
@@ -121,6 +127,9 @@ class DefaultMainFlowComponent(
                 },
                 onNavigateToMediaViewer = { mediaList, index ->
                     navigation.push(MediaViewer(mediaList, index))
+                },
+                onNavigateToHashtag = { tag ->
+                    navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
                 }
             )
         )
@@ -131,6 +140,30 @@ class DefaultMainFlowComponent(
                 mediaList = config.media,
                 initialIndex = config.index,
                 onFinished = { navigation.pop() }
+            )
+        )
+
+        is MainFlowComponent.Config.HashtagsFeed -> MainFlowComponent.Child.HashtagsFeed(
+            hashtagsFactory(
+                componentContext = context,
+                hashtag = config.hashtag,
+                onBack = { navigation.pop() },
+                onNavigateToComments = { post ->
+                    navigation.push(PostDetails(postId = post.id))
+                },
+                onNavigateToMediaViewer = { mediaList, index ->
+                    navigation.push(MediaViewer(mediaList, index))
+                },
+                onNavigateToHashtag = { tag ->
+                    navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
+                }
+            )
+        )
+
+        MainFlowComponent.Config.Store -> MainFlowComponent.Child.Store(
+            storeFactory(
+                componentContext = context,
+                onBack = { navigation.pop() }
             )
         )
 

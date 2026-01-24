@@ -20,6 +20,7 @@ interface HomeComponent {
     fun onMediaClick(media: List<PostMedia>, index: Int)
     fun onCommentsClick(post: Post)
     fun onShareClick(post: Post)
+    fun onHashtagClick(tag: String)
 
     data class Model(
         val listState: PagingDelegate.State<Post>,
@@ -31,7 +32,8 @@ interface HomeComponent {
             onNavigateToCreatePost: () -> Unit,
             onNavigateToProfile: (Long) -> Unit,
             onNavigateToComments: (Post) -> Unit,
-            onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit
+            onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
+            onNavigateToHashtag: (String) -> Unit
         ): HomeComponent
     }
 }

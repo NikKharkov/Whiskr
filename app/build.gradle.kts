@@ -10,16 +10,20 @@ dependencies {
     commonMainImplementation(projects.core.common)
     commonMainImplementation(projects.core.ui)
     commonMainImplementation(projects.core.user)
-    commonMainImplementation(libs.kvault)
     commonMainImplementation(projects.features.auth)
     commonMainImplementation(projects.features.registration)
     commonMainImplementation(projects.features.posts)
     commonMainImplementation(projects.features.mediaViewer)
+    commonMainImplementation(projects.features.billing)
     commonMainImplementation(projects.flows.auth)
     commonMainImplementation(projects.flows.main)
+
+    commonMainImplementation(libs.kvault)
     commonMainImplementation(libs.multiplatform.settings)
     commonMainImplementation(libs.filekit.compose)
+
     androidMainImplementation(libs.androidx.activity.compose)
+    androidMainImplementation(libs.stripe.android)
 }
 
 android {
@@ -53,5 +57,6 @@ kotlin {
         pod("GoogleSignIn") { version = "7.1.0" }
         pod("FBSDKCoreKit") { version = "17.0.0" }
         pod("FBSDKLoginKit") { version = "17.0.0" }
+        pod("StripePaymentSheet") { version = "23.2.0" }
     }
 }

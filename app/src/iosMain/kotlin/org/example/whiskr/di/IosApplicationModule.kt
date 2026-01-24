@@ -9,10 +9,10 @@ import org.example.whiskr.util.BUNDLE
 
 @Singleton
 @Component
-abstract class IosApplicationComponentDI(
+abstract class IosApplicationModule(
     @get:Provides val databaseFactory: DatabaseFactory,
     @get:Provides val shareService: ShareService
-) : ApplicationComponentDI {
+) : ApplicationModule {
     @Provides
     @Singleton
     fun provideKVault(): KVault = KVault(BUNDLE)

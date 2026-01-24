@@ -15,7 +15,7 @@ import domain.RegistrationRepository
 import me.tatarka.inject.annotations.Provides
 import org.example.whiskr.di.Singleton
 
-interface RegistrationComponent {
+interface RegistrationModule {
 
     @Provides
     @Singleton

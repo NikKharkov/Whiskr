@@ -9,7 +9,7 @@ import me.tatarka.inject.annotations.Provides
 import org.example.whiskr.database.daos.UserDao
 import org.example.whiskr.di.Singleton
 
-interface UserComponentDI {
+interface UserModule {
 
     @Provides
     @Singleton

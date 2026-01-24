@@ -7,6 +7,8 @@ import org.example.whiskr.component.create.CreatePostComponent
 import org.example.whiskr.component.create.DefaultCreatePostComponent
 import org.example.whiskr.component.details.DefaultPostDetailsComponent
 import org.example.whiskr.component.details.PostDetailsComponent
+import org.example.whiskr.component.hashtags.DefaultHashtagsComponent
+import org.example.whiskr.component.hashtags.HashtagsComponent
 import org.example.whiskr.component.home.DefaultHomeComponent
 import org.example.whiskr.component.home.HomeComponent
 import org.example.whiskr.component.reply.CreateReplyComponent
@@ -18,7 +20,7 @@ import org.example.whiskr.domain.PostRepository
 import org.example.whiskr.dto.Post
 import org.example.whiskr.dto.PostMedia
 
-interface PostComponentDI {
+interface PostModule {
 
     @Provides
     @Singleton
@@ -40,8 +42,8 @@ interface PostComponentDI {
 
     @Provides
     @Singleton
-    fun providePostFactory(
-        factory: (ComponentContext, () -> Unit, (Long) -> Unit, (Post) -> Unit, (List<PostMedia>, Int) -> Unit) -> DefaultHomeComponent
+    fun provideHomeFactory(
+        factory: (ComponentContext, () -> Unit, (Long) -> Unit, (Post) -> Unit, (List<PostMedia>, Int) -> Unit, (String) -> Unit) -> DefaultHomeComponent
     ): HomeComponent.Factory {
         return HomeComponent.Factory(factory)
     }
@@ -57,8 +59,16 @@ interface PostComponentDI {
     @Provides
     @Singleton
     fun providePostDetailsFactory(
-        factory: (ComponentContext, Long, (Post) -> Unit, (Post) -> Unit, (List<PostMedia>, Int) -> Unit, () -> Unit) -> DefaultPostDetailsComponent
+        factory: (ComponentContext, Long, (Post) -> Unit, (Post) -> Unit, (List<PostMedia>, Int) -> Unit, () -> Unit, (String) -> Unit) -> DefaultPostDetailsComponent
     ): PostDetailsComponent.Factory {
         return PostDetailsComponent.Factory(factory)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHashtagsFactory(
+        factory: (ComponentContext, String, () -> Unit, (Post) -> Unit, (List<PostMedia>, Int) -> Unit, (String) -> Unit) -> DefaultHashtagsComponent
+    ): HashtagsComponent.Factory {
+        return HashtagsComponent.Factory(factory)
     }
 }

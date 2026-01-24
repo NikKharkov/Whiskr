@@ -19,6 +19,7 @@ fun MainFlowComponent.Tab.toConfig(): MainFlowComponent.Config = when (this) {
     MainFlowComponent.Tab.GAMES -> MainFlowComponent.Config.Games
     MainFlowComponent.Tab.MESSAGES -> MainFlowComponent.Config.Messages
     MainFlowComponent.Tab.PROFILE -> MainFlowComponent.Config.Profile
+    MainFlowComponent.Tab.STORE -> MainFlowComponent.Config.Store
 }
 
 val MainFlowComponent.Child.showsNavigation: Boolean
@@ -26,6 +27,8 @@ val MainFlowComponent.Child.showsNavigation: Boolean
         is MainFlowComponent.Child.CreatePost,
         is MainFlowComponent.Child.CreateReply,
         is MainFlowComponent.Child.PostDetails,
+        is MainFlowComponent.Child.HashtagsFeed,
         is MainFlowComponent.Child.MediaViewer -> false
+
         else -> true
     }

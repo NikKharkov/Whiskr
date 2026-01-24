@@ -7,7 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.arkivanov.decompose.retainedComponent
 import io.github.vinceglb.filekit.core.FileKit
-import org.example.whiskr.di.AndroidApplicationComponentDI
+import org.example.whiskr.di.AndroidApplicationModule
 import org.example.whiskr.di.create
 import org.example.whiskr.root.RootComponent
 
@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
         val initialDeepLink = intent?.data?.toString()
 
         val appComponent =
-            AndroidApplicationComponentDI::class.create(applicationContext, databaseFactory, shareService)
+            AndroidApplicationModule::class.create(applicationContext, databaseFactory, shareService)
 
         val root = retainedComponent { componentContext ->
             appComponent.rootComponentFactory(componentContext, initialDeepLink)

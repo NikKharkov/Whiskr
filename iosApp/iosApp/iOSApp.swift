@@ -1,12 +1,14 @@
 import SwiftUI
+import StripeCore
 import FirebaseCore
 import ComposeApp
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        
         FirebaseApp.configure()
-
+        StripeAPI.defaultPublishableKey = "pk_test_51SqLqAD9IFbFeS4YHydYpaVu3ot9Xspu6MYQCiQcbO4Zh5ELSQyc9Dim0aWLtZ0JHMPF7ZLX3VcgaB9TY7h1Pbq100onTcH6mb"
         return true
     }
 }

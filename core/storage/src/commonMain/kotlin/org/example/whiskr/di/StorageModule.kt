@@ -6,7 +6,7 @@ import org.example.whiskr.DatabaseFactory
 import org.example.whiskr.database.daos.UserDao
 import org.example.whiskr.preferences.UserPreferences
 
-interface StorageComponent {
+interface StorageModule {
 
     @Singleton
     @Provides

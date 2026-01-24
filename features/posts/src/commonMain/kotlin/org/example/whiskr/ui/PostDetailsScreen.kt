@@ -152,14 +152,13 @@ fun PostDetailsScreen(
                 ) { _, reply ->
                     PostCard(
                         post = reply,
-                        onPostClick = { mediaIndex ->
-                            component.onMediaClick(reply.media, mediaIndex)
-                        },
+                        onPostClick = { mediaIndex -> component.onMediaClick(reply.media, mediaIndex) },
                         onLikeClick = { component.onLikeClick(reply.id) },
-                        onCommentClick = { component.onPostClick(reply) },
+                        onCommentClick = { component.onCommentsClick(reply) },
                         onRepostClick = { /* ... */ },
                         onShareClick = { component.onShareClick(reply) },
-                        onProfileClick = { /* ... */ }
+                        onProfileClick = { /* ... */ },
+                        onHashtagClick = { tag -> component.onHashtagClick(tag) }
                     )
                 }
             }
