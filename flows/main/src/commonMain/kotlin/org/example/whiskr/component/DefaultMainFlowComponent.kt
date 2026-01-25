@@ -30,6 +30,8 @@ import org.example.whiskr.component.details.PostDetailsComponent
 import org.example.whiskr.component.hashtags.HashtagsComponent
 import org.example.whiskr.component.home.HomeComponent
 import org.example.whiskr.component.reply.CreateReplyComponent
+import org.example.whiskr.data.WalletResponseDto
+import org.example.whiskr.domain.BillingRepository
 import org.example.whiskr.util.toConfig
 
 @OptIn(DelicateDecomposeApi::class)
@@ -39,6 +41,7 @@ class DefaultMainFlowComponent(
     @Assisted override val isDarkTheme: Value<Boolean>,
     @Assisted private val deepLink: String?,
     private val userRepository: UserRepository,
+    private val billingRepository: BillingRepository,
     private val homeFactory: HomeComponent.Factory,
     private val createPostFactory: CreatePostComponent.Factory,
     private val createReplyFactory: CreateReplyComponent.Factory,
@@ -52,12 +55,14 @@ class DefaultMainFlowComponent(
     private val scope = componentScope()
 
     override val userState: Value<UserState> = userRepository.user
+    override val walletState: Value<WalletResponseDto> = billingRepository.wallet
 
     private val _isDrawerOpen = MutableValue(false)
     override val isDrawerOpen: Value<Boolean> = _isDrawerOpen
 
     init {
         scope.launch {
+            billingRepository.getWallet()
             if (userRepository.user.value.profile == null) {
                 userRepository.getMyProfile()
             }

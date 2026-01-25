@@ -10,6 +10,7 @@ import org.example.whiskr.component.details.PostDetailsComponent
 import org.example.whiskr.component.hashtags.HashtagsComponent
 import org.example.whiskr.component.home.HomeComponent
 import org.example.whiskr.component.reply.CreateReplyComponent
+import org.example.whiskr.data.WalletResponseDto
 import org.example.whiskr.dto.Post
 import org.example.whiskr.dto.PostMedia
 import org.jetbrains.compose.resources.DrawableResource
@@ -34,6 +35,7 @@ interface MainFlowComponent {
 
     val stack: Value<ChildStack<Config, Child>>
     val userState: Value<UserState>
+    val walletState: Value<WalletResponseDto>
     val isDarkTheme: Value<Boolean>
     val isDrawerOpen: Value<Boolean>
 

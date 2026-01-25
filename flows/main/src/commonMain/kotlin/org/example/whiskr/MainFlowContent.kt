@@ -21,6 +21,7 @@ import org.example.whiskr.ui.HomeScreen
 import org.example.whiskr.ui.MediaViewerScreen
 import org.example.whiskr.ui.PostDetailsScreen
 import org.example.whiskr.ui.StoreScreen
+import org.example.whiskr.util.LocalWalletProvider
 import org.example.whiskr.util.showsNavigation
 import org.example.whiskr.util.toTab
 import util.LocalUser
@@ -33,47 +34,50 @@ fun MainFlowContent(
 ) {
     val stack by component.stack.subscribeAsState()
     val user by component.userState.subscribeAsState()
+    val wallet by component.walletState.subscribeAsState()
     val isDrawerOpen by component.isDrawerOpen.subscribeAsState()
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val isTablet = maxWidth >= 960.dp
 
-        CompositionLocalProvider(LocalIsTablet provides isTablet) {
-            CompositionLocalProvider(LocalUser provides user) {
-
-                AdaptiveMainLayout(
-                    activeTab = stack.active.instance.toTab(),
-                    isDarkTheme = isDarkTheme,
-                    onThemeToggle = { centerOffset ->
-                        onThemeAnimationStart(centerOffset)
-                    },
-                    onTabSelected = component::onTabSelected,
-                    isDrawerOpen = isDrawerOpen,
-                    shouldShowNavigation = stack.active.instance.showsNavigation,
-                    onPostClick = component::onPostClick,
-                    onDrawerOpenChange = component::setDrawerOpen
+        CompositionLocalProvider(
+            LocalIsTablet provides isTablet,
+            LocalUser provides user,
+            LocalWalletProvider provides wallet
+        ) {
+            AdaptiveMainLayout(
+                activeTab = stack.active.instance.toTab(),
+                isDarkTheme = isDarkTheme,
+                onThemeToggle = { centerOffset ->
+                    onThemeAnimationStart(centerOffset)
+                },
+                onTabSelected = component::onTabSelected,
+                isDrawerOpen = isDrawerOpen,
+                shouldShowNavigation = stack.active.instance.showsNavigation,
+                onPostClick = component::onPostClick,
+                onDrawerOpenChange = component::setDrawerOpen
+            ) {
+                Children(
+                    stack = stack,
+                    modifier = Modifier.fillMaxSize()
                 ) {
-                    Children(
-                        stack = stack,
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        when (val child = it.instance) {
-                            is MainFlowComponent.Child.Home -> HomeScreen(child.component)
-                            is MainFlowComponent.Child.Explore -> Text("Explore screen")
-                            is MainFlowComponent.Child.AIStudio -> Text("AI Studio screen")
-                            is MainFlowComponent.Child.Games -> Text("Games screen")
-                            is MainFlowComponent.Child.Messages -> Text("Messages screen")
-                            is MainFlowComponent.Child.Profile -> Text("Profile screen")
-                            is MainFlowComponent.Child.CreatePost -> CreatePostScreen(child.component)
-                            is MainFlowComponent.Child.CreateReply -> CreateReplyScreen(child.component)
-                            is MainFlowComponent.Child.PostDetails -> PostDetailsScreen(child.component)
-                            is MainFlowComponent.Child.MediaViewer -> MediaViewerScreen(child.component)
-                            is MainFlowComponent.Child.HashtagsFeed -> HashtagFeedScreen(child.component)
-                            is MainFlowComponent.Child.Store -> StoreScreen(child.component)
-                        }
+                    when (val child = it.instance) {
+                        is MainFlowComponent.Child.Home -> HomeScreen(child.component)
+                        is MainFlowComponent.Child.Explore -> Text("Explore screen")
+                        is MainFlowComponent.Child.AIStudio -> Text("AI Studio screen")
+                        is MainFlowComponent.Child.Games -> Text("Games screen")
+                        is MainFlowComponent.Child.Messages -> Text("Messages screen")
+                        is MainFlowComponent.Child.Profile -> Text("Profile screen")
+                        is MainFlowComponent.Child.CreatePost -> CreatePostScreen(child.component)
+                        is MainFlowComponent.Child.CreateReply -> CreateReplyScreen(child.component)
+                        is MainFlowComponent.Child.PostDetails -> PostDetailsScreen(child.component)
+                        is MainFlowComponent.Child.MediaViewer -> MediaViewerScreen(child.component)
+                        is MainFlowComponent.Child.HashtagsFeed -> HashtagFeedScreen(child.component)
+                        is MainFlowComponent.Child.Store -> StoreScreen(child.component)
                     }
                 }
             }
+
         }
     }
 }
