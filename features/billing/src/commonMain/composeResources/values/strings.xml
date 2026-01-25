@@ -2,7 +2,7 @@
     <string name="store_title">Whiskr Store</string>
     <string name="store_balance_label">Your balance:</string>
     <string name="store_vip_title">Whiskr VIP Membership</string>
-    <string name="store_vip_desc">Ad-free experience, exclusive badges, priority support</string>
+    <string name="store_vip_desc">Ad-free, exclusive badges, 50% off AI generations</string>
     <string name="store_vip_price_format">Subscribe for $%1$s</string>
     <string name="store_vip_active_until">Active until %1$s</string>
     <string name="store_pack_section">Coin Packs</string>
@@ -12,4 +12,5 @@
     <string name="pack_medium">Medium Pack</string>
     <string name="pack_large">Large Pack</string>
     <string name="pack_unknown">Coin Pack</string>
+    <string name="payment_failed">Payment failed or cancelled</string>
 </resources>

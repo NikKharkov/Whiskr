@@ -3,6 +3,7 @@ package org.example.whiskr.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalInspectionMode
 import co.touchlab.kermit.Logger
 import com.stripe.android.paymentsheet.PaymentSheet
 import com.stripe.android.paymentsheet.PaymentSheet.Builder
@@ -14,6 +15,10 @@ actual fun StripeLauncher(
     onPaymentResult: (isSuccess: Boolean) -> Unit,
     onReadyToLaunch: () -> Unit
 ) {
+    if (LocalInspectionMode.current) {
+        return
+    }
+
     val paymentResultCallback = { result: PaymentSheetResult ->
         when (result) {
             is PaymentSheetResult.Completed -> {
