@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -18,6 +17,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -29,10 +29,14 @@ import org.example.whiskr.theme.WhiskrTheme
 import org.example.whiskr.ui.components.BalanceSection
 import org.example.whiskr.ui.components.ProductCard
 import org.example.whiskr.ui.components.SubscriptionCard
+import org.example.whiskr.ui.components.toDollarPrice
+import org.example.whiskr.ui.components.toIsoDate
 import org.jetbrains.compose.resources.stringResource
 import whiskr.features.billing.generated.resources.Res
 import whiskr.features.billing.generated.resources.store_pack_section
 import whiskr.features.billing.generated.resources.store_title
+import whiskr.features.billing.generated.resources.store_vip_active_until
+import whiskr.features.billing.generated.resources.store_vip_price_format
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,6 +45,20 @@ fun StoreScreen(
     component: StoreComponent
 ) {
     val model by component.model.subscribeAsState()
+
+    val subscriptionProduct = remember(model.products) {
+        model.products.find { it.type == BillingProductType.SUBSCRIPTION }
+    }
+    val coinPacks = remember(model.products) {
+        model.products.filter { it.type == BillingProductType.COIN_PACK }
+    }
+
+    val subButtonText = if (model.wallet?.isPremium == true && model.wallet?.premiumEndsAt != null) {
+        stringResource(Res.string.store_vip_active_until, model.wallet?.premiumEndsAt.toIsoDate())
+    } else {
+        val price = subscriptionProduct?.priceInCents?.toDollarPrice() ?: "--"
+        stringResource(Res.string.store_vip_price_format, price)
+    }
 
     StripeLauncher(
         clientSecret = model.paymentLaunchSecret,
@@ -64,21 +82,11 @@ fun StoreScreen(
         ) {
             when {
                 model.isLoading && model.products.isEmpty() -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator(color = WhiskrTheme.colors.primary)
-                    }
+                    CircularProgressIndicator(color = WhiskrTheme.colors.primary)
                 }
 
                 model.error != null && model.products.isEmpty() -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = model.error ?: "Error", color = WhiskrTheme.colors.error)
-                    }
+                    Text(text = model.error ?: "Error", color = WhiskrTheme.colors.error)
                 }
 
                 else -> {
@@ -100,18 +108,21 @@ fun StoreScreen(
                                 color = WhiskrTheme.colors.onBackground,
                                 textAlign = TextAlign.Center,
                                 style = WhiskrTheme.typography.h3,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(bottom = 16.dp)
+                                modifier = Modifier.fillMaxWidth()
                             )
                         }
+
                         item(span = { GridItemSpan(maxLineSpan) }) {
                             Box(
                                 modifier = Modifier.fillMaxWidth(),
                                 contentAlignment = Alignment.Center
                             ) {
                                 SubscriptionCard(
-                                    onSubscribeClick = { /* TODO: Vip flow */ },
+                                    buttonText = subButtonText,
+                                    isEnabled = model.wallet?.isPremium == false,
+                                    onSubscribeClick = {
+                                        subscriptionProduct?.let { component.onProductClicked(it.key) }
+                                    },
                                     modifier = Modifier.widthIn(max = 600.dp)
                                 )
                             }
@@ -140,7 +151,7 @@ fun StoreScreen(
                             )
                         }
 
-                        items(model.products.filter { it.type != BillingProductType.SUBSCRIPTION }) { product ->
+                        items(coinPacks) { product ->
                             ProductCard(
                                 product = product,
                                 onClick = { component.onProductClicked(product.key) }

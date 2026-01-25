@@ -41,9 +41,9 @@ val darkPalette = WhiskrColors(
     error = Color(0xFFF87171),
     like = Color(0xFFF91880),
     vipGradient = listOf(
-        Color(0xFFFF5F6D),
-        Color(0xFFFFC371),
-        Color(0xFF2196F3),
-        Color(0xFF9C27B0)
+        Color(0xFFFF2E63),
+        Color(0xFFFFAB00),
+        Color(0xFF00B0FF),
+        Color(0xFFD500F9)
     )
 )

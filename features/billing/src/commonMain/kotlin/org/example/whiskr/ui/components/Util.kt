@@ -1,5 +1,9 @@
 package org.example.whiskr.ui.components
 
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.number
+import kotlinx.datetime.toLocalDateTime
 import org.example.whiskr.data.BillingProductKey
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
@@ -12,6 +16,8 @@ import whiskr.features.billing.generated.resources.pack_large
 import whiskr.features.billing.generated.resources.pack_medium
 import whiskr.features.billing.generated.resources.pack_small
 import whiskr.features.billing.generated.resources.pack_unknown
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 fun BillingProductKey.toTitleRes(): StringResource = when (this) {
     BillingProductKey.COINS_SMALL -> Res.string.pack_small
@@ -31,4 +37,24 @@ fun Long.toDollarPrice(): String {
     val dollars = this / 100
     val cents = this % 100
     return "$dollars.${cents.toString().padStart(2, '0')}"
+}
+
+@OptIn(ExperimentalTime::class)
+fun String?.toIsoDate(): String {
+    if (this.isNullOrBlank()) return ""
+
+    return try {
+        val localDateTime = LocalDateTime.parse(this)
+        val date = localDateTime.date
+
+        "${date.day}.${date.month.number.toString().padStart(2, '0')}.${date.year}"
+    } catch (e: Exception) {
+        try {
+            val instant = Instant.parse(this)
+            val date = instant.toLocalDateTime(TimeZone.currentSystemDefault()).date
+            "${date.day}.${date.month.number.toString().padStart(2, '0')}.${date.year}"
+        } catch (e2: Exception) {
+            this
+        }
+    }
 }

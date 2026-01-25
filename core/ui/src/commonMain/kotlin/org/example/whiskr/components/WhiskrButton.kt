@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +25,7 @@ fun WhiskrButton(
     isLoading: Boolean = false,
     shape: Shape = RoundedCornerShape(24.dp),
     contentPadding: PaddingValues = PaddingValues(vertical = 16.dp),
+    elevation: ButtonElevation = ButtonDefaults.buttonElevation(),
     contentColor: Color = WhiskrTheme.colors.onBackground,
     containerColor: Color = WhiskrTheme.colors.primary,
     borderColor: Color? = null
@@ -35,6 +37,7 @@ fun WhiskrButton(
         shape = shape,
         contentPadding = contentPadding,
         border = if (borderColor != null) BorderStroke(1.dp, borderColor) else null,
+        elevation = elevation,
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
             contentColor = contentColor,
