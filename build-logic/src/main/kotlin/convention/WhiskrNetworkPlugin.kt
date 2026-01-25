@@ -5,11 +5,16 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import de.jensklingenberg.ktorfit.gradle.KtorfitPluginExtension
 
 class WhiskrNetworkPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("org.jetbrains.kotlin.plugin.serialization")
         pluginManager.apply("de.jensklingenberg.ktorfit")
+
+        extensions.configure<KtorfitPluginExtension> {
+            compilerPluginVersion.set("2.3.3")
+        }
 
         extensions.configure<KotlinMultiplatformExtension> {
             sourceSets.apply {
@@ -24,8 +29,17 @@ class WhiskrNetworkPlugin : Plugin<Project> {
                     }
                 }
 
-                named("androidMain") { dependencies { implementation(libs.findLibrary("ktor-client-okhttp").get()) } }
-                named("iosMain") { dependencies { implementation(libs.findLibrary("ktor-client-darwin").get()) } }
+                named("androidMain") {
+                    dependencies {
+                        implementation(libs.findLibrary("ktor-client-okhttp").get())
+                    }
+                }
+
+                named("iosMain") {
+                    dependencies {
+                        implementation(libs.findLibrary("ktor-client-darwin").get())
+                    }
+                }
             }
         }
     }

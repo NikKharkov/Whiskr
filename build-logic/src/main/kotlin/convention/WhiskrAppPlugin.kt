@@ -5,8 +5,8 @@ import org.gradle.api.Project
 
 class WhiskrAppPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
-        pluginManager.apply("whiskr.android.application")
         pluginManager.apply("whiskr.kmp")
+        pluginManager.apply("whiskr.android.application")
         pluginManager.apply("org.jetbrains.compose.hot-reload")
         pluginManager.apply("whiskr.compose")
         pluginManager.apply("whiskr.navigation")

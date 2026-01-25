@@ -1,6 +1,6 @@
 package convention
 
-import com.android.build.gradle.AppExtension
+import com.android.build.api.dsl.ApplicationExtension
 import convention.extensions.libs
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
@@ -9,18 +9,25 @@ import org.gradle.kotlin.dsl.configure
 
 class WhiskrAndroidApplicationPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
-        pluginManager.apply("com.android.application")
+        with(pluginManager) {
+            apply("com.android.application")
+        }
 
-        val compileSdk = libs.findVersion("android-compileSdk").get().requiredVersion.toInt()
-        val minSdk = libs.findVersion("android-minSdk").get().requiredVersion.toInt()
-        val targetSdk = libs.findVersion("android-targetSdk").get().requiredVersion.toInt()
+        val compileSdkVer = libs.findVersion("android-compileSdk").get().requiredVersion.toInt()
+        val minSdkVer = libs.findVersion("android-minSdk").get().requiredVersion.toInt()
+        val targetSdkVer = libs.findVersion("android-targetSdk").get().requiredVersion.toInt()
 
-        extensions.configure<AppExtension> {
-            compileSdkVersion(compileSdk)
+        extensions.configure<ApplicationExtension> {
+            compileSdk = compileSdkVer
+
             defaultConfig {
-                minSdkVersion(minSdk)
-                targetSdkVersion(targetSdk)
+                minSdk = minSdkVer
+                targetSdk = targetSdkVer
+
+                versionCode = 1
+                versionName = "1.0"
             }
+
             compileOptions {
                 sourceCompatibility = JavaVersion.VERSION_17
                 targetCompatibility = JavaVersion.VERSION_17
