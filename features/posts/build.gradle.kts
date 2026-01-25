@@ -3,15 +3,19 @@ plugins {
 }
 
 android {
-    namespace = "org.example.whiskr.features.home"
+    namespace = "org.example.whiskr.features.posts"
 }
 
-dependencies {
-    commonMainImplementation(libs.kotlinx.datetime)
-    commonMainImplementation(libs.calf.file.picker)
-    commonMainImplementation(libs.calf.file.picker.coil)
-    commonMainImplementation(libs.coil.compose)
-    commonMainImplementation(libs.coil.network)
-    commonMainImplementation(projects.core.user)
-    commonMainImplementation(libs.media.player)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.core.user)
+
+            implementation(libs.calf.file.picker)
+            implementation(libs.calf.file.picker.coil)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network)
+            implementation(libs.media.player)
+        }
+    }
 }

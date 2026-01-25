@@ -10,10 +10,14 @@ android {
     namespace = "org.example.whiskr.core.network"
 }
 
-dependencies {
-    commonMainImplementation(projects.core.common)
-    commonMainImplementation(libs.kermit)
-    commonMainImplementation(libs.kvault)
-    commonMainImplementation(libs.ktor.client.auth)
-    commonMainImplementation(libs.kotlinx.datetime)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.core.common)
+            api(libs.kotlinx.datetime)
+            implementation(libs.kermit)
+            implementation(libs.kvault)
+            implementation(libs.ktor.client.auth)
+        }
+    }
 }

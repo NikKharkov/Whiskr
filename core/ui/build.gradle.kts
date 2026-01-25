@@ -8,8 +8,15 @@ android {
     namespace = "org.example.whiskr.core.ui"
 }
 
-dependencies {
-    androidMainImplementation(libs.androidx.core)
-    commonMainImplementation(projects.core.common)
-    commonMainImplementation(libs.coil.compose)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.core.common)
+            implementation(libs.coil.compose)
+        }
+
+        androidMain.dependencies {
+            implementation(libs.androidx.core)
+        }
+    }
 }

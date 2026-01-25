@@ -6,10 +6,13 @@ android {
     namespace = "org.example.whiskr.features.registration"
 }
 
-dependencies {
-    commonMainImplementation(libs.peekaboo.ui)
-    commonMainImplementation(libs.peekaboo.image.picker)
-    commonMainImplementation(libs.coil.compose)
-    commonMainImplementation(libs.coil.network)
-    commonMainImplementation(libs.kotlinx.datetime)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.peekaboo.ui)
+            implementation(libs.peekaboo.image.picker)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network)
+        }
+    }
 }

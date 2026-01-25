@@ -11,8 +11,12 @@ android {
     namespace = "org.example.whiskr.core.user"
 }
 
-dependencies {
-    commonMainImplementation(libs.kermit)
-    commonMainImplementation(projects.core.common)
-    commonMainImplementation(projects.core.storage)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.core.common)
+            implementation(projects.core.storage)
+            implementation(libs.kermit)
+        }
+    }
 }

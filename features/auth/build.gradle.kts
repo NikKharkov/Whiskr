@@ -6,8 +6,12 @@ android {
     namespace = "org.example.whiskr.features.auth"
 }
 
-dependencies {
-    commonMainImplementation(libs.kmpauth.google)
-    commonMainImplementation(libs.kmpauth.firebase)
-    commonMainImplementation(libs.kmpauth.uihelper)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kmpauth.google)
+            implementation(libs.kmpauth.firebase)
+            implementation(libs.kmpauth.uihelper)
+        }
+    }
 }

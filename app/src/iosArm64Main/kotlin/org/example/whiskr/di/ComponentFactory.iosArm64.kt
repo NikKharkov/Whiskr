@@ -6,4 +6,4 @@ import org.example.whiskr.domain.ShareService
 actual fun createIosModule(
     databaseFactory: DatabaseFactory,
     shareService: ShareService
-): IosApplicationModule = InjectIosApplicationComponentDI(databaseFactory, shareService)
+): IosApplicationModule = InjectIosApplicationModule(databaseFactory, shareService)

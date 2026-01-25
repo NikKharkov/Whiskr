@@ -3,36 +3,18 @@ plugins {
     kotlin("native.cocoapods")
 }
 
-dependencies {
-    debugImplementation(compose.uiTooling)
-    commonMainImplementation(projects.core.network)
-    commonMainImplementation(projects.core.storage)
-    commonMainImplementation(projects.core.common)
-    commonMainImplementation(projects.core.ui)
-    commonMainImplementation(projects.core.user)
-    commonMainImplementation(projects.features.auth)
-    commonMainImplementation(projects.features.registration)
-    commonMainImplementation(projects.features.posts)
-    commonMainImplementation(projects.features.mediaViewer)
-    commonMainApi(projects.features.billing)
-    commonMainImplementation(projects.flows.auth)
-    commonMainImplementation(projects.flows.main)
-
-    commonMainImplementation(libs.kvault)
-    commonMainImplementation(libs.multiplatform.settings)
-    commonMainImplementation(libs.filekit.compose)
-
-    androidMainImplementation(libs.androidx.activity.compose)
-}
-
 android {
     namespace = "org.example.whiskr"
+
     defaultConfig {
         applicationId = "org.example.whiskr"
         versionCode = 1
         versionName = "1.0"
     }
-    packaging { resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" } }
+
+    packaging {
+        resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" }
+    }
 }
 
 kotlin {
@@ -40,7 +22,6 @@ kotlin {
         version = "1.0"
         summary = "Whiskr Mobile App"
         homepage = "https://whiskr.app"
-
         ios.deploymentTarget = "15.0"
 
         framework {
@@ -57,5 +38,27 @@ kotlin {
         pod("GoogleSignIn") { version = "7.1.0" }
         pod("FBSDKCoreKit") { version = "17.0.0" }
         pod("FBSDKLoginKit") { version = "17.0.0" }
+    }
+
+    sourceSets {
+        commonMain.dependencies {
+            implementation(projects.flows.main)
+            implementation(projects.flows.auth)
+            api(projects.features.billing)
+
+            implementation(projects.core.common)
+            implementation(projects.core.network)
+            implementation(projects.core.storage)
+            implementation(projects.core.ui)
+            implementation(projects.core.user)
+
+            implementation(libs.kvault)
+            implementation(libs.multiplatform.settings)
+            implementation(libs.filekit.compose)
+        }
+
+        androidMain.dependencies {
+            implementation(libs.androidx.activity.compose)
+        }
     }
 }

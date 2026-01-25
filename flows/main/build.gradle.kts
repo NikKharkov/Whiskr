@@ -6,14 +6,19 @@ android {
     namespace = "org.example.whiskr.main"
 }
 
-dependencies {
-    commonMainImplementation(projects.core.user)
-    commonMainImplementation(projects.core.storage)
-    commonMainImplementation(projects.features.posts)
-    commonMainImplementation(projects.features.mediaViewer)
-    commonMainImplementation(projects.features.billing)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.features.posts)
+            api(projects.features.mediaViewer)
+            api(projects.features.billing)
 
-    commonMainImplementation(libs.coil.compose)
-    commonMainImplementation(libs.coil.network)
-    commonMainImplementation(libs.calf.file.picker.coil)
+            implementation(projects.core.user)
+            implementation(projects.core.storage)
+
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network)
+            implementation(libs.calf.file.picker.coil)
+        }
+    }
 }

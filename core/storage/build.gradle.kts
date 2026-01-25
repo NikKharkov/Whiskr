@@ -7,7 +7,6 @@ plugins {
     id("whiskr.room")
 }
 
-
 android {
     namespace = "org.example.whiskr.core.storage"
 }
@@ -16,8 +15,12 @@ room {
     schemaDirectory("$projectDir/schemas")
 }
 
-dependencies {
-    commonMainImplementation(libs.kermit)
-    commonMainImplementation(projects.core.common)
-    commonMainImplementation(libs.multiplatform.settings)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.core.common)
+            implementation(libs.kermit)
+            implementation(libs.multiplatform.settings)
+        }
+    }
 }

@@ -6,7 +6,11 @@ android {
     namespace = "org.example.whiskr.auth"
 }
 
-dependencies {
-    commonMainImplementation(projects.features.auth)
-    commonMainImplementation(projects.features.registration)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            api(projects.features.auth)
+            api(projects.features.registration)
+        }
+    }
 }

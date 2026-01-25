@@ -9,6 +9,10 @@ android {
     namespace = "org.example.whiskr.core.common"
 }
 
-dependencies {
-    commonMainImplementation(libs.kotlinx.coroutines.core)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kotlinx.coroutines.core)
+        }
+    }
 }

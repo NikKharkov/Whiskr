@@ -6,8 +6,10 @@ android {
     namespace = "org.example.whiskr.features.billing"
 }
 
-dependencies {
-    commonMainImplementation(libs.kotlinx.datetime)
-
-    androidMainApi(libs.stripe.android)
+kotlin {
+    sourceSets {
+        androidMain.dependencies {
+            api(libs.stripe.android)
+        }
+    }
 }

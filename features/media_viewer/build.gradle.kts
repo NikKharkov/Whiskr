@@ -6,12 +6,14 @@ android {
     namespace = "org.example.whiskr.features.mediaviewer"
 }
 
-dependencies {
-    commonMainImplementation(libs.kotlinx.datetime)
-    commonMainImplementation(libs.coil.compose)
-    commonMainImplementation(libs.coil.network)
-    commonMainImplementation(libs.media.player)
-    commonMainImplementation(libs.zoomable)
-    commonMainImplementation(libs.filekit.compose)
-    commonMainImplementation(libs.media.player)
+kotlin {
+    sourceSets {
+        commonMain.dependencies {
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network)
+            implementation(libs.zoomable)
+            implementation(libs.filekit.compose)
+            implementation(libs.media.player)
+        }
+    }
 }
