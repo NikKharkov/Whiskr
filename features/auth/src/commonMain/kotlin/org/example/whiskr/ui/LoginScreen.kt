@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import org.example.whiskr.component.login.FakeLoginComponent
@@ -25,7 +26,6 @@ import org.example.whiskr.layouts.AdaptiveLayoutWithDialog
 import org.example.whiskr.theme.WhiskrTheme
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import whiskr.features.auth.generated.resources.Res
 import whiskr.features.auth.generated.resources.email_input_subtitle
 import whiskr.features.auth.generated.resources.email_input_title

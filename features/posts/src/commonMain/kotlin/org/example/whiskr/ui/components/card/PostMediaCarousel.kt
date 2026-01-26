@@ -65,7 +65,7 @@ fun PostMediaCarousel(
         ) { index ->
             MediaCard(
                 media = medias[index],
-                shouldBePaused = pagerState.settledPage != index,
+                isPlaying = pagerState.settledPage == index,
                 onClick = { onMediaClick(index) }
             )
         }
@@ -86,7 +86,7 @@ fun PostMediaCarousel(
 private fun MediaCard(
     modifier: Modifier = Modifier,
     media: PostMedia,
-    shouldBePaused: Boolean,
+    isPlaying: Boolean,
     onClick: () -> Unit
 ) {
     when (media.type) {
@@ -104,10 +104,10 @@ private fun MediaCard(
         MediaType.VIDEO -> {
             var isMuted by remember { mutableStateOf(true) }
 
-            val videoPlayerHost = remember(media.url, shouldBePaused, isMuted) {
+            val videoPlayerHost = remember(media.url, isPlaying, isMuted) {
                 MediaPlayerHost(
                     mediaUrl = media.url.toCloudStorageUrl(),
-                    isPaused = shouldBePaused,
+                    autoPlay = isPlaying,
                     isMuted = isMuted
                 )
             }

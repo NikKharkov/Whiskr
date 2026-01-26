@@ -1,8 +1,10 @@
+import com.android.build.api.dsl.LibraryExtension
+
 plugins {
     id("whiskr.feature")
 }
 
-android {
+configure<LibraryExtension>  {
     namespace = "org.example.whiskr.auth"
 }
 

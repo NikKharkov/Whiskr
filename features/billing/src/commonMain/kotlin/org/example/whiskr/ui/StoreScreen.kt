@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import kotlinx.coroutines.launch
 import org.example.whiskr.component.FakeStoreComponent
@@ -25,7 +26,6 @@ import org.example.whiskr.ui.components.StoreContent
 import org.example.whiskr.ui.components.toDollarPrice
 import org.example.whiskr.ui.components.toIsoDate
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import whiskr.features.billing.generated.resources.Res
 import whiskr.features.billing.generated.resources.payment_failed
 import whiskr.features.billing.generated.resources.store_vip_active_until

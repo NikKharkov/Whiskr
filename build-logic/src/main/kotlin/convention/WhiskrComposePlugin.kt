@@ -1,9 +1,9 @@
 package convention
 
+import convention.extensions.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
-import org.jetbrains.compose.ComposeExtension
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 class WhiskrComposePlugin : Plugin<Project> {
@@ -11,25 +11,25 @@ class WhiskrComposePlugin : Plugin<Project> {
         pluginManager.apply("org.jetbrains.compose")
         pluginManager.apply("org.jetbrains.kotlin.plugin.compose")
 
+        val composeVersion = libs.findVersion("composeMultiplatform").get()
+
         extensions.configure<KotlinMultiplatformExtension> {
             sourceSets.apply {
-                val compose = project.extensions.getByType(ComposeExtension::class.java).dependencies
-
                 named("commonMain") {
                     dependencies {
-                        implementation(compose.runtime)
-                        implementation(compose.foundation)
-                        implementation(compose.material3)
-                        implementation(compose.ui)
-                        implementation(compose.components.resources)
-                        implementation(compose.components.uiToolingPreview)
+                        implementation("org.jetbrains.compose.runtime:runtime:$composeVersion")
+                        implementation("org.jetbrains.compose.foundation:foundation:$composeVersion")
+                        implementation("org.jetbrains.compose.material3:material3:1.9.0")
+                        implementation("org.jetbrains.compose.ui:ui:$composeVersion")
+                        implementation("org.jetbrains.compose.components:components-resources:$composeVersion")
+                        implementation("org.jetbrains.compose.ui:ui-tooling-preview:$composeVersion")
                     }
                 }
 
                 named("androidMain") {
                     dependencies {
-                        implementation(compose.preview)
-                        implementation(compose.uiTooling)
+                        implementation("org.jetbrains.compose.ui:ui-tooling-preview:$composeVersion")
+                        implementation("org.jetbrains.compose.ui:ui-tooling:$composeVersion")
                     }
                 }
             }

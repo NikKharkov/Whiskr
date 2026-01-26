@@ -1,9 +1,11 @@
+import com.android.build.api.dsl.ApplicationExtension
+
 plugins {
     id("whiskr.app")
     kotlin("native.cocoapods")
 }
 
-android {
+configure<ApplicationExtension> {
     namespace = "org.example.whiskr"
 
     defaultConfig {
@@ -13,7 +15,9 @@ android {
     }
 
     packaging {
-        resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" }
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
 }
 

@@ -89,7 +89,7 @@ fun MediaViewerScreen(
                     MediaPlayerHost(
                         mediaUrl = url,
                         isMuted = false,
-                        isPaused = true
+                        autoPlay = true
                     )
                 }
 

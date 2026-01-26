@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.LibraryExtension
+
 plugins {
     id("whiskr.android.library")
     id("whiskr.kmp")
@@ -7,7 +9,7 @@ plugins {
     id("whiskr.compose")
 }
 
-android {
+configure<LibraryExtension> {
     namespace = "org.example.whiskr.core.user"
 }
 

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mmk.kmpauth.google.GoogleAuthCredentials
 import com.mmk.kmpauth.google.GoogleAuthProvider
@@ -17,7 +18,6 @@ import org.example.whiskr.theme.WhiskrTheme
 import org.example.whiskr.ui.components.WelcomeActionsContent
 import org.example.whiskr.ui.components.WelcomeHeroContent
 import org.example.whiskr.util.WEB_CLIENT_ID
-import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun WelcomeScreen(component: WelcomeComponent) {

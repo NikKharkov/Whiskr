@@ -18,6 +18,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import component.user.FakeUserRegistrationComponent
@@ -27,7 +28,6 @@ import org.example.whiskr.components.WhiskrTextField
 import org.example.whiskr.layouts.AdaptiveLayoutWithDialog
 import org.example.whiskr.theme.WhiskrTheme
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.components.HandleVisualTransformation
 import ui.components.ProfilePhotoSelector
 import whiskr.features.registration.generated.resources.Res

@@ -42,7 +42,7 @@ fun MediaPreviewItem(
                 modifier = Modifier.fillMaxSize(),
                 playerHost = MediaPlayerHost(
                     mediaUrl = videoUrl,
-                    isPaused = false
+                    autoPlay = true
                 ),
                 playerConfig = VideoPlayerConfig(
                     loadingIndicatorColor = Color.Transparent,
