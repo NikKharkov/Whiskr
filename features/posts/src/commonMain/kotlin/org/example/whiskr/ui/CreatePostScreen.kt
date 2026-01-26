@@ -5,14 +5,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.mohamedrejeb.calf.core.LocalPlatformContext
 import org.example.whiskr.component.create.CreatePostComponent
+import org.example.whiskr.component.create.FakeCreatePostComponent
 import org.example.whiskr.theme.WhiskrTheme
 import org.example.whiskr.ui.components.ComposerTopBar
 import org.example.whiskr.ui.components.CreatePostInput
+import org.example.whiskr.util.mockUserState
 import org.jetbrains.compose.resources.stringResource
 import util.LocalUser
 import whiskr.features.posts.generated.resources.Res
@@ -49,5 +53,48 @@ fun CreatePostScreen(component: CreatePostComponent) {
             onRemoveFile = component::onRemoveFile,
             onSendClick = { component.onSendClick(context) }
         )
+    }
+}
+
+@Preview(name = "Create Post - Light", showBackground = true)
+@Composable
+private fun PreviewCreatePostLight() {
+    WhiskrTheme(isDarkTheme = false) {
+        CompositionLocalProvider(LocalUser provides mockUserState) {
+            CreatePostScreen(
+                component = FakeCreatePostComponent(
+                    initialText = "Hello, Whiskr!"
+                )
+            )
+        }
+    }
+}
+
+@Preview(name = "Create Post - Dark", showBackground = true)
+@Composable
+private fun PreviewCreatePostDark() {
+    WhiskrTheme(isDarkTheme = true) {
+        CompositionLocalProvider(LocalUser provides mockUserState) {
+            CreatePostScreen(
+                component = FakeCreatePostComponent(
+                    initialText = "Dark mode check ✅"
+                )
+            )
+        }
+    }
+}
+
+@Preview(name = "Tablet", widthDp = 891, showBackground = true)
+@Composable
+private fun PreviewCreatePostTablet() {
+    WhiskrTheme(isDarkTheme = false) {
+        CompositionLocalProvider(LocalUser provides mockUserState) {
+            CreatePostScreen(
+                component = FakeCreatePostComponent(
+                    initialText = "Tablet layout test...",
+                    initialSending = true
+                )
+            )
+        }
     }
 }

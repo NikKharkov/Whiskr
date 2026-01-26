@@ -13,18 +13,22 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import org.example.whiskr.component.home.FakeHomeComponent
 import org.example.whiskr.component.home.HomeComponent
 import org.example.whiskr.layouts.pagingItems
 import org.example.whiskr.theme.LocalIsTablet
 import org.example.whiskr.theme.WhiskrTheme
 import org.example.whiskr.ui.components.CreatePostLayout
 import org.example.whiskr.ui.components.PostCard
+import org.example.whiskr.util.mockUserState
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import util.LocalUser
@@ -61,7 +65,7 @@ fun HomeScreen(
                 }
             }
         }
-    ) { innerPadding ->
+    ) { _ ->
         PullToRefreshBox(
             state = pullRefreshState,
             isRefreshing = state.isRefreshing,
@@ -101,7 +105,7 @@ fun HomeScreen(
                     separatorContent = { _, _ ->
                         HorizontalDivider(thickness = 1.dp, color = WhiskrTheme.colors.outline)
                     }
-                ) { index, post ->
+                ) { _, post ->
                     PostCard(
                         post = post,
                         onPostClick = { mediaIndex ->
@@ -116,6 +120,42 @@ fun HomeScreen(
                     )
                 }
             }
+        }
+    }
+}
+
+@Preview(name = "Light Mode", showBackground = true)
+@Composable
+private fun HomeScreenPreview() {
+    WhiskrTheme(isDarkTheme = false) {
+        CompositionLocalProvider(LocalUser provides mockUserState) {
+            HomeScreen(
+                component = FakeHomeComponent()
+            )
+        }
+    }
+}
+
+@Preview(name = "Dark Mode", showBackground = true)
+@Composable
+private fun HomeScreenDarkThemePreview() {
+    WhiskrTheme(isDarkTheme = true) {
+        CompositionLocalProvider(LocalUser provides mockUserState) {
+            HomeScreen(
+                component = FakeHomeComponent()
+            )
+        }
+    }
+}
+
+@Preview(name = "Tablet", widthDp = 891, showBackground = true)
+@Composable
+private fun HomeScreenTabletPreview() {
+    WhiskrTheme(isDarkTheme = false) {
+        CompositionLocalProvider(LocalUser provides mockUserState) {
+            HomeScreen(
+                component = FakeHomeComponent()
+            )
         }
     }
 }

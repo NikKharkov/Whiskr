@@ -18,18 +18,23 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.mohamedrejeb.calf.core.LocalPlatformContext
 import org.example.whiskr.component.reply.CreateReplyComponent
+import org.example.whiskr.component.reply.FakeCreateReplyComponent
 import org.example.whiskr.components.AvatarPlaceholder
 import org.example.whiskr.theme.WhiskrTheme
 import org.example.whiskr.ui.components.ComposerTopBar
 import org.example.whiskr.ui.components.CreatePostInput
+import org.example.whiskr.util.mockPostForReply
+import org.example.whiskr.util.mockUserState
 import org.example.whiskr.util.rememberRelativeTime
 import org.jetbrains.compose.resources.stringResource
 import util.LocalUser
@@ -146,6 +151,48 @@ fun CreateReplyScreen(
                 onFilesSelected = component::onMediaSelected,
                 onRemoveFile = component::onRemoveFile,
                 onSendClick = { component.onSendClick(context) }
+            )
+        }
+    }
+}
+
+@Preview(name = "Light Mode", showBackground = true)
+@Composable
+private fun CreateReplyScreenPreview() {
+    WhiskrTheme(isDarkTheme = false) {
+        CompositionLocalProvider(LocalUser provides mockUserState) {
+            CreateReplyScreen(
+                component = FakeCreateReplyComponent()
+            )
+        }
+    }
+}
+
+@Preview(name = "Dark Mode", showBackground = true)
+@Composable
+private fun CreateReplyScreenDarkThemePreview() {
+    WhiskrTheme(isDarkTheme = true) {
+        CompositionLocalProvider(LocalUser provides mockUserState) {
+            CreateReplyScreen(
+                component = FakeCreateReplyComponent(
+                    initialModel = CreateReplyComponent.Model(
+                        targetPost = mockPostForReply,
+                        text = "Dark mode reply...",
+                        isSending = true
+                    )
+                )
+            )
+        }
+    }
+}
+
+@Preview(name = "Tablet", widthDp = 891, showBackground = true)
+@Composable
+private fun CreateReplyScreenTabletPreview() {
+    WhiskrTheme(isDarkTheme = false) {
+        CompositionLocalProvider(LocalUser provides mockUserState) {
+            CreateReplyScreen(
+                component = FakeCreateReplyComponent()
             )
         }
     }

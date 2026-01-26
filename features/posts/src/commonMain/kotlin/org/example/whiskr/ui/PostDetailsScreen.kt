@@ -20,14 +20,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
+import org.example.whiskr.PagingDelegate
+import org.example.whiskr.component.details.FakePostDetailsComponent
 import org.example.whiskr.component.details.PostDetailsComponent
 import org.example.whiskr.components.SimpleTopBar
 import org.example.whiskr.layouts.pagingItems
 import org.example.whiskr.theme.WhiskrTheme
 import org.example.whiskr.ui.components.ParentPost
 import org.example.whiskr.ui.components.PostCard
+import org.example.whiskr.util.mockPost
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import whiskr.features.posts.generated.resources.Res
@@ -152,7 +156,12 @@ fun PostDetailsScreen(
                 ) { _, reply ->
                     PostCard(
                         post = reply,
-                        onPostClick = { mediaIndex -> component.onMediaClick(reply.media, mediaIndex) },
+                        onPostClick = { mediaIndex ->
+                            component.onMediaClick(
+                                reply.media,
+                                mediaIndex
+                            )
+                        },
                         onLikeClick = { component.onLikeClick(reply.id) },
                         onCommentClick = { component.onCommentsClick(reply) },
                         onRepostClick = { /* ... */ },
@@ -163,5 +172,47 @@ fun PostDetailsScreen(
                 }
             }
         }
+    }
+}
+
+@Preview(name = "Light Mode", showBackground = true)
+@Composable
+private fun PostDetailsScreenPreview() {
+    WhiskrTheme(isDarkTheme = false) {
+        PostDetailsScreen(
+            component = FakePostDetailsComponent()
+        )
+
+    }
+}
+
+@Preview(name = "Dark Mode", showBackground = true)
+@Composable
+private fun PostDetailsScreenDarkThemePreview() {
+    WhiskrTheme(isDarkTheme = true) {
+        PostDetailsScreen(
+            component = FakePostDetailsComponent(
+                initialModel = PostDetailsComponent.Model(
+                    post = mockPost.copy(content = "Dark mode requires high contrast!"),
+                    isLoadingPost = false,
+                    isError = false,
+                    listState = PagingDelegate.State(
+                        items = emptyList(),
+                        isLoadingMore = false,
+                        isEndOfList = true
+                    )
+                )
+            )
+        )
+    }
+}
+
+@Preview(name = "Tablet", widthDp = 891, showBackground = true)
+@Composable
+private fun PostDetailsScreenTabletPreview() {
+    WhiskrTheme(isDarkTheme = false) {
+        PostDetailsScreen(
+            component = FakePostDetailsComponent()
+        )
     }
 }
