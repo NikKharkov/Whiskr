@@ -5,7 +5,7 @@ import com.arkivanov.decompose.value.Value
 import org.example.whiskr.data.BillingProductKey
 import org.example.whiskr.data.BillingProductType
 import org.example.whiskr.data.ProductResponseDto
-import org.example.whiskr.data.WalletResponseDto
+import org.example.whiskr.dto.WalletResponseDto
 
 class FakeStoreComponent(initialModel: StoreComponent.Model = defaultModel) : StoreComponent {
 

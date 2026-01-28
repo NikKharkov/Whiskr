@@ -39,8 +39,13 @@ class DefaultCreateReplyComponent(
 
     override fun onSendClick(context: PlatformContext) {
         inputDelegate.submit(
-            action = { text, files ->
-                postRepository.replyToPost(context, post.id, text ?: "", files)
+            action = { text, files, _ ->
+                postRepository.replyToPost(
+                    context = context,
+                    targetPostId = post.id,
+                    text = text ?: "",
+                    files = files
+                )
             },
             onSuccess = onReplyCreated
         )

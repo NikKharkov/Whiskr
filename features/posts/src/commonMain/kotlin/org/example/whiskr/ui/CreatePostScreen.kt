@@ -36,21 +36,23 @@ fun CreatePostScreen(component: CreatePostComponent) {
                 onCancel = component::onBackClick,
                 onSend = { component.onSendClick(context) },
                 isSending = model.isSending,
-                isSendEnabled = model.text.isNotBlank() || model.files.isNotEmpty(),
+                isSendEnabled = model.text.isNotBlank() || model.files.isNotEmpty() || model.attachedAiMediaUrls.isNotEmpty(),
                 modifier = Modifier.statusBarsPadding()
             )
         }
     ) { innerPadding ->
         CreatePostInput(
             modifier = Modifier.padding(innerPadding),
-            myAvatarUrl = user?.profile?.avatarUrl,
+            avatarUrl = user?.profile?.avatarUrl,
             text = model.text,
             files = model.files,
+            attachedUrls = model.attachedAiMediaUrls,
             isSending = model.isSending,
             placeholderText = stringResource(Res.string.whats_happening),
             onTextChanged = component::onTextChanged,
             onFilesSelected = component::onMediaSelected,
             onRemoveFile = component::onRemoveFile,
+            onRemoveUrl = component::onRemoveUrl,
             onSendClick = { component.onSendClick(context) }
         )
     }

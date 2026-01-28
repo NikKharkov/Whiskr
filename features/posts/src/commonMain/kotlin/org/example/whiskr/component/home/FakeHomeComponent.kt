@@ -22,6 +22,7 @@ class FakeHomeComponent(
         override fun onRemoveFile(file: KmpFile) {}
         override fun onSendClick(context: PlatformContext) {}
         override fun onBackClick() {}
+        override fun onRemoveUrl(url: String) {}
     }
 
     override val model: Value<HomeComponent.Model> = MutableValue(initialModel)

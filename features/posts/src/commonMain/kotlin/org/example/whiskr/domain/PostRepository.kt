@@ -20,7 +20,8 @@ interface PostRepository {
     suspend fun createPost(
         context: PlatformContext,
         text: String?,
-        files: List<KmpFile>
+        files: List<KmpFile>,
+        attachedUrls: List<String> = emptyList()
     ): Result<Post>
     suspend fun replyToPost(
         context: PlatformContext,

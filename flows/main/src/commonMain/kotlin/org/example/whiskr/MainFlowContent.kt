@@ -14,6 +14,7 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import org.example.whiskr.component.MainFlowComponent
 import org.example.whiskr.theme.LocalIsTablet
 import org.example.whiskr.ui.AdaptiveMainLayout
+import org.example.whiskr.ui.AiStudioScreen
 import org.example.whiskr.ui.CreatePostScreen
 import org.example.whiskr.ui.CreateReplyScreen
 import org.example.whiskr.ui.HashtagFeedScreen
@@ -21,7 +22,6 @@ import org.example.whiskr.ui.HomeScreen
 import org.example.whiskr.ui.MediaViewerScreen
 import org.example.whiskr.ui.PostDetailsScreen
 import org.example.whiskr.ui.StoreScreen
-import org.example.whiskr.util.LocalWalletProvider
 import org.example.whiskr.util.showsNavigation
 import org.example.whiskr.util.toTab
 import util.LocalUser
@@ -34,7 +34,6 @@ fun MainFlowContent(
 ) {
     val stack by component.stack.subscribeAsState()
     val user by component.userState.subscribeAsState()
-    val wallet by component.walletState.subscribeAsState()
     val isDrawerOpen by component.isDrawerOpen.subscribeAsState()
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
@@ -42,8 +41,7 @@ fun MainFlowContent(
 
         CompositionLocalProvider(
             LocalIsTablet provides isTablet,
-            LocalUser provides user,
-            LocalWalletProvider provides wallet
+            LocalUser provides user
         ) {
             AdaptiveMainLayout(
                 activeTab = stack.active.instance.toTab(),
@@ -64,7 +62,7 @@ fun MainFlowContent(
                     when (val child = it.instance) {
                         is MainFlowComponent.Child.Home -> HomeScreen(child.component)
                         is MainFlowComponent.Child.Explore -> Text("Explore screen")
-                        is MainFlowComponent.Child.AIStudio -> Text("AI Studio screen")
+                        is MainFlowComponent.Child.AiStudio -> AiStudioScreen(child.component)
                         is MainFlowComponent.Child.Games -> Text("Games screen")
                         is MainFlowComponent.Child.Messages -> Text("Messages screen")
                         is MainFlowComponent.Child.Profile -> Text("Profile screen")

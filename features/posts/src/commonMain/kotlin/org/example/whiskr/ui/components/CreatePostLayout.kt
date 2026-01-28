@@ -55,7 +55,7 @@ fun CreatePostLayout(
 
     CreatePostInput(
         modifier = modifier.fillMaxWidth(),
-        myAvatarUrl = userAvatar,
+        avatarUrl = userAvatar,
         text = model.text,
         files = model.files,
         isSending = model.isSending,
@@ -70,9 +70,11 @@ fun CreatePostLayout(
 
 @Composable
 fun CreatePostInput(
-    myAvatarUrl: String?,
+    avatarUrl: String?,
     text: String,
     files: List<KmpFile>,
+    attachedUrls: List<String> = emptyList(),
+    onRemoveUrl: ((String) -> Unit) = {},
     isSending: Boolean,
     placeholderText: String,
     onTextChanged: (String) -> Unit,
@@ -82,6 +84,8 @@ fun CreatePostInput(
     showSendButton: Boolean = false,
     modifier: Modifier = Modifier
 ) {
+    val totalMediaCount = files.size + attachedUrls.size
+
     val launcher = rememberFilePickerLauncher(
         type = FilePickerFileType.ImageVideo,
         selectionMode = FilePickerSelectionMode.Multiple,
@@ -95,7 +99,7 @@ fun CreatePostInput(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.Top
     ) {
-        AvatarPlaceholder(avatarUrl = myAvatarUrl)
+        AvatarPlaceholder(avatarUrl = avatarUrl)
 
         Column(
             modifier = Modifier.weight(1f)
@@ -123,11 +127,22 @@ fun CreatePostInput(
                 )
             }
 
-            if (files.isNotEmpty()) {
+            if (totalMediaCount > 0) {
                 LazyRow(
                     modifier = Modifier.padding(top = 12.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
+                    items(attachedUrls) { url ->
+                        RemoteMediaPreviewItem(
+                            url = url,
+                            onRemove = { onRemoveUrl(url) },
+                            modifier = Modifier
+                                .width(160.dp)
+                                .height(120.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                        )
+                    }
+
                     items(files) { file ->
                         MediaPreviewItem(
                             file = file,

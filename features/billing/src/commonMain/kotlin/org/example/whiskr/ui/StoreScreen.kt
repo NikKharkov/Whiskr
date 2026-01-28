@@ -20,7 +20,7 @@ import org.example.whiskr.component.FakeStoreComponent
 import org.example.whiskr.component.StoreComponent
 import org.example.whiskr.components.ConfettiOverlay
 import org.example.whiskr.data.BillingProductType
-import org.example.whiskr.data.WalletResponseDto
+import org.example.whiskr.dto.WalletResponseDto
 import org.example.whiskr.theme.WhiskrTheme
 import org.example.whiskr.ui.components.StoreContent
 import org.example.whiskr.ui.components.toDollarPrice

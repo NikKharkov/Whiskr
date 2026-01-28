@@ -23,4 +23,5 @@ class FakeCreatePostComponent(
     override fun onRemoveFile(file: KmpFile) {}
     override fun onSendClick(context: PlatformContext) {}
     override fun onBackClick() {}
+    override fun onRemoveUrl(url: String) {}
 }

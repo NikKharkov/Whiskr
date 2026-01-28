@@ -10,7 +10,7 @@ import org.example.whiskr.component.details.PostDetailsComponent
 import org.example.whiskr.component.hashtags.HashtagsComponent
 import org.example.whiskr.component.home.HomeComponent
 import org.example.whiskr.component.reply.CreateReplyComponent
-import org.example.whiskr.data.WalletResponseDto
+import org.example.whiskr.dto.WalletResponseDto
 import org.example.whiskr.dto.Post
 import org.example.whiskr.dto.PostMedia
 import org.jetbrains.compose.resources.DrawableResource
@@ -53,7 +53,7 @@ interface MainFlowComponent {
         class MediaViewer(val component: MediaViewerComponent) : Child()
         class Store(val component: StoreComponent) : Child()
         class Explore(val component: Any) : Child()
-        class AIStudio(val component: Any) : Child()
+        class AiStudio(val component: AiStudioComponent) : Child()
         class Games(val component: Any) : Child()
         class Messages(val component: Any) : Child()
         class Profile(val component: Any) : Child()
@@ -68,7 +68,7 @@ interface MainFlowComponent {
         data object Explore : Config
 
         @Serializable
-        data object AIStudio : Config
+        data object AiStudio : Config
 
         @Serializable
         data object Games : Config
@@ -80,7 +80,7 @@ interface MainFlowComponent {
         data object Profile : Config
 
         @Serializable
-        data object CreatePost : Config
+        data class CreatePost(val imageUrl: String? = null) : Config
 
         @Serializable
         data class CreateReply(val targetPost: Post) : Config

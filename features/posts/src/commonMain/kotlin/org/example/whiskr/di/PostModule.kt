@@ -35,7 +35,7 @@ interface PostModule {
     @Provides
     @Singleton
     fun provideCreatePostFactory(
-        factory: (ComponentContext, (Post) -> Unit, () -> Unit) -> DefaultCreatePostComponent
+        factory: (ComponentContext, String?, (Post) -> Unit, () -> Unit) -> DefaultCreatePostComponent
     ): CreatePostComponent.Factory {
         return CreatePostComponent.Factory(factory)
     }

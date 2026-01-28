@@ -69,10 +69,14 @@ class PostRepositoryImpl(
     override suspend fun createPost(
         context: PlatformContext,
         text: String?,
-        files: List<KmpFile>
+        files: List<KmpFile>,
+        attachedUrls: List<String>
     ): Result<Post> {
         return try {
-            val requestDto = CreatePostRequest(text)
+            val requestDto = CreatePostRequest(
+                text = text,
+                attachedMediaUrls = attachedUrls.ifEmpty { null }
+            )
 
             val multipartBody = buildMultipartRequest(
                 context = context,

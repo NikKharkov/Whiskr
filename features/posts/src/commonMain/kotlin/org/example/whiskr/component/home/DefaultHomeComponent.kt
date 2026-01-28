@@ -52,6 +52,7 @@ class DefaultHomeComponent(
 
     override val createPostComponent: CreatePostComponent = createPostFactory(
         componentContext = childContext("EmbeddedCreatePost"),
+        initialImageUrl = null,
         onPostCreated = { newPost ->
             if (newPost.parentPost == null) {
                 pagingDelegate.prependItem(newPost)

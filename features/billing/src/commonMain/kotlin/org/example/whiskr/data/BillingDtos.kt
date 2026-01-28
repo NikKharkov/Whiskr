@@ -24,13 +24,6 @@ data class ProductResponseDto(
 )
 
 @Serializable
-data class WalletResponseDto(
-    val balance: Long,
-    val isPremium: Boolean,
-    val premiumEndsAt: String?
-)
-
-@Serializable
 data class PurchaseRequestDto(
     val productKey: BillingProductKey
 )

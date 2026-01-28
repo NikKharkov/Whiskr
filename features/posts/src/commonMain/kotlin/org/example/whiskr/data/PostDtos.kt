@@ -4,7 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreatePostRequest(
-    val text: String?
+    val text: String?,
+    val attachedMediaUrls: List<String>? = null
 )
 
 @Serializable

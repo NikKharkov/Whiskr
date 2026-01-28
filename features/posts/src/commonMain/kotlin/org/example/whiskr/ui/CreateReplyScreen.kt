@@ -142,7 +142,7 @@ fun CreateReplyScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f),
-                myAvatarUrl = user?.profile?.avatarUrl,
+                avatarUrl = user?.profile?.avatarUrl,
                 text = model.text,
                 files = model.files,
                 isSending = model.isSending,

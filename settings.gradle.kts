@@ -41,6 +41,7 @@ include(":features:registration")
 include(":features:posts")
 include(":features:media_viewer")
 include(":features:billing")
+include(":features:ai_studio")
 
 include(":core:common")
 include(":core:network")

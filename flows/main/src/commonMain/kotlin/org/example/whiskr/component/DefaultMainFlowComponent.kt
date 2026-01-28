@@ -14,7 +14,7 @@ import domain.UserState
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
-import org.example.whiskr.component.MainFlowComponent.Config.AIStudio
+import org.example.whiskr.component.MainFlowComponent.Config.AiStudio
 import org.example.whiskr.component.MainFlowComponent.Config.CreatePost
 import org.example.whiskr.component.MainFlowComponent.Config.CreateReply
 import org.example.whiskr.component.MainFlowComponent.Config.Explore
@@ -30,8 +30,9 @@ import org.example.whiskr.component.details.PostDetailsComponent
 import org.example.whiskr.component.hashtags.HashtagsComponent
 import org.example.whiskr.component.home.HomeComponent
 import org.example.whiskr.component.reply.CreateReplyComponent
-import org.example.whiskr.data.WalletResponseDto
+import org.example.whiskr.dto.WalletResponseDto
 import org.example.whiskr.domain.BillingRepository
+import org.example.whiskr.util.toAiPostMedia
 import org.example.whiskr.util.toConfig
 
 @OptIn(DelicateDecomposeApi::class)
@@ -48,7 +49,8 @@ class DefaultMainFlowComponent(
     private val postDetailsFactory: PostDetailsComponent.Factory,
     private val mediaViewerFactory: MediaViewerComponent.Factory,
     private val hashtagsFactory: HashtagsComponent.Factory,
-    private val storeFactory: StoreComponent.Factory
+    private val storeFactory: StoreComponent.Factory,
+    private val aiFactory: AiStudioComponent.Factory
 ) : MainFlowComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<MainFlowComponent.Config>()
@@ -88,7 +90,7 @@ class DefaultMainFlowComponent(
         Home -> MainFlowComponent.Child.Home(
             homeFactory(
                 componentContext = context,
-                onNavigateToCreatePost = { navigation.push(CreatePost) },
+                onNavigateToCreatePost = { navigation.push(CreatePost()) },
                 onNavigateToProfile = {},
                 onNavigateToMediaViewer = { mediaList, index ->
                     navigation.push(MediaViewer(mediaList, index))
@@ -102,9 +104,10 @@ class DefaultMainFlowComponent(
             )
         )
 
-        CreatePost -> MainFlowComponent.Child.CreatePost(
+        is CreatePost -> MainFlowComponent.Child.CreatePost(
             createPostFactory(
                 componentContext = context,
+                initialImageUrl = config.imageUrl,
                 onBack = { navigation.pop() },
                 onPostCreated = { navigation.pop() }
             )
@@ -172,8 +175,25 @@ class DefaultMainFlowComponent(
             )
         )
 
+        AiStudio -> MainFlowComponent.Child.AiStudio(
+            aiFactory(
+                componentContext = context,
+                initialBalance = walletState.value.balance,
+                onNavigateToMediaViewer = { url ->
+                    navigation.push(
+                        MediaViewer(
+                            media = listOf(url.toAiPostMedia()),
+                            index = 0
+                        )
+                    )
+                },
+                onNavigateToCreatePost = { url ->
+                    navigation.push(CreatePost(imageUrl = url))
+                }
+            )
+        )
+
         is UserProfile -> TODO()
-        AIStudio -> TODO()
         Explore -> TODO()
         Games -> TODO()
         Messages -> TODO()
@@ -208,5 +228,5 @@ class DefaultMainFlowComponent(
         navigation.bringToFront(tab.toConfig())
     }
 
-    override fun onPostClick() = navigation.push(CreatePost)
+    override fun onPostClick() = navigation.push(CreatePost())
 }

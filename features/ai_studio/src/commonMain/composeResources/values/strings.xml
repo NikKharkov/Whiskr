@@ -1,0 +1,15 @@
+<resources>
+    <string name="cyberpunk">Cyberpunk</string>
+    <string name="oil_painting">Oil Painting</string>
+    <string name="3d_render">3D Render</string>
+    <string name="watercolor">Watercolor</string>
+    <string name="ai_studio">AI Studio</string>
+    <string name="describe">Describe</string>
+    <string name="your_gallery">Your Gallery</string>
+    <string name="delete">Delete</string>
+    <string name="upload">Upload</string>
+    <string name="send">Send</string>
+    <string name="prompt_placeholder">A cat sitting on the Iron Throne...</string>
+    <string name="generate">Generate</string>
+    <string name="generating_placeholder">Creating magic...</string>
+</resources>

@@ -4,6 +4,7 @@ import de.jensklingenberg.ktorfit.http.Body
 import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.Headers
 import de.jensklingenberg.ktorfit.http.POST
+import org.example.whiskr.dto.WalletResponseDto
 
 interface BillingApiService {
     @Headers("Content-Type: application/json")

@@ -14,16 +14,19 @@ interface CreatePostComponent {
     fun onRemoveFile(file: KmpFile)
     fun onSendClick(context: PlatformContext)
     fun onBackClick()
+    fun onRemoveUrl(url: String)
 
     data class Model(
         val text: String = "",
         val files: List<KmpFile> = emptyList(),
+        val attachedAiMediaUrls: List<String> = emptyList(),
         val isSending: Boolean = false
     )
 
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
+            initialImageUrl: String?,
             onPostCreated: (Post) -> Unit,
             onBack: () -> Unit
         ): CreatePostComponent

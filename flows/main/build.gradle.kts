@@ -14,6 +14,7 @@ kotlin {
             api(projects.features.posts)
             api(projects.features.mediaViewer)
             api(projects.features.billing)
+            api(projects.features.aiStudio)
 
             implementation(projects.core.user)
             implementation(projects.core.storage)
