@@ -17,6 +17,7 @@ import org.example.whiskr.PagingDelegate
 import org.example.whiskr.data.AiArtStyle
 import org.example.whiskr.data.AiGalleryItemDto
 import org.example.whiskr.domain.AiRepository
+import org.example.whiskr.share.ImageShareManager
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -27,7 +28,8 @@ class DefaultAiStudioComponent(
     @Assisted private val onNavigateToMediaViewer: (String) -> Unit,
     @Assisted private val onNavigateToCreatePost: (String) -> Unit,
     private val aiRepository: AiRepository,
-    private val httpClient: HttpClient
+    private val httpClient: HttpClient,
+    private val imageShareManager: ImageShareManager
 ) : AiStudioComponent, ComponentContext by componentContext {
 
     private val scope = componentScope()
@@ -91,6 +93,22 @@ class DefaultAiStudioComponent(
         _state.update { it.copy(sourceImageBytes = bytes) }
     }
 
+    override fun onShareClicked(url: String) {
+        scope.launch {
+            try {
+                val bytes: ByteArray = httpClient.get(url).body()
+
+                imageShareManager.shareImages(listOf(bytes))
+                    .onFailure { e ->
+                        Logger.e(e) { "Share execution failed" }
+                    }
+
+            } catch (e: Exception) {
+                Logger.e(e) { "Download for share failed" }
+            }
+        }
+    }
+
     override fun onGenerateClicked() {
         val s = _state.value
         if (s.prompt.isBlank() || s.isGenerating) return
@@ -149,5 +167,4 @@ class DefaultAiStudioComponent(
 
     override fun onImageClicked(url: String) = onNavigateToMediaViewer(url)
     override fun onPostClicked(url: String) = onNavigateToCreatePost(url)
-    override fun onShareClicked(url: String) { /* Share implementation */ }
 }

@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,12 +27,13 @@ import com.preat.peekaboo.image.picker.rememberImagePickerLauncher
 import org.example.whiskr.component.AiStudioComponent
 import org.example.whiskr.theme.LocalIsTablet
 import org.example.whiskr.theme.WhiskrTheme
+import org.example.whiskr.ui.components.AiGalleryCard
 import org.example.whiskr.ui.components.AiTopBar
 import org.example.whiskr.ui.components.GalleryGrid
 import org.example.whiskr.ui.components.PromptInputSection
 import org.example.whiskr.ui.components.ResultSection
 import org.example.whiskr.ui.components.StyleSelector
-import org.example.whiskr.ui.components.galleryGridItems
+import org.example.whiskr.ui.components.paginatedGridItems
 import org.jetbrains.compose.resources.stringResource
 import whiskr.features.ai_studio.generated.resources.Res
 import whiskr.features.ai_studio.generated.resources.your_gallery
@@ -120,11 +124,7 @@ fun AiStudioScreen(
                 modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxSize(),
-                contentPadding = PaddingValues(
-                    top = 16.dp,
-                    start = 16.dp,
-                    end = 16.dp
-                ),
+                contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 item {
@@ -168,13 +168,18 @@ fun AiStudioScreen(
                     )
                 }
 
-                galleryGridItems(
+                paginatedGridItems(
                     items = model.galleryItems,
                     columns = 3,
-                    onItemClick = component::onImageClicked,
+                    isLoadingMore = model.isGalleryLoading,
                     onLoadMore = component::onGalleryLoadMore,
-                    isLoadingMore = model.isGalleryLoading
-                )
+                    key = { it.id }
+                ) { item ->
+                    AiGalleryCard(
+                        item = item,
+                        onClick = { component.onImageClicked(item.imageUrl) }
+                    )
+                }
             }
         }
     }

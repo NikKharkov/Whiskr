@@ -2,46 +2,49 @@ package org.example.whiskr.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
-import org.example.whiskr.data.AiGalleryItemDto
-import org.example.whiskr.extensions.customClickable
-import org.example.whiskr.util.toCloudStorageUrl
 
-fun LazyListScope.galleryGridItems(
-    items: List<AiGalleryItemDto>,
-    columns: Int = 3,
-    onItemClick: (String) -> Unit,
+fun <T> LazyListScope.paginatedGridItems(
+    items: List<T>,
+    columns: Int,
+    contentPadding: Dp = 8.dp,
+    isLoadingMore: Boolean = false,
     onLoadMore: () -> Unit,
-    isLoadingMore: Boolean
+    key: ((item: T) -> Any)? = null,
+    itemContent: @Composable BoxScope.(item: T) -> Unit
 ) {
     val chunks = items.chunked(columns)
 
     itemsIndexed(
         items = chunks,
-        key = { _, rowItems -> rowItems.first().id }
+        key = key?.let { keySelector ->
+            { _, rowItems -> rowItems.first().let(keySelector) }
+        }
     ) { index, rowItems ->
+        if (index >= chunks.lastIndex - 2 && !isLoadingMore) {
+            LaunchedEffect(Unit) { onLoadMore() }
+        }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(bottom = contentPadding),
+            horizontalArrangement = Arrangement.spacedBy(contentPadding)
         ) {
             rowItems.forEach { item ->
                 Box(
@@ -49,32 +52,27 @@ fun LazyListScope.galleryGridItems(
                         .weight(1f)
                         .aspectRatio(1f)
                 ) {
-                    AsyncImage(
-                        model = item.imageUrl.toCloudStorageUrl(),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(RoundedCornerShape(12.dp))
-                            .customClickable { onItemClick(item.imageUrl) }
-                    )
+                    itemContent(item)
                 }
             }
 
             val emptySlots = columns - rowItems.size
-            repeat(emptySlots) {
-                Spacer(modifier = Modifier.weight(1f))
+            if (emptySlots > 0) {
+                repeat(emptySlots) {
+                    Spacer(modifier = Modifier.weight(1f))
+                }
             }
-        }
-
-        if (index >= chunks.size - 2 && !isLoadingMore) {
-            LaunchedEffect(Unit) { onLoadMore() }
         }
     }
 
     if (isLoadingMore) {
         item {
-            Box(Modifier.fillMaxWidth().padding(16.dp), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
                 CircularProgressIndicator(modifier = Modifier.size(24.dp))
             }
         }

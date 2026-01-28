@@ -115,7 +115,7 @@ fun ResultSection(
                     tint = WhiskrTheme.colors.onBackground,
                     modifier = Modifier
                         .size(24.dp)
-                        .customClickable(onClick = { onShare(latestItem.imageUrl) })
+                        .customClickable(onClick = { onShare(latestItem.imageUrl.toCloudStorageUrl()) })
                 )
             }
         }

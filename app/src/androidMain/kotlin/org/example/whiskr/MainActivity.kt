@@ -10,6 +10,7 @@ import io.github.vinceglb.filekit.core.FileKit
 import org.example.whiskr.di.AndroidApplicationModule
 import org.example.whiskr.di.create
 import org.example.whiskr.root.RootComponent
+import org.example.whiskr.share.AndroidImageShareManager
 
 class MainActivity : ComponentActivity() {
 
@@ -21,10 +22,11 @@ class MainActivity : ComponentActivity() {
 
         val databaseFactory = AndroidDatabaseFactory(applicationContext)
         val shareService = AndroidShareService(applicationContext)
+        val imageShareManager = AndroidImageShareManager(applicationContext)
         val initialDeepLink = intent?.data?.toString()
 
         val appComponent =
-            AndroidApplicationModule::class.create(applicationContext, databaseFactory, shareService)
+            AndroidApplicationModule::class.create(applicationContext, databaseFactory, shareService, imageShareManager)
 
         val root = retainedComponent { componentContext ->
             appComponent.rootComponentFactory(componentContext, initialDeepLink)

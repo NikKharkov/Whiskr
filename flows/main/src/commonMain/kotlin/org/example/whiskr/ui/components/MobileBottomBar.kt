@@ -20,7 +20,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun MobileBottomBar(
     activeTab: MainFlowComponent.Tab,
-    onTabSelected: (MainFlowComponent.Tab) -> Unit
+    onTabSelected: (MainFlowComponent.Tab) -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
