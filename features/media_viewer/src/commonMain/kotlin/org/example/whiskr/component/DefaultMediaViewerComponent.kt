@@ -9,8 +9,8 @@ import io.ktor.client.request.get
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
-import org.example.whiskr.dto.MediaType
-import org.example.whiskr.dto.PostMedia
+import org.example.whiskr.data.MediaType
+import org.example.whiskr.data.PostMedia
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -25,9 +25,7 @@ class DefaultMediaViewerComponent(
 
     private val scope = componentScope()
 
-    override fun onBackClicked() {
-        onFinished()
-    }
+    override fun onBackClicked() = onFinished()
 
     @OptIn(ExperimentalTime::class)
     override fun onDownloadClicked(url: String, type: MediaType) {

@@ -11,6 +11,7 @@ configure<LibraryExtension> {
 kotlin {
     sourceSets {
         commonMain.dependencies {
+            implementation(projects.features.posts.api)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
             implementation(libs.zoomable)

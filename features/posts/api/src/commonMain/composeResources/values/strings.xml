@@ -1,0 +1,8 @@
+<resources>
+    <string name="post">Post</string>
+    <string name="time_just_now">now</string>
+    <string name="time_short_minute">%1$dm</string>
+    <string name="time_short_hour">%1$dh</string>
+    <string name="time_short_day">%1$dd</string>
+    <string name="time_yesterday">Yesterday</string>
+</resources>

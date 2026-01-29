@@ -11,10 +11,12 @@ configure<LibraryExtension> {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            api(projects.features.posts)
+            api(projects.features.posts.impl)
             api(projects.features.mediaViewer)
             api(projects.features.billing)
             api(projects.features.aiStudio)
+            api(projects.features.home)
+            api(projects.features.profile)
 
             implementation(projects.core.user)
             implementation(projects.core.storage)

@@ -4,7 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import me.tatarka.inject.annotations.Provides
 import org.example.whiskr.component.DefaultMediaViewerComponent
 import org.example.whiskr.component.MediaViewerComponent
-import org.example.whiskr.dto.PostMedia
+import org.example.whiskr.data.PostMedia
 
 interface MediaViewerModule {
 

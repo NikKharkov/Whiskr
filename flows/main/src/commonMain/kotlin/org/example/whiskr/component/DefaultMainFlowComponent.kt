@@ -25,13 +25,8 @@ import org.example.whiskr.component.MainFlowComponent.Config.Messages
 import org.example.whiskr.component.MainFlowComponent.Config.PostDetails
 import org.example.whiskr.component.MainFlowComponent.Config.Profile
 import org.example.whiskr.component.MainFlowComponent.Config.UserProfile
-import org.example.whiskr.component.create.CreatePostComponent
-import org.example.whiskr.component.details.PostDetailsComponent
-import org.example.whiskr.component.hashtags.HashtagsComponent
-import org.example.whiskr.component.home.HomeComponent
-import org.example.whiskr.component.reply.CreateReplyComponent
-import org.example.whiskr.dto.WalletResponseDto
 import org.example.whiskr.domain.BillingRepository
+import org.example.whiskr.dto.WalletResponseDto
 import org.example.whiskr.util.toAiPostMedia
 import org.example.whiskr.util.toConfig
 
@@ -90,13 +85,17 @@ class DefaultMainFlowComponent(
         Home -> MainFlowComponent.Child.Home(
             homeFactory(
                 componentContext = context,
-                onNavigateToCreatePost = { navigation.push(CreatePost()) },
-                onNavigateToProfile = {},
-                onNavigateToMediaViewer = { mediaList, index ->
-                    navigation.push(MediaViewer(mediaList, index))
+                onNavigateToCreatePost = {
+                    navigation.push(CreatePost())
+                },
+                onNavigateToProfile = { userHandle ->
+                    TODO()
                 },
                 onNavigateToComments = { post ->
                     navigation.push(PostDetails(postId = post.id))
+                },
+                onNavigateToMediaViewer = { mediaList, index ->
+                    navigation.push(MediaViewer(mediaList, index))
                 },
                 onNavigateToHashtag = { tag ->
                     navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))

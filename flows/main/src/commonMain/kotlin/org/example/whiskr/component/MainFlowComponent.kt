@@ -5,14 +5,9 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import domain.UserState
 import kotlinx.serialization.Serializable
-import org.example.whiskr.component.create.CreatePostComponent
-import org.example.whiskr.component.details.PostDetailsComponent
-import org.example.whiskr.component.hashtags.HashtagsComponent
-import org.example.whiskr.component.home.HomeComponent
-import org.example.whiskr.component.reply.CreateReplyComponent
+import org.example.whiskr.data.Post
+import org.example.whiskr.data.PostMedia
 import org.example.whiskr.dto.WalletResponseDto
-import org.example.whiskr.dto.Post
-import org.example.whiskr.dto.PostMedia
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import whiskr.flows.main.generated.resources.Res
