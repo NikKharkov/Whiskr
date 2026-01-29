@@ -17,7 +17,7 @@ import org.example.whiskr.dto.PagedResponse
 class DefaultPostListComponent(
     @Assisted componentContext: ComponentContext,
     @Assisted private val loader: suspend (Int) -> Result<PagedResponse<Post>>,
-    @Assisted private val onNavigateToProfile: (Long) -> Unit,
+    @Assisted private val onNavigateToProfile: (String) -> Unit,
     @Assisted private val onNavigateToComments: (Post) -> Unit,
     @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
     @Assisted private val onNavigateToHashtag: (String) -> Unit,
@@ -51,6 +51,6 @@ class DefaultPostListComponent(
 
     override fun onMediaClick(media: List<PostMedia>, index: Int) = onNavigateToMediaViewer(media, index)
     override fun onCommentsClick(post: Post) = onNavigateToComments(post)
-    override fun onProfileClick(userId: Long) = onNavigateToProfile(userId)
+    override fun onProfileClick(handle: String) = onNavigateToProfile(handle)
     override fun onHashtagClick(tag: String) = onNavigateToHashtag(tag)
 }

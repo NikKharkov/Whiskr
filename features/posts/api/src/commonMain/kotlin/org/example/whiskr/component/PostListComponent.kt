@@ -16,7 +16,7 @@ interface PostListComponent {
     fun onShareClick(post: Post)
     fun onMediaClick(media: List<PostMedia>, index: Int)
     fun onCommentsClick(post: Post)
-    fun onProfileClick(userId: Long)
+    fun onProfileClick(handle: String)
     fun onHashtagClick(tag: String)
     fun insertNewPost(post: Post)
 
@@ -26,7 +26,7 @@ interface PostListComponent {
         operator fun invoke(
             componentContext: ComponentContext,
             loader: suspend (page: Int) -> Result<PagedResponse<Post>>,
-            onNavigateToProfile: (Long) -> Unit,
+            onNavigateToProfile: (String) -> Unit,
             onNavigateToComments: (Post) -> Unit,
             onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
             onNavigateToHashtag: (String) -> Unit

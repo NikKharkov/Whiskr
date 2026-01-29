@@ -23,6 +23,7 @@ class DefaultPostDetailsComponent(
     @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
     @Assisted private val onBack: () -> Unit,
     @Assisted private val onNavigateToHashtag: (String) -> Unit,
+    @Assisted private val onNavigateToProfile: (String) -> Unit,
     postListFactory: PostListComponent.Factory,
     private val postRepository: PostRepository
 ) : PostDetailsComponent, ComponentContext by componentContext {
@@ -34,7 +35,7 @@ class DefaultPostDetailsComponent(
     override val repliesComponent: PostListComponent = postListFactory(
         componentContext = childContext("RepliesList"),
         loader = { page -> postRepository.getReplies(postId = postId, page = page) },
-        onNavigateToProfile = { /* TODO */ },
+        onNavigateToProfile = onNavigateToProfile,
         onNavigateToComments = onNavigateToPostDetails,
         onNavigateToMediaViewer = onNavigateToMediaViewer,
         onNavigateToHashtag = onNavigateToHashtag
@@ -116,4 +117,5 @@ class DefaultPostDetailsComponent(
     override fun onBackClick() = onBack()
     override fun onReplyClick(post: Post) = onNavigateToReply(post)
     override fun onMediaClick(media: List<PostMedia>, index: Int) = onNavigateToMediaViewer(media, index)
+    override fun onNavigateToParentProfile(handle: String) = onNavigateToProfile(handle)
 }

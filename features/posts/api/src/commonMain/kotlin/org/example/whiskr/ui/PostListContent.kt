@@ -71,7 +71,7 @@ fun PostListContent(
                 PostCard(
                     post = post,
                     onPostClick = { mediaIndex -> component.onMediaClick(post.media, mediaIndex) },
-                    onProfileClick = { component.onProfileClick(post.author.id) },
+                    onProfileClick = { component.onProfileClick(post.author.handle) },
                     onLikeClick = { component.onLikeClick(post.id) },
                     onCommentClick = { component.onCommentsClick(post) },
                     onRepostClick = { /* TODO: Добавить в компонент */ },

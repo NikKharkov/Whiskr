@@ -47,7 +47,7 @@ interface PostModule {
         factory: (
             ComponentContext,
             suspend (Int) -> Result<PagedResponse<Post>>,
-            (Long) -> Unit,
+            (String) -> Unit,
             (Post) -> Unit,
             (List<PostMedia>, Int) -> Unit,
             (String) -> Unit
@@ -74,6 +74,7 @@ interface PostModule {
             (Post) -> Unit,
             (List<PostMedia>, Int) -> Unit,
             () -> Unit,
+            (String) -> Unit,
             (String) -> Unit
         ) -> DefaultPostDetailsComponent
     ): PostDetailsComponent.Factory {
@@ -83,7 +84,15 @@ interface PostModule {
     @Provides
     @Singleton
     fun provideHashtagsFactory(
-        factory: (ComponentContext, String, () -> Unit, (Post) -> Unit, (List<PostMedia>, Int) -> Unit, (String) -> Unit) -> DefaultHashtagsComponent
+        factory: (
+            ComponentContext,
+            String, // hashtag
+            () -> Unit, // onBack
+            (Post) -> Unit, // comments
+            (List<PostMedia>, Int) -> Unit, // media
+            (String) -> Unit, // hashtag nav
+            (String) -> Unit // profile nav
+        ) -> DefaultHashtagsComponent
     ): HashtagsComponent.Factory {
         return HashtagsComponent.Factory(factory)
     }

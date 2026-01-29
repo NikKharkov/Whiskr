@@ -54,7 +54,9 @@ fun PostDetailsScreen(
                         color = WhiskrTheme.colors.onBackground
                     )
                 },
-                modifier = Modifier.statusBarsPadding().padding(horizontal = 16.dp, vertical = 8.dp)
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
             )
         },
         floatingActionButton = {
@@ -103,7 +105,7 @@ fun PostDetailsScreen(
                                 onCommentsClick = { component.onReplyClick(post) },
                                 onRepostClick = { /* ... */ },
                                 onShareClick = { component.onShareClick(post) },
-                                onProfileClick = { /* ... */ }
+                                onProfileClick = { component.onNavigateToParentProfile(post.author.handle) }
                             )
                         }
                     }

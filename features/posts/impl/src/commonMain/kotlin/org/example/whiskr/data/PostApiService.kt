@@ -47,4 +47,11 @@ interface PostApiService {
         @Query("page") page: Int,
         @Query("size") size: Int = 20
     ): PagedResponse<Post>
+
+    @GET("post/user/{handle}")
+    suspend fun getPostsByHandle(
+        @Path("handle") handle: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int = 20
+    ): PagedResponse<Post>
 }

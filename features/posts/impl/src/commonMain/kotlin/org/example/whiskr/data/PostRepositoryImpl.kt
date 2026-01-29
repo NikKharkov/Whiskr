@@ -60,6 +60,12 @@ class PostRepositoryImpl(
         }
     }
 
+    override suspend fun getPostsByHandle(handle: String, page: Int): Result<PagedResponse<Post>> {
+        return runCatching {
+            postApiService.getPostsByHandle(handle, page)
+        }
+    }
+
     override suspend fun notifyPostUpdated(post: Post) {
         _postUpdated.emit(post)
     }

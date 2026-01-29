@@ -11,7 +11,7 @@ configure<LibraryExtension> {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-
+            implementation(projects.features.posts.api)
         }
     }
 }

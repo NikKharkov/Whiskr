@@ -24,4 +24,5 @@ class FakePostDetailsComponent(
     override fun onLikeClick(postId: Long) {}
     override fun onMediaClick(media: List<PostMedia>, index: Int) {}
     override fun onShareClick(post: Post) {}
+    override fun onNavigateToParentProfile(handle: String) {}
 }

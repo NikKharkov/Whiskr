@@ -15,6 +15,7 @@ interface PostDetailsComponent {
     fun onLikeClick(postId: Long)
     fun onShareClick(post: Post)
     fun onMediaClick(media: List<PostMedia>, index: Int)
+    fun onNavigateToParentProfile(handle: String)
 
     data class Model(
         val post: Post? = null,
@@ -30,7 +31,8 @@ interface PostDetailsComponent {
             onNavigateToPostDetails: (Post) -> Unit,
             onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
             onBack: () -> Unit,
-            onNavigateToHashtag: (String) -> Unit
+            onNavigateToHashtag: (String) -> Unit,
+            onNavigateToProfile: (String) -> Unit
         ): PostDetailsComponent
     }
 }

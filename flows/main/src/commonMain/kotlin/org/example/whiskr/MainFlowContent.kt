@@ -24,6 +24,7 @@ import org.example.whiskr.ui.PostDetailsScreen
 import org.example.whiskr.ui.StoreScreen
 import org.example.whiskr.util.showsNavigation
 import org.example.whiskr.util.toTab
+import ui.ProfileScreen
 import util.LocalUser
 
 @Composable
@@ -65,7 +66,7 @@ fun MainFlowContent(
                         is MainFlowComponent.Child.AiStudio -> AiStudioScreen(child.component)
                         is MainFlowComponent.Child.Games -> Text("Games screen")
                         is MainFlowComponent.Child.Messages -> Text("Messages screen")
-                        is MainFlowComponent.Child.Profile -> Text("Profile screen")
+                        is MainFlowComponent.Child.Profile -> ProfileScreen(child.component)
                         is MainFlowComponent.Child.CreatePost -> CreatePostScreen(child.component)
                         is MainFlowComponent.Child.CreateReply -> CreateReplyScreen(child.component)
                         is MainFlowComponent.Child.PostDetails -> PostDetailsScreen(child.component)
@@ -75,7 +76,6 @@ fun MainFlowContent(
                     }
                 }
             }
-
         }
     }
 }

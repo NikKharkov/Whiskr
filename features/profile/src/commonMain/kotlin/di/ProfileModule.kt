@@ -1,0 +1,41 @@
+package di
+
+import com.arkivanov.decompose.ComponentContext
+import component.DefaultProfileComponent
+import component.ProfileComponent
+import data.ProfileApiService
+import data.ProfileRepositoryImpl
+import data.createProfileApiService
+import de.jensklingenberg.ktorfit.Ktorfit
+import domain.ProfileRepository
+import me.tatarka.inject.annotations.Provides
+import org.example.whiskr.data.Post
+import org.example.whiskr.data.PostMedia
+import org.example.whiskr.di.Singleton
+
+interface ProfileModule {
+
+    @Provides
+    @Singleton
+    fun provideProfileApiService(ktorfit: Ktorfit): ProfileApiService = ktorfit.createProfileApiService()
+
+    @Provides
+    @Singleton
+    fun provideProfileRepository(profileRepositoryImpl: ProfileRepositoryImpl): ProfileRepository = profileRepositoryImpl
+
+    @Provides
+    @Singleton
+    fun provideProfileComponentFactory(
+        factory: (
+            ComponentContext,
+            String, // handle
+            () -> Unit, // onBack
+            (Post) -> Unit, // onNavPost
+            (String) -> Unit, // onNavUser
+            (List<PostMedia>, Int) -> Unit, // onNavMedia
+            (String) -> Unit // onNavTag
+        ) -> DefaultProfileComponent
+    ): ProfileComponent.Factory {
+        return ProfileComponent.Factory(factory)
+    }
+}

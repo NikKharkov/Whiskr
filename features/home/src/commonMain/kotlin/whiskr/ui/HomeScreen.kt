@@ -1,5 +1,6 @@
 package org.example.whiskr.ui
 
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -45,7 +46,8 @@ fun HomeScreen(
                     )
                 }
             }
-        }
+        },
+        contentWindowInsets = WindowInsets(0,0,0,0)
     ) { paddingValues ->
         PostListContent(
             component = component.postsComponent,

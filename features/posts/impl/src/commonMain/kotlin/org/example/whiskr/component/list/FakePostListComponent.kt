@@ -36,7 +36,7 @@ class FakePostListComponent(
     override fun onShareClick(post: Post) {}
     override fun onMediaClick(media: List<PostMedia>, index: Int) {}
     override fun onCommentsClick(post: Post) {}
-    override fun onProfileClick(userId: Long) {}
+    override fun onProfileClick(handle: String) {}
     override fun onHashtagClick(tag: String) {}
     override fun insertNewPost(post: Post) {}
 }

@@ -14,7 +14,7 @@ interface HomeComponent {
         operator fun invoke(
             componentContext: ComponentContext,
             onNavigateToCreatePost: () -> Unit,
-            onNavigateToProfile: (Long) -> Unit,
+            onNavigateToProfile: (String) -> Unit,
             onNavigateToComments: (Post) -> Unit,
             onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
             onNavigateToHashtag: (String) -> Unit

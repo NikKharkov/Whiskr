@@ -9,6 +9,7 @@ import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import component.ProfileComponent
 import domain.UserRepository
 import domain.UserState
 import kotlinx.coroutines.launch
@@ -45,7 +46,8 @@ class DefaultMainFlowComponent(
     private val mediaViewerFactory: MediaViewerComponent.Factory,
     private val hashtagsFactory: HashtagsComponent.Factory,
     private val storeFactory: StoreComponent.Factory,
-    private val aiFactory: AiStudioComponent.Factory
+    private val aiFactory: AiStudioComponent.Factory,
+    private val profileFactory: ProfileComponent.Factory
 ) : MainFlowComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<MainFlowComponent.Config>()
@@ -89,7 +91,7 @@ class DefaultMainFlowComponent(
                     navigation.push(CreatePost())
                 },
                 onNavigateToProfile = { userHandle ->
-                    TODO()
+                    navigation.push(UserProfile(userHandle))
                 },
                 onNavigateToComments = { post ->
                     navigation.push(PostDetails(postId = post.id))
@@ -137,7 +139,8 @@ class DefaultMainFlowComponent(
                 },
                 onNavigateToHashtag = { tag ->
                     navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
-                }
+                },
+                onNavigateToProfile = { handle -> navigation.push(UserProfile(handle)) }
             )
         )
 
@@ -163,7 +166,8 @@ class DefaultMainFlowComponent(
                 },
                 onNavigateToHashtag = { tag ->
                     navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
-                }
+                },
+                onNavigateToProfile = { handle -> navigation.push(UserProfile(handle)) }
             )
         )
 
@@ -192,11 +196,51 @@ class DefaultMainFlowComponent(
             )
         )
 
-        is UserProfile -> TODO()
+        is UserProfile -> MainFlowComponent.Child.Profile(
+            profileFactory(
+                componentContext = context,
+                handle = config.handle,
+                onBack = { navigation.pop() },
+                onNavigateToPost = { post ->
+                    navigation.push(PostDetails(postId = post.id))
+                },
+                onNavigateToUserProfile = { handle ->
+                    navigation.push(UserProfile(handle))
+                },
+                onNavigateToMediaViewer = { media, index ->
+                    navigation.push(MediaViewer(media, index))
+                },
+                onNavigateToHashtag = { tag ->
+                    navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
+                }
+            )
+        )
+
+        Profile -> MainFlowComponent.Child.Profile(
+            profileFactory(
+                componentContext = context,
+                handle = userState.value.profile?.handle ?: "",
+                onBack = {
+                    navigation.bringToFront(Home)
+                },
+                onNavigateToPost = { post ->
+                    navigation.push(PostDetails(postId = post.id))
+                },
+                onNavigateToUserProfile = { handle ->
+                    navigation.push(UserProfile(handle))
+                },
+                onNavigateToMediaViewer = { media, index ->
+                    navigation.push(MediaViewer(media, index))
+                },
+                onNavigateToHashtag = { tag ->
+                    navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
+                }
+            )
+        )
+
         Explore -> TODO()
         Games -> TODO()
         Messages -> TODO()
-        Profile -> TODO()
     }
 
     override fun onDeepLink(link: String) {

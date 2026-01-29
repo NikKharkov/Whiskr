@@ -31,4 +31,5 @@ interface PostRepository {
     ): Result<Post>
     suspend fun getReplies(postId: Long, page: Int): Result<PagedResponse<Post>>
     suspend fun getPostsByHashtag(tag: String, page: Int): Result<PagedResponse<Post>>
+    suspend fun getPostsByHandle(handle: String, page: Int): Result<PagedResponse<Post>>
 }

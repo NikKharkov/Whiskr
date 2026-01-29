@@ -14,21 +14,12 @@ interface HomeModule {
         factory: (
             ComponentContext,
             () -> Unit, // onNavigateToCreatePost
-            (Long) -> Unit, // onNavigateToProfile
+            (String) -> Unit, // onNavigateToProfile
             (Post) -> Unit, // onNavigateToComments
             (List<PostMedia>, Int) -> Unit, // onNavigateToMediaViewer
             (String) -> Unit // onNavigateToHashtag
         ) -> DefaultHomeComponent
     ): HomeComponent.Factory {
-        return HomeComponent.Factory { context, navCreate, navProfile, navComments, navMedia, navHashtag ->
-            factory(
-                context,
-                navCreate,
-                navProfile,
-                navComments,
-                navMedia,
-                navHashtag
-            )
-        }
+        return HomeComponent.Factory(factory)
     }
 }

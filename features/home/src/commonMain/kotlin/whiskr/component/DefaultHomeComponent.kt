@@ -12,7 +12,7 @@ import org.example.whiskr.domain.PostRepository
 class DefaultHomeComponent(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onNavigateToCreatePost: () -> Unit,
-    @Assisted private val onNavigateToProfile: (Long) -> Unit,
+    @Assisted private val onNavigateToProfile: (String) -> Unit,
     @Assisted private val onNavigateToComments: (Post) -> Unit,
     @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
     @Assisted private val onNavigateToHashtag: (String) -> Unit,

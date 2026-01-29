@@ -3,6 +3,7 @@ package org.example.whiskr.component
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
+import component.ProfileComponent
 import domain.UserState
 import kotlinx.serialization.Serializable
 import org.example.whiskr.data.Post
@@ -51,7 +52,7 @@ interface MainFlowComponent {
         class AiStudio(val component: AiStudioComponent) : Child()
         class Games(val component: Any) : Child()
         class Messages(val component: Any) : Child()
-        class Profile(val component: Any) : Child()
+        class Profile(val component: ProfileComponent) : Child()
     }
 
     @Serializable
@@ -84,7 +85,7 @@ interface MainFlowComponent {
         data class PostDetails(val postId: Long) : Config
 
         @Serializable
-        data class UserProfile(val userId: Long) : Config
+        data class UserProfile(val handle: String) : Config
 
         @Serializable
         data class HashtagsFeed(val hashtag: String) : Config

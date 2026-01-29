@@ -1,25 +1,13 @@
 package org.example.whiskr.component.hashtags
 
-import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.Value
-import org.example.whiskr.PagingDelegate
 import org.example.whiskr.component.HashtagsComponent
-import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.component.PostListComponent
+import org.example.whiskr.component.list.FakePostListComponent
 
 class FakeHashtagsComponent(
     override val hashtag: String = "Whiskr",
-    initialModel: HashtagsComponent.Model = HashtagsComponent.Model(
-        listState = PagingDelegate.State(items = emptyList(), isLoadingMore = false, isEndOfList = false)
-    )
+    override val postsComponent: PostListComponent = FakePostListComponent()
 ) : HashtagsComponent {
-    override val model: Value<HashtagsComponent.Model> = MutableValue(initialModel)
 
     override fun onBackClick() {}
-    override fun onLoadMore() {}
-    override fun onLikeClick(postId: Long) {}
-    override fun onCommentsClick(post: Post) {}
-    override fun onShareClick(post: Post) {}
-    override fun onMediaClick(media: List<PostMedia>, index: Int) {}
-    override fun onHashtagClick(tag: String) {}
 }
