@@ -11,7 +11,8 @@ data class WhiskrColors(
     val primary: Color,
     val error: Color,
     val like: Color,
-    val vipGradient: List<Color>
+    val vipGradient: List<Color>,
+    val skyGradient: List<Color>
 )
 
 val lightPalette = WhiskrColors(
@@ -28,6 +29,11 @@ val lightPalette = WhiskrColors(
         Color(0xFFFFC371),
         Color(0xFF2196F3),
         Color(0xFF9C27B0)
+    ),
+    skyGradient = listOf(
+        Color(0xFF8ECAFE),
+        Color(0xFF4FC3F7),
+        Color(0xFFB39DDB)
     )
 )
 
@@ -45,5 +51,10 @@ val darkPalette = WhiskrColors(
         Color(0xFFFFAB00),
         Color(0xFF00B0FF),
         Color(0xFFD500F9)
+    ),
+    skyGradient = listOf(
+        Color(0xFF1D9BF0),
+        Color(0xFF7E57C2),
+        Color(0xFF00E5FF)
     )
 )

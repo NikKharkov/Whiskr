@@ -91,7 +91,7 @@ class DefaultMainFlowComponent(
                     navigation.push(CreatePost())
                 },
                 onNavigateToProfile = { userHandle ->
-                    navigation.push(UserProfile(userHandle))
+                    navigation.bringToFront(UserProfile(userHandle))
                 },
                 onNavigateToComments = { post ->
                     navigation.push(PostDetails(postId = post.id))
@@ -102,6 +102,73 @@ class DefaultMainFlowComponent(
                 onNavigateToHashtag = { tag ->
                     navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
                 }
+            )
+        )
+
+        is PostDetails -> MainFlowComponent.Child.PostDetails(
+            postDetailsFactory(
+                componentContext = context,
+                postId = config.postId,
+                onBack = { navigation.pop() },
+                onNavigateToReply = { postToReply ->
+                    navigation.push(CreateReply(targetPost = postToReply))
+                },
+                onNavigateToPostDetails = { post ->
+                    navigation.push(PostDetails(postId = post.id))
+                },
+                onNavigateToMediaViewer = { mediaList, index ->
+                    navigation.push(MediaViewer(mediaList, index))
+                },
+                onNavigateToHashtag = { tag ->
+                    navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
+                },
+                onNavigateToProfile = { handle ->
+                    navigation.bringToFront(UserProfile(handle))
+                }
+            )
+        )
+
+        is MainFlowComponent.Config.HashtagsFeed -> MainFlowComponent.Child.HashtagsFeed(
+            hashtagsFactory(
+                componentContext = context,
+                hashtag = config.hashtag,
+                onBack = { navigation.pop() },
+                onNavigateToComments = { post ->
+                    navigation.push(PostDetails(postId = post.id))
+                },
+                onNavigateToMediaViewer = { mediaList, index ->
+                    navigation.push(MediaViewer(mediaList, index))
+                },
+                onNavigateToHashtag = { tag ->
+                    navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
+                },
+                onNavigateToProfile = { handle ->
+                    navigation.bringToFront(UserProfile(handle))
+                }
+            )
+        )
+
+        is UserProfile -> MainFlowComponent.Child.Profile(
+            profileFactory(
+                componentContext = context,
+                handle = config.handle,
+                onBack = { navigation.pop() },
+                onNavigateToPost = { post -> navigation.push(PostDetails(postId = post.id)) },
+                onNavigateToUserProfile = { handle -> navigation.bringToFront(UserProfile(handle)) },
+                onNavigateToMediaViewer = { media, index -> navigation.push(MediaViewer(media, index)) },
+                onNavigateToHashtag = { tag -> navigation.push(MainFlowComponent.Config.HashtagsFeed(tag)) }
+            )
+        )
+
+        Profile -> MainFlowComponent.Child.Profile(
+            profileFactory(
+                componentContext = context,
+                handle = userState.value.profile?.handle ?: "",
+                onBack = { navigation.pop() },
+                onNavigateToPost = { post -> navigation.push(PostDetails(postId = post.id)) },
+                onNavigateToUserProfile = { handle -> navigation.bringToFront(UserProfile(handle)) },
+                onNavigateToMediaViewer = { media, index -> navigation.push(MediaViewer(media, index)) },
+                onNavigateToHashtag = { tag -> navigation.push(MainFlowComponent.Config.HashtagsFeed(tag)) }
             )
         )
 
@@ -123,51 +190,12 @@ class DefaultMainFlowComponent(
             )
         )
 
-        is PostDetails -> MainFlowComponent.Child.PostDetails(
-            postDetailsFactory(
-                componentContext = context,
-                postId = config.postId,
-                onBack = { navigation.pop() },
-                onNavigateToReply = { postToReply ->
-                    navigation.push(CreateReply(targetPost = postToReply))
-                },
-                onNavigateToPostDetails = { post ->
-                    navigation.push(PostDetails(postId = post.id))
-                },
-                onNavigateToMediaViewer = { mediaList, index ->
-                    navigation.push(MediaViewer(mediaList, index))
-                },
-                onNavigateToHashtag = { tag ->
-                    navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
-                },
-                onNavigateToProfile = { handle -> navigation.push(UserProfile(handle)) }
-            )
-        )
-
         is MediaViewer -> MainFlowComponent.Child.MediaViewer(
             mediaViewerFactory(
                 componentContext = context,
                 mediaList = config.media,
                 initialIndex = config.index,
                 onFinished = { navigation.pop() }
-            )
-        )
-
-        is MainFlowComponent.Config.HashtagsFeed -> MainFlowComponent.Child.HashtagsFeed(
-            hashtagsFactory(
-                componentContext = context,
-                hashtag = config.hashtag,
-                onBack = { navigation.pop() },
-                onNavigateToComments = { post ->
-                    navigation.push(PostDetails(postId = post.id))
-                },
-                onNavigateToMediaViewer = { mediaList, index ->
-                    navigation.push(MediaViewer(mediaList, index))
-                },
-                onNavigateToHashtag = { tag ->
-                    navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
-                },
-                onNavigateToProfile = { handle -> navigation.push(UserProfile(handle)) }
             )
         )
 
@@ -196,53 +224,10 @@ class DefaultMainFlowComponent(
             )
         )
 
-        is UserProfile -> MainFlowComponent.Child.Profile(
-            profileFactory(
-                componentContext = context,
-                handle = config.handle,
-                onBack = { navigation.pop() },
-                onNavigateToPost = { post ->
-                    navigation.push(PostDetails(postId = post.id))
-                },
-                onNavigateToUserProfile = { handle ->
-                    navigation.push(UserProfile(handle))
-                },
-                onNavigateToMediaViewer = { media, index ->
-                    navigation.push(MediaViewer(media, index))
-                },
-                onNavigateToHashtag = { tag ->
-                    navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
-                }
-            )
-        )
-
-        Profile -> MainFlowComponent.Child.Profile(
-            profileFactory(
-                componentContext = context,
-                handle = userState.value.profile?.handle ?: "",
-                onBack = {
-                    navigation.bringToFront(Home)
-                },
-                onNavigateToPost = { post ->
-                    navigation.push(PostDetails(postId = post.id))
-                },
-                onNavigateToUserProfile = { handle ->
-                    navigation.push(UserProfile(handle))
-                },
-                onNavigateToMediaViewer = { media, index ->
-                    navigation.push(MediaViewer(media, index))
-                },
-                onNavigateToHashtag = { tag ->
-                    navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
-                }
-            )
-        )
-
         Explore -> TODO()
         Games -> TODO()
         Messages -> TODO()
     }
-
     override fun onDeepLink(link: String) {
         val newStack = getInitialStack(link)
         if (newStack.size > 1) {

@@ -30,6 +30,7 @@ class DefaultProfileComponent(
 ) : ProfileComponent, ComponentContext by componentContext {
 
     private val scope = componentScope()
+
     private val _model = MutableValue(ProfileComponent.Model())
     override val model: Value<ProfileComponent.Model> = _model
 
@@ -64,7 +65,7 @@ class DefaultProfileComponent(
                 }
                 .onFailure { error ->
                     _model.value = _model.value.copy(isLoading = false, isError = true)
-                    Logger.e(error) {"${error.message}"}
+                    Logger.e(error) { "${error.message}" }
                 }
         }
     }
@@ -89,7 +90,7 @@ class DefaultProfileComponent(
                 }
                 .onFailure { error ->
                     _model.value = _model.value.copy(profile = currentProfile)
-                    Logger.e(error) {"${error.message}"}
+                    Logger.e(error) { "${error.message}" }
                 }
         }
     }

@@ -29,6 +29,7 @@ val MainFlowComponent.Child.showsNavigation: Boolean
         is MainFlowComponent.Child.CreateReply,
         is MainFlowComponent.Child.PostDetails,
         is MainFlowComponent.Child.HashtagsFeed,
+        is MainFlowComponent.Child.Profile,
         is MainFlowComponent.Child.MediaViewer -> false
 
         else -> true
