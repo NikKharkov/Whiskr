@@ -157,7 +157,8 @@ class DefaultMainFlowComponent(
                 onNavigateToUserProfile = { handle -> navigation.bringToFront(UserProfile(handle)) },
                 onNavigateToMediaViewer = { media, index -> navigation.push(MediaViewer(media, index)) },
                 onNavigateToHashtag = { tag -> navigation.push(MainFlowComponent.Config.HashtagsFeed(tag)) }
-            )
+            ),
+            isMe = false
         )
 
         Profile -> MainFlowComponent.Child.Profile(
@@ -169,7 +170,8 @@ class DefaultMainFlowComponent(
                 onNavigateToUserProfile = { handle -> navigation.bringToFront(UserProfile(handle)) },
                 onNavigateToMediaViewer = { media, index -> navigation.push(MediaViewer(media, index)) },
                 onNavigateToHashtag = { tag -> navigation.push(MainFlowComponent.Config.HashtagsFeed(tag)) }
-            )
+            ),
+            isMe = true
         )
 
         is CreatePost -> MainFlowComponent.Child.CreatePost(

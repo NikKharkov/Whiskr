@@ -52,7 +52,7 @@ interface MainFlowComponent {
         class AiStudio(val component: AiStudioComponent) : Child()
         class Games(val component: Any) : Child()
         class Messages(val component: Any) : Child()
-        class Profile(val component: ProfileComponent) : Child()
+        class Profile(val component: ProfileComponent, val isMe: Boolean) : Child()
     }
 
     @Serializable

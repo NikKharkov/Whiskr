@@ -25,7 +25,7 @@ import whiskr.flows.main.generated.resources.followers
 
 @Composable
 fun MobileDrawerContent(
-    activeTab: MainFlowComponent.Tab,
+    activeTab: MainFlowComponent.Tab?,
     isDarkTheme: Boolean,
     onTabSelected: (MainFlowComponent.Tab) -> Unit,
     onThemeToggle: (Offset) -> Unit,

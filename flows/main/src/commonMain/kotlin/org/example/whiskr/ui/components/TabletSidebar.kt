@@ -29,7 +29,7 @@ import whiskr.flows.main.generated.resources.post
 @Composable
 fun TabletSidebar(
     modifier: Modifier = Modifier,
-    activeTab: MainFlowComponent.Tab,
+    activeTab: MainFlowComponent.Tab?,
     isDarkTheme: Boolean,
     onThemeToggle: (Offset) -> Unit,
     onPostClick: () -> Unit,

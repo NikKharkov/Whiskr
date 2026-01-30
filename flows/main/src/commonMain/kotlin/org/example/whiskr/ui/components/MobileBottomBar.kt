@@ -19,7 +19,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun MobileBottomBar(
-    activeTab: MainFlowComponent.Tab,
+    activeTab: MainFlowComponent.Tab?,
     onTabSelected: (MainFlowComponent.Tab) -> Unit,
 ) {
     Column(

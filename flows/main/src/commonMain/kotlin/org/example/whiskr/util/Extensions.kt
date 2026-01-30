@@ -2,15 +2,21 @@ package org.example.whiskr.util
 
 import org.example.whiskr.component.MainFlowComponent
 
-fun MainFlowComponent.Child.toTab(): MainFlowComponent.Tab = when (this) {
+fun MainFlowComponent.Child.toTab(): MainFlowComponent.Tab? = when (this) {
     is MainFlowComponent.Child.Home -> MainFlowComponent.Tab.HOME
     is MainFlowComponent.Child.Explore -> MainFlowComponent.Tab.EXPLORE
     is MainFlowComponent.Child.AiStudio -> MainFlowComponent.Tab.AI_STUDIO
     is MainFlowComponent.Child.Games -> MainFlowComponent.Tab.GAMES
     is MainFlowComponent.Child.Messages -> MainFlowComponent.Tab.MESSAGES
-    is MainFlowComponent.Child.Profile -> MainFlowComponent.Tab.PROFILE
     is MainFlowComponent.Child.Store -> MainFlowComponent.Tab.STORE
-    else -> MainFlowComponent.Tab.HOME
+    is MainFlowComponent.Child.Profile -> {
+        if (isMe) {
+            MainFlowComponent.Tab.PROFILE
+        } else {
+            null
+        }
+    }
+    else -> null
 }
 
 fun MainFlowComponent.Tab.toConfig(): MainFlowComponent.Config = when (this) {

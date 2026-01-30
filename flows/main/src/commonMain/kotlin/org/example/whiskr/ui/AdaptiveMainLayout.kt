@@ -38,7 +38,7 @@ import org.example.whiskr.ui.components.TabletSidebar
 @Composable
 fun AdaptiveMainLayout(
     modifier: Modifier = Modifier,
-    activeTab: MainFlowComponent.Tab,
+    activeTab: MainFlowComponent.Tab?,
     onTabSelected: (MainFlowComponent.Tab) -> Unit,
     isDarkTheme: Boolean,
     onThemeToggle: (Offset) -> Unit,
