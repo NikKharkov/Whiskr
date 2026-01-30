@@ -24,6 +24,7 @@ class DefaultProfileComponent(
     @Assisted private val onNavigateToUserProfile: (String) -> Unit,
     @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
     @Assisted private val onNavigateToHashtag: (String) -> Unit,
+    @Assisted private val onNavigateToRepost: (Post) -> Unit,
     private val profileRepository: ProfileRepository,
     private val postRepository: PostRepository,
     postListFactory: PostListComponent.Factory
@@ -44,7 +45,8 @@ class DefaultProfileComponent(
         },
         onNavigateToComments = { post -> onNavigateToPost(post) },
         onNavigateToMediaViewer = onNavigateToMediaViewer,
-        onNavigateToHashtag = onNavigateToHashtag
+        onNavigateToHashtag = onNavigateToHashtag,
+        onNavigateToRepost = onNavigateToRepost
     )
 
     init {

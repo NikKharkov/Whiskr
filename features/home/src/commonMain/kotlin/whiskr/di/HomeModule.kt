@@ -17,7 +17,8 @@ interface HomeModule {
             (String) -> Unit, // onNavigateToProfile
             (Post) -> Unit, // onNavigateToComments
             (List<PostMedia>, Int) -> Unit, // onNavigateToMediaViewer
-            (String) -> Unit // onNavigateToHashtag
+            (String) -> Unit, // onNavigateToHashtag
+            (Post) -> Unit // onNavigateToRepost
         ) -> DefaultHomeComponent
     ): HomeComponent.Factory {
         return HomeComponent.Factory(factory)

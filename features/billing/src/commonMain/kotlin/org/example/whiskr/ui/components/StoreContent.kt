@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import org.example.whiskr.component.StoreComponent
 import org.example.whiskr.data.BillingProductKey
 import org.example.whiskr.data.ProductResponseDto
-import org.example.whiskr.dto.WalletResponseDto
+import org.example.whiskr.data.WalletResponseDto
 import org.example.whiskr.theme.LocalIsTablet
 import org.example.whiskr.theme.WhiskrTheme
 import org.jetbrains.compose.resources.stringResource

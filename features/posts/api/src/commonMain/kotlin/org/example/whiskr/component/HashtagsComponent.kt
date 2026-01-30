@@ -18,7 +18,8 @@ interface HashtagsComponent {
             onNavigateToComments: (Post) -> Unit,
             onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
             onNavigateToHashtag: (String) -> Unit,
-            onNavigateToProfile: (String) -> Unit
+            onNavigateToProfile: (String) -> Unit,
+            onNavigateToRepost: (Post) -> Unit
         ): HashtagsComponent
     }
 }

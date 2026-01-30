@@ -4,7 +4,7 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.domain.BillingRepository
-import org.example.whiskr.dto.WalletResponseDto
+import org.example.whiskr.data.WalletResponseDto
 
 @Inject
 class BillingRepositoryImpl(

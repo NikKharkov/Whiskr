@@ -82,12 +82,19 @@ fun PostDetailsScreen(
             headerContent = {
                 when {
                     model.isLoadingPost -> {
-                        Box(Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
+                        Box(
+                            Modifier.fillMaxWidth().padding(32.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
                             CircularProgressIndicator(color = WhiskrTheme.colors.primary)
                         }
                     }
+
                     model.isError -> {
-                        Box(Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
+                        Box(
+                            Modifier.fillMaxWidth().padding(32.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
                             Text(
                                 text = stringResource(Res.string.post_error),
                                 style = WhiskrTheme.typography.h3,
@@ -95,6 +102,7 @@ fun PostDetailsScreen(
                             )
                         }
                     }
+
                     model.post != null -> {
                         val post = model.post!!
                         Column {
@@ -103,7 +111,7 @@ fun PostDetailsScreen(
                                 onLikeClick = { component.onLikeClick(post.id) },
                                 onMediaClick = { idx -> component.onMediaClick(post.media, idx) },
                                 onCommentsClick = { component.onReplyClick(post) },
-                                onRepostClick = { /* ... */ },
+                                onRepostClick = { component.onRepostClick(post) },
                                 onShareClick = { component.onShareClick(post) },
                                 onProfileClick = { component.onNavigateToParentProfile(post.author.handle) }
                             )

@@ -17,4 +17,7 @@
     <string name="time_short_hour">%1$dh</string>
     <string name="time_short_day">%1$dd</string>
     <string name="time_yesterday">Yesterday</string>
+    <string name="repost_title">Repost</string>
+    <string name="post_action">Post</string>
+    <string name="add_comment_hint">Add a comment...</string>
 </resources>

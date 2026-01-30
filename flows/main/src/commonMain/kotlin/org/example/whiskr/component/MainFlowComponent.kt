@@ -1,6 +1,7 @@
 package org.example.whiskr.component
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import component.ProfileComponent
@@ -8,7 +9,7 @@ import domain.UserState
 import kotlinx.serialization.Serializable
 import org.example.whiskr.data.Post
 import org.example.whiskr.data.PostMedia
-import org.example.whiskr.dto.WalletResponseDto
+import org.example.whiskr.data.WalletResponseDto
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import whiskr.flows.main.generated.resources.Res
@@ -30,6 +31,8 @@ import whiskr.flows.main.generated.resources.tab_store
 interface MainFlowComponent {
 
     val stack: Value<ChildStack<Config, Child>>
+    val dialogSlot: Value<ChildSlot<DialogConfig, DialogChild>>
+
     val userState: Value<UserState>
     val walletState: Value<WalletResponseDto>
     val isDarkTheme: Value<Boolean>
@@ -98,6 +101,16 @@ interface MainFlowComponent {
 
         @Serializable
         data object Store : Config
+    }
+
+    sealed interface DialogChild {
+        class CreateRepost(val component: CreateRepostComponent) : DialogChild
+    }
+
+    @Serializable
+    sealed interface DialogConfig {
+        @Serializable
+        data class CreateRepost(val targetPost: Post) : DialogConfig
     }
 
     fun interface Factory {

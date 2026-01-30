@@ -36,7 +36,8 @@ interface ProfileComponent {
             onNavigateToPost: (Post) -> Unit,
             onNavigateToUserProfile: (String) -> Unit,
             onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
-            onNavigateToHashtag: (String) -> Unit
+            onNavigateToHashtag: (String) -> Unit,
+            onNavigateToRepost: (Post) -> Unit
         ): ProfileComponent
     }
 }

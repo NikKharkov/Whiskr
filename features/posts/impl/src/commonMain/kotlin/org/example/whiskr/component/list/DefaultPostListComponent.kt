@@ -21,6 +21,7 @@ class DefaultPostListComponent(
     @Assisted private val onNavigateToComments: (Post) -> Unit,
     @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
     @Assisted private val onNavigateToHashtag: (String) -> Unit,
+    @Assisted private val onNavigateToRepost: (Post) -> Unit,
     private val postRepository: PostRepository,
     private val shareService: ShareService,
 ) : PostListComponent, ComponentContext by componentContext {
@@ -53,4 +54,5 @@ class DefaultPostListComponent(
     override fun onCommentsClick(post: Post) = onNavigateToComments(post)
     override fun onProfileClick(handle: String) = onNavigateToProfile(handle)
     override fun onHashtagClick(tag: String) = onNavigateToHashtag(tag)
+    override fun onRepostClick(post: Post) = onNavigateToRepost(post)
 }

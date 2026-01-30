@@ -18,7 +18,8 @@ class DefaultHashtagsComponent(
     @Assisted private val onNavigateToComments: (Post) -> Unit,
     @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
     @Assisted private val onNavigateToHashtag: (String) -> Unit,
-    @Assisted private val onNavigateToProfile: (String) -> Unit, // 👇
+    @Assisted private val onNavigateToProfile: (String) -> Unit,
+    @Assisted private val onNavigateToRepost: (Post) -> Unit,
     private val postRepository: PostRepository,
     postListFactory: PostListComponent.Factory,
 ) : HashtagsComponent, ComponentContext by componentContext {
@@ -31,7 +32,8 @@ class DefaultHashtagsComponent(
         onNavigateToMediaViewer = onNavigateToMediaViewer,
         onNavigateToHashtag = { tag ->
             if (tag != hashtag) onNavigateToHashtag(tag)
-        }
+        },
+        onNavigateToRepost = onNavigateToRepost
     )
 
     override fun onBackClick() = onBack()

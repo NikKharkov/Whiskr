@@ -33,7 +33,8 @@ interface ProfileModule {
             (Post) -> Unit, // onNavPost
             (String) -> Unit, // onNavUser
             (List<PostMedia>, Int) -> Unit, // onNavMedia
-            (String) -> Unit // onNavTag
+            (String) -> Unit, // onNavTag,
+            (Post) -> Unit //onRepost
         ) -> DefaultProfileComponent
     ): ProfileComponent.Factory {
         return ProfileComponent.Factory(factory)

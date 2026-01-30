@@ -17,6 +17,7 @@ import org.example.whiskr.ui.AdaptiveMainLayout
 import org.example.whiskr.ui.AiStudioScreen
 import org.example.whiskr.ui.CreatePostScreen
 import org.example.whiskr.ui.CreateReplyScreen
+import org.example.whiskr.ui.CreateRepostScreen
 import org.example.whiskr.ui.HashtagFeedScreen
 import org.example.whiskr.ui.HomeScreen
 import org.example.whiskr.ui.MediaViewerScreen
@@ -34,6 +35,7 @@ fun MainFlowContent(
     onThemeAnimationStart: (Offset) -> Unit
 ) {
     val stack by component.stack.subscribeAsState()
+    val dialogSlot by component.dialogSlot.subscribeAsState()
     val user by component.userState.subscribeAsState()
     val isDrawerOpen by component.isDrawerOpen.subscribeAsState()
 
@@ -73,6 +75,14 @@ fun MainFlowContent(
                         is MainFlowComponent.Child.MediaViewer -> MediaViewerScreen(child.component)
                         is MainFlowComponent.Child.HashtagsFeed -> HashtagFeedScreen(child.component)
                         is MainFlowComponent.Child.Store -> StoreScreen(child.component)
+                    }
+                }
+
+                dialogSlot.child?.instance?.let { dialogChild ->
+                    when (dialogChild) {
+                        is MainFlowComponent.DialogChild.CreateRepost -> {
+                            CreateRepostScreen(component = dialogChild.component)
+                        }
                     }
                 }
             }

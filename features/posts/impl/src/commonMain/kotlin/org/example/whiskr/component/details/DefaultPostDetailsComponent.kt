@@ -24,6 +24,7 @@ class DefaultPostDetailsComponent(
     @Assisted private val onBack: () -> Unit,
     @Assisted private val onNavigateToHashtag: (String) -> Unit,
     @Assisted private val onNavigateToProfile: (String) -> Unit,
+    @Assisted private val onNavigateToRepost: (Post) -> Unit,
     postListFactory: PostListComponent.Factory,
     private val postRepository: PostRepository
 ) : PostDetailsComponent, ComponentContext by componentContext {
@@ -38,7 +39,8 @@ class DefaultPostDetailsComponent(
         onNavigateToProfile = onNavigateToProfile,
         onNavigateToComments = onNavigateToPostDetails,
         onNavigateToMediaViewer = onNavigateToMediaViewer,
-        onNavigateToHashtag = onNavigateToHashtag
+        onNavigateToHashtag = onNavigateToHashtag,
+        onNavigateToRepost = onNavigateToRepost
     )
 
     init {
@@ -118,4 +120,5 @@ class DefaultPostDetailsComponent(
     override fun onReplyClick(post: Post) = onNavigateToReply(post)
     override fun onMediaClick(media: List<PostMedia>, index: Int) = onNavigateToMediaViewer(media, index)
     override fun onNavigateToParentProfile(handle: String) = onNavigateToProfile(handle)
+    override fun onRepostClick(post: Post) = onNavigateToRepost(post)
 }

@@ -12,6 +12,7 @@ interface PostDetailsComponent {
 
     fun onBackClick()
     fun onReplyClick(post: Post)
+    fun onRepostClick(post: Post)
     fun onLikeClick(postId: Long)
     fun onShareClick(post: Post)
     fun onMediaClick(media: List<PostMedia>, index: Int)
@@ -32,7 +33,8 @@ interface PostDetailsComponent {
             onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
             onBack: () -> Unit,
             onNavigateToHashtag: (String) -> Unit,
-            onNavigateToProfile: (String) -> Unit
+            onNavigateToProfile: (String) -> Unit,
+            onNavigateToRepost: (Post) -> Unit
         ): PostDetailsComponent
     }
 }

@@ -32,3 +32,10 @@ data class PurchaseRequestDto(
 data class PurchaseResponseDto(
     val clientSecret: String
 )
+
+@Serializable
+data class WalletResponseDto(
+    val balance: Long,
+    val isPremium: Boolean,
+    val premiumEndsAt: String?
+)

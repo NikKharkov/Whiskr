@@ -39,4 +39,5 @@ class FakePostListComponent(
     override fun onProfileClick(handle: String) {}
     override fun onHashtagClick(tag: String) {}
     override fun insertNewPost(post: Post) {}
+    override fun onRepostClick(post: Post) {}
 }

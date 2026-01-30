@@ -16,6 +16,7 @@ class DefaultHomeComponent(
     @Assisted private val onNavigateToComments: (Post) -> Unit,
     @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
     @Assisted private val onNavigateToHashtag: (String) -> Unit,
+    @Assisted private val onNavigateToRepost: (Post) -> Unit,
     private val postRepository: PostRepository,
     createPostFactory: CreatePostComponent.Factory,
     postListFactory: PostListComponent.Factory
@@ -27,7 +28,8 @@ class DefaultHomeComponent(
         onNavigateToProfile = onNavigateToProfile,
         onNavigateToComments = onNavigateToComments,
         onNavigateToMediaViewer = onNavigateToMediaViewer,
-        onNavigateToHashtag = onNavigateToHashtag
+        onNavigateToHashtag = onNavigateToHashtag,
+        onNavigateToRepost = onNavigateToRepost
     )
 
     override val createPostComponent: CreatePostComponent = createPostFactory(

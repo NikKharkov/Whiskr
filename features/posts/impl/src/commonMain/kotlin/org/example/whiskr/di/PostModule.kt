@@ -5,6 +5,7 @@ import de.jensklingenberg.ktorfit.Ktorfit
 import me.tatarka.inject.annotations.Provides
 import org.example.whiskr.component.CreatePostComponent
 import org.example.whiskr.component.CreateReplyComponent
+import org.example.whiskr.component.CreateRepostComponent
 import org.example.whiskr.component.HashtagsComponent
 import org.example.whiskr.component.PostDetailsComponent
 import org.example.whiskr.component.PostListComponent
@@ -13,6 +14,7 @@ import org.example.whiskr.component.details.DefaultPostDetailsComponent
 import org.example.whiskr.component.hashtags.DefaultHashtagsComponent
 import org.example.whiskr.component.list.DefaultPostListComponent
 import org.example.whiskr.component.reply.DefaultCreateReplyComponent
+import org.example.whiskr.component.repost.DefaultCreateRepostComponent
 import org.example.whiskr.data.Post
 import org.example.whiskr.data.PostApiService
 import org.example.whiskr.data.PostMedia
@@ -50,7 +52,8 @@ interface PostModule {
             (String) -> Unit,
             (Post) -> Unit,
             (List<PostMedia>, Int) -> Unit,
-            (String) -> Unit
+            (String) -> Unit,
+            (Post) -> Unit
         ) -> DefaultPostListComponent
     ): PostListComponent.Factory {
         return PostListComponent.Factory(factory)
@@ -75,7 +78,8 @@ interface PostModule {
             (List<PostMedia>, Int) -> Unit,
             () -> Unit,
             (String) -> Unit,
-            (String) -> Unit
+            (String) -> Unit,
+            (Post) -> Unit
         ) -> DefaultPostDetailsComponent
     ): PostDetailsComponent.Factory {
         return PostDetailsComponent.Factory(factory)
@@ -91,9 +95,23 @@ interface PostModule {
             (Post) -> Unit, // comments
             (List<PostMedia>, Int) -> Unit, // media
             (String) -> Unit, // hashtag nav
-            (String) -> Unit // profile nav
+            (String) -> Unit, // profile nav
+            (Post) -> Unit // repost
         ) -> DefaultHashtagsComponent
     ): HashtagsComponent.Factory {
         return HashtagsComponent.Factory(factory)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRepostFactory(
+        factory: (
+            ComponentContext,
+            Post,
+            () -> Unit,
+            () -> Unit
+        ) -> DefaultCreateRepostComponent
+    ): CreateRepostComponent.Factory {
+        return CreateRepostComponent.Factory(factory)
     }
 }

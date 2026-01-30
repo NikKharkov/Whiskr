@@ -2,6 +2,10 @@ package org.example.whiskr.component
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DelicateDecomposeApi
+import com.arkivanov.decompose.router.slot.SlotNavigation
+import com.arkivanov.decompose.router.slot.activate
+import com.arkivanov.decompose.router.slot.childSlot
+import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.childStack
@@ -27,7 +31,7 @@ import org.example.whiskr.component.MainFlowComponent.Config.PostDetails
 import org.example.whiskr.component.MainFlowComponent.Config.Profile
 import org.example.whiskr.component.MainFlowComponent.Config.UserProfile
 import org.example.whiskr.domain.BillingRepository
-import org.example.whiskr.dto.WalletResponseDto
+import org.example.whiskr.data.WalletResponseDto
 import org.example.whiskr.util.toAiPostMedia
 import org.example.whiskr.util.toConfig
 
@@ -47,10 +51,13 @@ class DefaultMainFlowComponent(
     private val hashtagsFactory: HashtagsComponent.Factory,
     private val storeFactory: StoreComponent.Factory,
     private val aiFactory: AiStudioComponent.Factory,
-    private val profileFactory: ProfileComponent.Factory
+    private val profileFactory: ProfileComponent.Factory,
+    private val repostFactory: CreateRepostComponent.Factory
 ) : MainFlowComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<MainFlowComponent.Config>()
+    private val dialogNavigation = SlotNavigation<MainFlowComponent.DialogConfig>()
+
     private val scope = componentScope()
 
     override val userState: Value<UserState> = userRepository.user
@@ -80,6 +87,13 @@ class DefaultMainFlowComponent(
         childFactory = ::createChild
     )
 
+    override val dialogSlot = childSlot(
+        source = dialogNavigation,
+        serializer = MainFlowComponent.DialogConfig.serializer(),
+        handleBackButton = true,
+        childFactory = ::createDialogChild
+    )
+
     private fun createChild(
         config: MainFlowComponent.Config,
         context: ComponentContext
@@ -101,6 +115,9 @@ class DefaultMainFlowComponent(
                 },
                 onNavigateToHashtag = { tag ->
                     navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
+                },
+                onNavigateToRepost = { post ->
+                    dialogNavigation.activate(MainFlowComponent.DialogConfig.CreateRepost(post))
                 }
             )
         )
@@ -124,6 +141,9 @@ class DefaultMainFlowComponent(
                 },
                 onNavigateToProfile = { handle ->
                     navigation.bringToFront(UserProfile(handle))
+                },
+                onNavigateToRepost = { post ->
+                    dialogNavigation.activate(MainFlowComponent.DialogConfig.CreateRepost(post))
                 }
             )
         )
@@ -144,6 +164,9 @@ class DefaultMainFlowComponent(
                 },
                 onNavigateToProfile = { handle ->
                     navigation.bringToFront(UserProfile(handle))
+                },
+                onNavigateToRepost = { post ->
+                    dialogNavigation.activate(MainFlowComponent.DialogConfig.CreateRepost(post))
                 }
             )
         )
@@ -155,8 +178,24 @@ class DefaultMainFlowComponent(
                 onBack = { navigation.pop() },
                 onNavigateToPost = { post -> navigation.push(PostDetails(postId = post.id)) },
                 onNavigateToUserProfile = { handle -> navigation.bringToFront(UserProfile(handle)) },
-                onNavigateToMediaViewer = { media, index -> navigation.push(MediaViewer(media, index)) },
-                onNavigateToHashtag = { tag -> navigation.push(MainFlowComponent.Config.HashtagsFeed(tag)) }
+                onNavigateToMediaViewer = { media, index ->
+                    navigation.push(
+                        MediaViewer(
+                            media,
+                            index
+                        )
+                    )
+                },
+                onNavigateToHashtag = { tag ->
+                    navigation.push(
+                        MainFlowComponent.Config.HashtagsFeed(
+                            tag
+                        )
+                    )
+                },
+                onNavigateToRepost = { post ->
+                    dialogNavigation.activate(MainFlowComponent.DialogConfig.CreateRepost(post))
+                }
             ),
             isMe = false
         )
@@ -168,8 +207,24 @@ class DefaultMainFlowComponent(
                 onBack = { navigation.pop() },
                 onNavigateToPost = { post -> navigation.push(PostDetails(postId = post.id)) },
                 onNavigateToUserProfile = { handle -> navigation.bringToFront(UserProfile(handle)) },
-                onNavigateToMediaViewer = { media, index -> navigation.push(MediaViewer(media, index)) },
-                onNavigateToHashtag = { tag -> navigation.push(MainFlowComponent.Config.HashtagsFeed(tag)) }
+                onNavigateToMediaViewer = { media, index ->
+                    navigation.push(
+                        MediaViewer(
+                            media,
+                            index
+                        )
+                    )
+                },
+                onNavigateToHashtag = { tag ->
+                    navigation.push(
+                        MainFlowComponent.Config.HashtagsFeed(
+                            tag
+                        )
+                    )
+                },
+                onNavigateToRepost = { post ->
+                    dialogNavigation.activate(MainFlowComponent.DialogConfig.CreateRepost(post))
+                }
             ),
             isMe = true
         )
@@ -230,6 +285,21 @@ class DefaultMainFlowComponent(
         Games -> TODO()
         Messages -> TODO()
     }
+
+    private fun createDialogChild(
+        config: MainFlowComponent.DialogConfig,
+        context: ComponentContext
+    ): MainFlowComponent.DialogChild = when (config) {
+        is MainFlowComponent.DialogConfig.CreateRepost -> MainFlowComponent.DialogChild.CreateRepost(
+            repostFactory(
+                componentContext = context,
+                targetPost = config.targetPost,
+                onBack = { dialogNavigation.dismiss() },
+                onRepostCreated = { dialogNavigation.dismiss() }
+            )
+        )
+    }
+
     override fun onDeepLink(link: String) {
         val newStack = getInitialStack(link)
         if (newStack.size > 1) {

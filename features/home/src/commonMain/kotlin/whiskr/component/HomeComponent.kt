@@ -17,7 +17,8 @@ interface HomeComponent {
             onNavigateToProfile: (String) -> Unit,
             onNavigateToComments: (Post) -> Unit,
             onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
-            onNavigateToHashtag: (String) -> Unit
+            onNavigateToHashtag: (String) -> Unit,
+            onNavigateToRepost: (Post) -> Unit
         ): HomeComponent
     }
 }

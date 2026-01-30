@@ -74,7 +74,7 @@ fun PostListContent(
                     onProfileClick = { component.onProfileClick(post.author.handle) },
                     onLikeClick = { component.onLikeClick(post.id) },
                     onCommentClick = { component.onCommentsClick(post) },
-                    onRepostClick = { /* TODO: Добавить в компонент */ },
+                    onRepostClick = { component.onRepostClick(post) },
                     onShareClick = { component.onShareClick(post) },
                     onHashtagClick = { tag -> component.onHashtagClick(tag) }
                 )

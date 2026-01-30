@@ -14,6 +14,7 @@ interface PostListComponent {
     fun onLoadMore()
     fun onLikeClick(postId: Long)
     fun onShareClick(post: Post)
+    fun onRepostClick(post: Post)
     fun onMediaClick(media: List<PostMedia>, index: Int)
     fun onCommentsClick(post: Post)
     fun onProfileClick(handle: String)
@@ -29,7 +30,8 @@ interface PostListComponent {
             onNavigateToProfile: (String) -> Unit,
             onNavigateToComments: (Post) -> Unit,
             onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
-            onNavigateToHashtag: (String) -> Unit
+            onNavigateToHashtag: (String) -> Unit,
+            onNavigateToRepost: (Post) -> Unit
         ): PostListComponent
     }
 }
