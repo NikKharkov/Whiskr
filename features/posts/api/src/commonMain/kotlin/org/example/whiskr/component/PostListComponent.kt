@@ -16,7 +16,7 @@ interface PostListComponent {
     fun onShareClick(post: Post)
     fun onRepostClick(post: Post)
     fun onMediaClick(media: List<PostMedia>, index: Int)
-    fun onCommentsClick(post: Post)
+    fun onNavigateToDetails(post: Post)
     fun onProfileClick(handle: String)
     fun onHashtagClick(tag: String)
     fun insertNewPost(post: Post)

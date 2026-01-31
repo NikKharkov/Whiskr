@@ -17,8 +17,6 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import org.example.whiskr.component.PostListComponent
 import org.example.whiskr.layouts.pagingItems
 import org.example.whiskr.theme.WhiskrTheme
-import org.example.whiskr.ui.components.PostCard
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,13 +68,14 @@ fun PostListContent(
             ) { _, post ->
                 PostCard(
                     post = post,
-                    onPostClick = { mediaIndex -> component.onMediaClick(post.media, mediaIndex) },
-                    onProfileClick = { component.onProfileClick(post.author.handle) },
+                    onMediaClick = { mediaList, index -> component.onMediaClick(mediaList, index) },
+                    onProfileClick = { handle -> component.onProfileClick(handle) },
                     onLikeClick = { component.onLikeClick(post.id) },
-                    onCommentClick = { component.onCommentsClick(post) },
+                    onCommentClick = { component.onNavigateToDetails(post) },
                     onRepostClick = { component.onRepostClick(post) },
                     onShareClick = { component.onShareClick(post) },
-                    onHashtagClick = { tag -> component.onHashtagClick(tag) }
+                    onHashtagClick = { tag -> component.onHashtagClick(tag) },
+                    onNavigateToOriginal = { originalPost -> component.onNavigateToDetails(originalPost) }
                 )
             }
         }

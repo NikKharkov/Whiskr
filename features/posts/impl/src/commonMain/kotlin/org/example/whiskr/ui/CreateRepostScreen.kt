@@ -105,13 +105,15 @@ fun CreateRepostScreen(
                     )
                 }
 
-                Text(
-                    text = model.targetPost.content ?: "",
-                    style = WhiskrTheme.typography.body,
-                    color = WhiskrTheme.colors.onBackground,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis
-                )
+                if (model.targetPost.content != null) {
+                    Text(
+                        text = model.targetPost.content!!,
+                        style = WhiskrTheme.typography.body,
+                        color = WhiskrTheme.colors.onBackground,
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
         }
 

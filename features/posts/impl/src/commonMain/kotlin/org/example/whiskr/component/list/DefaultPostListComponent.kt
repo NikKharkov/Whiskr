@@ -51,7 +51,7 @@ class DefaultPostListComponent(
     override fun onShareClick(post: Post) = feedDelegate.onShareClick(post)
 
     override fun onMediaClick(media: List<PostMedia>, index: Int) = onNavigateToMediaViewer(media, index)
-    override fun onCommentsClick(post: Post) = onNavigateToComments(post)
+    override fun onNavigateToDetails(post: Post) = onNavigateToComments(post)
     override fun onProfileClick(handle: String) = onNavigateToProfile(handle)
     override fun onHashtagClick(tag: String) = onNavigateToHashtag(tag)
     override fun onRepostClick(post: Post) = onNavigateToRepost(post)
