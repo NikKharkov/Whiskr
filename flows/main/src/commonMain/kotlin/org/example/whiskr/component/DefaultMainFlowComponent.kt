@@ -30,6 +30,8 @@ import org.example.whiskr.component.MainFlowComponent.Config.Messages
 import org.example.whiskr.component.MainFlowComponent.Config.PostDetails
 import org.example.whiskr.component.MainFlowComponent.Config.Profile
 import org.example.whiskr.component.MainFlowComponent.Config.UserProfile
+import org.example.whiskr.component.explore.ExploreComponent
+import org.example.whiskr.component.viewer.NewsViewerComponent
 import org.example.whiskr.domain.BillingRepository
 import org.example.whiskr.data.WalletResponseDto
 import org.example.whiskr.util.toAiPostMedia
@@ -52,7 +54,9 @@ class DefaultMainFlowComponent(
     private val storeFactory: StoreComponent.Factory,
     private val aiFactory: AiStudioComponent.Factory,
     private val profileFactory: ProfileComponent.Factory,
-    private val repostFactory: CreateRepostComponent.Factory
+    private val repostFactory: CreateRepostComponent.Factory,
+    private val exploreFactory: ExploreComponent.Factory,
+    private val newsViewerFactory: NewsViewerComponent.Factory
 ) : MainFlowComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<MainFlowComponent.Config>()
@@ -281,7 +285,36 @@ class DefaultMainFlowComponent(
             )
         )
 
-        Explore -> TODO()
+        Explore -> MainFlowComponent.Child.Explore(
+            exploreFactory(
+                componentContext = context,
+                onNavigateToPost = { post ->
+                    navigation.push(PostDetails(postId = post.id))
+                },
+                onNavigateToProfile = { userHandle ->
+                    navigation.bringToFront(UserProfile(userHandle))
+                },
+                onNavigateToMediaViewer = { mediaList, index ->
+                    navigation.push(MediaViewer(mediaList, index))
+                },
+                onNavigateToHashtag = { tag ->
+                    navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
+                },
+                onNavigateToNews = { url -> navigation.push(MainFlowComponent.Config.NewsViewer(url))},
+                onNavigateToRepost = { post ->
+                    dialogNavigation.activate(MainFlowComponent.DialogConfig.CreateRepost(post))
+                }
+            )
+        )
+
+        is MainFlowComponent.Config.NewsViewer -> MainFlowComponent.Child.NewsViewer(
+            newsViewerFactory(
+                componentContext = context,
+                url = config.url,
+                onBack = { navigation.pop() }
+            )
+        )
+
         Games -> TODO()
         Messages -> TODO()
     }

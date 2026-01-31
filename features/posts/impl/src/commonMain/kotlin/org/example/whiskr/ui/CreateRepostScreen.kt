@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
@@ -124,6 +125,7 @@ fun CreateRepostScreen(
             onClick = component::onRepostClick,
             isLoading = model.isReposting,
             enabled = !model.isReposting,
+            contentColor = Color.White,
             modifier = Modifier.fillMaxWidth()
         )
     }

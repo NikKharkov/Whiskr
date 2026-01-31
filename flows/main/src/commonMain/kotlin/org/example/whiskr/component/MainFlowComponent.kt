@@ -7,6 +7,8 @@ import com.arkivanov.decompose.value.Value
 import component.ProfileComponent
 import domain.UserState
 import kotlinx.serialization.Serializable
+import org.example.whiskr.component.explore.ExploreComponent
+import org.example.whiskr.component.viewer.NewsViewerComponent
 import org.example.whiskr.data.Post
 import org.example.whiskr.data.PostMedia
 import org.example.whiskr.data.WalletResponseDto
@@ -51,8 +53,9 @@ interface MainFlowComponent {
         class HashtagsFeed(val component: HashtagsComponent) : Child()
         class MediaViewer(val component: MediaViewerComponent) : Child()
         class Store(val component: StoreComponent) : Child()
-        class Explore(val component: Any) : Child()
+        class Explore(val component: ExploreComponent) : Child()
         class AiStudio(val component: AiStudioComponent) : Child()
+        class NewsViewer(val component: NewsViewerComponent) : Child()
         class Games(val component: Any) : Child()
         class Messages(val component: Any) : Child()
         class Profile(val component: ProfileComponent, val isMe: Boolean) : Child()
@@ -98,6 +101,9 @@ interface MainFlowComponent {
             val media: List<PostMedia>,
             val index: Int
         ) : Config
+
+        @Serializable
+        data class NewsViewer(val url: String): Config
 
         @Serializable
         data object Store : Config

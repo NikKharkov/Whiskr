@@ -45,6 +45,7 @@ include(":features:media_viewer")
 include(":features:billing")
 include(":features:ai_studio")
 include(":features:profile")
+include(":features:explorer")
 
 include(":core:common")
 include(":core:network")

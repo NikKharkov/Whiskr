@@ -1,5 +1,6 @@
 [versions]
 agp = "9.0.0"
+webview = "2.0.3"
 core = "1.17.0"
 kotlin = "2.3.0"
 ksp = "2.3.4"
@@ -25,6 +26,7 @@ ktorfit = "2.7.2"
 kotlinxSerialization = "1.10.0"
 
 room = "2.8.4"
+rssparser = "6.1.2"
 sqlite = "2.6.2"
 multiplatformSettings = "1.3.0"
 kvault = "1.12.0"
@@ -65,6 +67,7 @@ stripe-android = "22.6.1"
 # Build Logic Dependencies
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 androidx-core = { module = "androidx.core:core", version.ref = "core" }
+compose-webview-multiplatform = { module = "io.github.kevinnzou:compose-webview-multiplatform", version.ref = "webview" }
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeMultiplatform" }
 ksp-gradlePlugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
@@ -108,6 +111,7 @@ firebase-common = { module = "dev.gitlive:firebase-common", version.ref = "fireb
 # Database & SharedPreferences
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+rssparser = { module = "com.prof18.rssparser:rssparser", version.ref = "rssparser" }
 sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
 
 multiplatform-settings = { group = "com.russhwolf", name = "multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }

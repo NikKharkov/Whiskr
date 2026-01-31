@@ -85,7 +85,8 @@ fun QuotePostCard(
                     EmbeddedPostCard(
                         post = original,
                         onMediaClick = { index -> onMediaClick(original.media, index) },
-                        onClick = { onNavigateToOriginal(original) }
+                        onClick = { onNavigateToOriginal(original) },
+                        onProfileClick = { onProfileClick(original.author.handle) }
                     )
                 }
 
@@ -107,6 +108,7 @@ fun QuotePostCard(
 private fun EmbeddedPostCard(
     post: Post,
     onClick: () -> Unit,
+    onProfileClick: () -> Unit,
     onMediaClick: (Int) -> Unit
 ) {
     val formattedTime = rememberRelativeTime(post.createdAt)
@@ -125,7 +127,7 @@ private fun EmbeddedPostCard(
         ) {
             AvatarPlaceholder(
                 avatarUrl = post.author.avatarUrl,
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(20.dp).customClickable(onClick = onProfileClick)
             )
 
             Spacer(modifier = Modifier.width(8.dp))

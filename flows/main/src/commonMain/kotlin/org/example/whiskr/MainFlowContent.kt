@@ -18,9 +18,11 @@ import org.example.whiskr.ui.AiStudioScreen
 import org.example.whiskr.ui.CreatePostScreen
 import org.example.whiskr.ui.CreateReplyScreen
 import org.example.whiskr.ui.CreateRepostScreen
+import org.example.whiskr.ui.ExploreScreen
 import org.example.whiskr.ui.HashtagFeedScreen
 import org.example.whiskr.ui.HomeScreen
 import org.example.whiskr.ui.MediaViewerScreen
+import org.example.whiskr.ui.NewsViewerScreen
 import org.example.whiskr.ui.PostDetailsScreen
 import org.example.whiskr.ui.StoreScreen
 import org.example.whiskr.util.showsNavigation
@@ -64,7 +66,7 @@ fun MainFlowContent(
                 ) {
                     when (val child = it.instance) {
                         is MainFlowComponent.Child.Home -> HomeScreen(child.component)
-                        is MainFlowComponent.Child.Explore -> Text("Explore screen")
+                        is MainFlowComponent.Child.Explore -> ExploreScreen(child.component)
                         is MainFlowComponent.Child.AiStudio -> AiStudioScreen(child.component)
                         is MainFlowComponent.Child.Games -> Text("Games screen")
                         is MainFlowComponent.Child.Messages -> Text("Messages screen")
@@ -75,6 +77,7 @@ fun MainFlowContent(
                         is MainFlowComponent.Child.MediaViewer -> MediaViewerScreen(child.component)
                         is MainFlowComponent.Child.HashtagsFeed -> HashtagFeedScreen(child.component)
                         is MainFlowComponent.Child.Store -> StoreScreen(child.component)
+                        is MainFlowComponent.Child.NewsViewer -> NewsViewerScreen(child.component)
                     }
                 }
 

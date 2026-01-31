@@ -23,7 +23,9 @@ import org.example.whiskr.theme.WhiskrTheme
 fun PostListContent(
     component: PostListComponent,
     modifier: Modifier = Modifier,
-    headerContent: (@Composable () -> Unit)? = null
+    headerContent: (@Composable () -> Unit)? = null,
+    interval: Int = 0,
+    additionalContent: (@Composable (index: Int) -> Unit)? = null
 ) {
     val model by component.model.subscribeAsState()
     val state = model.listState
@@ -65,7 +67,7 @@ fun PostListContent(
                 separatorContent = { _, _ ->
                     HorizontalDivider(thickness = 1.dp, color = WhiskrTheme.colors.outline)
                 }
-            ) { _, post ->
+            ) { index, post ->
                 PostCard(
                     post = post,
                     onMediaClick = { mediaList, index -> component.onMediaClick(mediaList, index) },
@@ -77,6 +79,11 @@ fun PostListContent(
                     onHashtagClick = { tag -> component.onHashtagClick(tag) },
                     onNavigateToOriginal = { originalPost -> component.onNavigateToDetails(originalPost) }
                 )
+
+                if (interval > 0 && (index + 1) % interval == 0 && additionalContent != null) {
+                    HorizontalDivider(thickness = 1.dp, color = WhiskrTheme.colors.outline)
+                    additionalContent(index)
+                }
             }
         }
     }

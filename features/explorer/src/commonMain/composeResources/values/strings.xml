@@ -1,0 +1,4 @@
+<resources>
+    <string name="searchbar_hint">Search posts, tags...</string>
+    <string name="news_label">NEWS • Love Meow</string>
+</resources>

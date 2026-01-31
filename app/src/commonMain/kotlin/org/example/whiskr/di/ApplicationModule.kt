@@ -11,6 +11,7 @@ import org.example.whiskr.root.RootModule
 interface ApplicationModule :
     NetworkModule, AuthModule, RootModule, RegistrationModule,
     HomeModule, PostModule, AuthFlowModule, MainFlowModule, UserModule,
-    StorageModule, MediaViewerModule, BillingModule, AiModule, ProfileModule {
+    StorageModule, MediaViewerModule, BillingModule, AiModule, ProfileModule,
+    ExploreModule {
     val rootComponentFactory: RootComponent.Factory
 }
