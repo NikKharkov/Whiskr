@@ -5,8 +5,8 @@ import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.lifecycle.resume
 import component.pet.DefaultPetRegistrationComponent
 import component.pet.PetRegistrationComponent
-import data.PetGender
-import data.PetType
+import org.example.whiskr.dto.PetGender
+import org.example.whiskr.dto.PetType
 import dev.mokkery.answering.returns
 import dev.mokkery.everySuspend
 import dev.mokkery.matcher.any

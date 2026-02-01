@@ -30,10 +30,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import component.ProfileComponent
+import org.example.whiskr.dto.PetResponse
 import org.example.whiskr.components.AvatarPlaceholder
 import org.example.whiskr.components.WhiskrButton
 import org.example.whiskr.extensions.animatedGradientBackground
 import org.example.whiskr.extensions.customClickable
+import org.example.whiskr.theme.LocalIsTablet
 import org.example.whiskr.theme.WhiskrTheme
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -56,10 +58,11 @@ fun ProfileHeaderContent(
     onEditClick: () -> Unit,
     onFollowClick: () -> Unit,
     onMessageClick: () -> Unit,
-    onPetClick: (Long) -> Unit,
+    onPetClick: (Long, PetResponse) -> Unit,
     onAddPetClick: () -> Unit
 ) {
     val isMe = model.profile?.isMe == true
+    val isTablet = LocalIsTablet.current
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Box(
@@ -77,17 +80,19 @@ fun ProfileHeaderContent(
                     )
             )
 
-            IconButton(
-                onClick = onBackClick,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .background(WhiskrTheme.colors.background.copy(alpha = 0.5f), CircleShape)
-            ) {
-                Icon(
-                    painter = painterResource(Res.drawable.ic_arrow_back),
-                    contentDescription = null,
-                    tint = WhiskrTheme.colors.onBackground
-                )
+            if (!isTablet) {
+                IconButton(
+                    onClick = onBackClick,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .background(WhiskrTheme.colors.background.copy(alpha = 0.5f), CircleShape)
+                ) {
+                    Icon(
+                        painter = painterResource(Res.drawable.ic_arrow_back),
+                        contentDescription = null,
+                        tint = WhiskrTheme.colors.onBackground
+                    )
+                }
             }
 
             AvatarPlaceholder(
@@ -160,7 +165,7 @@ fun ProfileHeaderContent(
 
             if (!model.profile?.bio.isNullOrBlank()) {
                 Text(
-                    text = model.profile.bio,
+                    text = model.profile.bio!!,
                     style = WhiskrTheme.typography.body,
                     color = WhiskrTheme.colors.onBackground
                 )
@@ -201,7 +206,7 @@ fun ProfileHeaderContent(
                     PetItem(
                         name = pet.name,
                         imageUrl = pet.avatarUrl,
-                        onClick = { onPetClick(pet.id) }
+                        onClick = { onPetClick(pet.id, pet) }
                     )
                 }
                 if (isMe) {

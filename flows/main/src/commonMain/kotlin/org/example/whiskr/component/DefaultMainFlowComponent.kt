@@ -14,6 +14,9 @@ import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import component.ProfileComponent
+import component.add_pet.AddPetComponent
+import component.edit_pet.EditPetComponent
+import component.edit_profile.EditProfileComponent
 import domain.UserRepository
 import domain.UserState
 import kotlinx.coroutines.launch
@@ -56,7 +59,10 @@ class DefaultMainFlowComponent(
     private val profileFactory: ProfileComponent.Factory,
     private val repostFactory: CreateRepostComponent.Factory,
     private val exploreFactory: ExploreComponent.Factory,
-    private val newsViewerFactory: NewsViewerComponent.Factory
+    private val newsViewerFactory: NewsViewerComponent.Factory,
+    private val editProfileFactory: EditProfileComponent.Factory,
+    private val addPetFactory: AddPetComponent.Factory,
+    private val editPetFactory: EditPetComponent.Factory
 ) : MainFlowComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<MainFlowComponent.Config>()
@@ -199,6 +205,15 @@ class DefaultMainFlowComponent(
                 },
                 onNavigateToRepost = { post ->
                     dialogNavigation.activate(MainFlowComponent.DialogConfig.CreateRepost(post))
+                },
+                onNavigateToEditProfile = {
+                    dialogNavigation.activate(MainFlowComponent.DialogConfig.EditProfile)
+                },
+                onNavigateToAddPet = {
+                    dialogNavigation.activate(MainFlowComponent.DialogConfig.AddPet)
+                },
+                onNavigateToEditPet = { petId, petData ->
+                    dialogNavigation.activate(MainFlowComponent.DialogConfig.EditPet(petId, petData))
                 }
             ),
             isMe = false
@@ -228,6 +243,15 @@ class DefaultMainFlowComponent(
                 },
                 onNavigateToRepost = { post ->
                     dialogNavigation.activate(MainFlowComponent.DialogConfig.CreateRepost(post))
+                },
+                onNavigateToEditProfile = {
+                    dialogNavigation.activate(MainFlowComponent.DialogConfig.EditProfile)
+                },
+                onNavigateToAddPet = {
+                    dialogNavigation.activate(MainFlowComponent.DialogConfig.AddPet)
+                },
+                onNavigateToEditPet = { petId, petData ->
+                    dialogNavigation.activate(MainFlowComponent.DialogConfig.EditPet(petId, petData))
                 }
             ),
             isMe = true
@@ -329,6 +353,48 @@ class DefaultMainFlowComponent(
                 targetPost = config.targetPost,
                 onBack = { dialogNavigation.dismiss() },
                 onRepostCreated = { dialogNavigation.dismiss() }
+            )
+        )
+
+        MainFlowComponent.DialogConfig.EditProfile -> MainFlowComponent.DialogChild.EditProfile(
+            editProfileFactory(
+                componentContext = context,
+                initialProfile = userState.value,
+                onBack = { dialogNavigation.dismiss() },
+                onProfileUpdated = {
+                    scope.launch {
+                        userRepository.getMyProfile()
+                        dialogNavigation.dismiss()
+                    }
+                }
+            )
+        )
+
+        MainFlowComponent.DialogConfig.AddPet -> MainFlowComponent.DialogChild.AddPet(
+            addPetFactory(
+                componentContext = context,
+                onBack = { dialogNavigation.dismiss() },
+                onPetAdded = {
+                    scope.launch {
+                        userRepository.getMyProfile()
+                        dialogNavigation.dismiss()
+                    }
+                }
+            )
+        )
+
+        is MainFlowComponent.DialogConfig.EditPet -> MainFlowComponent.DialogChild.EditPet(
+            editPetFactory(
+                componentContext = context,
+                petId = config.petId,
+                initialPetData = config.petData,
+                onBack = { dialogNavigation.dismiss() },
+                onPetUpdated = {
+                    scope.launch {
+                        userRepository.getMyProfile()
+                        dialogNavigation.dismiss()
+                    }
+                }
             )
         )
     }

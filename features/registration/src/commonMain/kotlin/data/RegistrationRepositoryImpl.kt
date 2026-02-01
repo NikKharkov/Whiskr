@@ -10,6 +10,9 @@ import io.ktor.http.HttpHeaders
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.json.Json
 import me.tatarka.inject.annotations.Inject
+import org.example.whiskr.dto.CreatePetRequest
+import org.example.whiskr.dto.PetGender
+import org.example.whiskr.dto.PetType
 
 @Inject
 class RegistrationRepositoryImpl(

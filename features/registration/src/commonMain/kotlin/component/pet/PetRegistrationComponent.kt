@@ -2,8 +2,8 @@ package component.pet
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
-import data.PetGender
-import data.PetType
+import org.example.whiskr.dto.PetGender
+import org.example.whiskr.dto.PetType
 import kotlinx.datetime.LocalDate
 
 interface PetRegistrationComponent {

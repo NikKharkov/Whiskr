@@ -1,7 +1,7 @@
 package domain
 
-import data.PetGender
-import data.PetType
+import org.example.whiskr.dto.PetGender
+import org.example.whiskr.dto.PetType
 import kotlinx.datetime.LocalDate
 
 interface RegistrationRepository {

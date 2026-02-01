@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import component.pet.FakePetRegistrationComponent
 import component.pet.PetRegistrationComponent
-import data.PetGender
-import data.PetType
+import org.example.whiskr.dto.PetGender
+import org.example.whiskr.dto.PetType
 import kotlinx.datetime.LocalDate
 import org.example.whiskr.components.SimpleTopBar
 import org.example.whiskr.components.WhiskrButton

@@ -3,6 +3,7 @@ package di
 import com.arkivanov.decompose.ComponentContext
 import component.DefaultProfileComponent
 import component.ProfileComponent
+import org.example.whiskr.dto.PetResponse
 import data.ProfileApiService
 import data.ProfileRepositoryImpl
 import data.createProfileApiService
@@ -34,7 +35,10 @@ interface ProfileModule {
             (String) -> Unit, // onNavUser
             (List<PostMedia>, Int) -> Unit, // onNavMedia
             (String) -> Unit, // onNavTag,
-            (Post) -> Unit //onRepost
+            (Post) -> Unit, // onRepost
+            () -> Unit, // editProfile
+            () -> Unit, // addPet
+            (Long, PetResponse) -> Unit, //editPet
         ) -> DefaultProfileComponent
     ): ProfileComponent.Factory {
         return ProfileComponent.Factory(factory)

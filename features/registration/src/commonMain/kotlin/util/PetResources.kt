@@ -1,6 +1,6 @@
 package util
 
-import data.PetType
+import org.example.whiskr.dto.PetType
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import whiskr.features.registration.generated.resources.Res

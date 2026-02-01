@@ -2,6 +2,7 @@ package data
 
 import domain.ProfileRepository
 import me.tatarka.inject.annotations.Inject
+import org.example.whiskr.dto.ProfileResponse
 
 @Inject
 class ProfileRepositoryImpl(
@@ -12,11 +13,11 @@ class ProfileRepositoryImpl(
         profileApiService.getFullProfile(handle)
     }
 
-    override suspend fun getMyProfile(): Result<Profile> = runCatching {
+    override suspend fun getMyProfile(): Result<ProfileResponse> = runCatching {
         profileApiService.getMyProfile()
     }
 
-    override suspend fun toggleFollow(handle: String): Result<Profile> = runCatching {
+    override suspend fun toggleFollow(handle: String): Result<ProfileResponse> = runCatching {
         profileApiService.toggleFollow(handle)
     }
 }

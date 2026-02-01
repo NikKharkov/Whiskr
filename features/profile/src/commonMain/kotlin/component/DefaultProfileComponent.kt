@@ -5,7 +5,11 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import com.arkivanov.decompose.value.update
+import com.arkivanov.essenty.lifecycle.doOnDestroy
+import org.example.whiskr.dto.PetResponse
 import domain.ProfileRepository
+import domain.UserRepository
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
@@ -14,6 +18,8 @@ import org.example.whiskr.component.componentScope
 import org.example.whiskr.data.Post
 import org.example.whiskr.data.PostMedia
 import org.example.whiskr.domain.PostRepository
+import org.example.whiskr.dto.ProfileResponse
+import kotlin.onSuccess
 
 @Inject
 class DefaultProfileComponent(
@@ -25,8 +31,12 @@ class DefaultProfileComponent(
     @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
     @Assisted private val onNavigateToHashtag: (String) -> Unit,
     @Assisted private val onNavigateToRepost: (Post) -> Unit,
+    @Assisted private val onNavigateToEditProfile: () -> Unit,
+    @Assisted private val onNavigateToAddPet: () -> Unit,
+    @Assisted private val onNavigateToEditPet: (Long, PetResponse) -> Unit,
     private val profileRepository: ProfileRepository,
     private val postRepository: PostRepository,
+    userRepository: UserRepository,
     postListFactory: PostListComponent.Factory
 ) : ProfileComponent, ComponentContext by componentContext {
 
@@ -51,23 +61,54 @@ class DefaultProfileComponent(
 
     init {
         loadProfileData()
+
+        val cancellation = userRepository.user.subscribe { userState ->
+            val user = userState.profile
+
+            if (user != null && user.handle == handle) {
+                _model.update { currentModel ->
+                    val updatedProfile = ProfileResponse(
+                        id = user.id,
+                        userId = user.userId,
+                        handle = user.handle,
+                        displayName = user.displayName,
+                        bio = user.bio,
+                        avatarUrl = user.avatarUrl,
+                        followersCount = user.followersCount,
+                        followingCount = currentModel.profile?.followingCount ?: 0,
+                        isFollowing = false,
+                        isMe = true
+                    )
+
+                    currentModel.copy(profile = updatedProfile)
+                }
+                loadProfileData(isSilent = true)
+            }
+        }
+        lifecycle.doOnDestroy { cancellation.cancel() }
     }
 
-    private fun loadProfileData() {
+    private fun loadProfileData(isSilent: Boolean = false) {
         scope.launch {
-            _model.value = _model.value.copy(isLoading = true)
+            if (!isSilent) {
+                _model.update { it.copy(isLoading = true) }
+            }
 
             profileRepository.getFullProfile(handle)
                 .onSuccess { fullProfile ->
-                    _model.value = _model.value.copy(
-                        isLoading = false,
-                        profile = fullProfile.profile,
-                        pets = fullProfile.pets
-                    )
+                    _model.update {
+                        it.copy(
+                            profile = fullProfile.profile,
+                            pets = fullProfile.pets,
+                            isLoading = false,
+                            isError = false
+                        )
+                    }
                 }
-                .onFailure { error ->
-                    _model.value = _model.value.copy(isLoading = false, isError = true)
-                    Logger.e(error) { "${error.message}" }
+                .onFailure {
+                    if (!isSilent) {
+                        _model.update { it.copy(isLoading = false, isError = true) }
+                    }
                 }
         }
     }
@@ -100,8 +141,11 @@ class DefaultProfileComponent(
     override fun onBackClick() = onBack()
     override fun onNavigateToUserProfile(handle: String) = onNavigateToUserProfile.invoke(handle)
     override fun onNavigateToPost(post: Post) = onNavigateToPost.invoke(post)
-    override fun onMediaClick(media: List<PostMedia>, index: Int) = onNavigateToMediaViewer(media, index)
+    override fun onMediaClick(media: List<PostMedia>, index: Int) =
+        onNavigateToMediaViewer(media, index)
+
     override fun onHashtagClick(tag: String) = onNavigateToHashtag(tag)
-    override fun onPetClick(petId: Long) { /* TODO */ }
-    override fun onEditProfileClick() { /* TODO */ }
+    override fun onPetClick(petId: Long, pet: PetResponse) = onNavigateToEditPet(petId, pet)
+    override fun onEditProfileClick() = onNavigateToEditProfile()
+    override fun onAddPetClick() = onNavigateToAddPet()
 }

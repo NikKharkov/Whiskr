@@ -27,6 +27,9 @@ import org.example.whiskr.ui.PostDetailsScreen
 import org.example.whiskr.ui.StoreScreen
 import org.example.whiskr.util.showsNavigation
 import org.example.whiskr.util.toTab
+import screens.AddPetScreen
+import screens.EditPetScreen
+import screens.EditProfileScreen
 import ui.ProfileScreen
 import util.LocalUser
 
@@ -83,9 +86,10 @@ fun MainFlowContent(
 
                 dialogSlot.child?.instance?.let { dialogChild ->
                     when (dialogChild) {
-                        is MainFlowComponent.DialogChild.CreateRepost -> {
-                            CreateRepostScreen(component = dialogChild.component)
-                        }
+                        is MainFlowComponent.DialogChild.CreateRepost -> CreateRepostScreen(component = dialogChild.component)
+                        is MainFlowComponent.DialogChild.AddPet -> AddPetScreen(dialogChild.component)
+                        is MainFlowComponent.DialogChild.EditPet -> EditPetScreen(dialogChild.component)
+                        is MainFlowComponent.DialogChild.EditProfile -> EditProfileScreen(dialogChild.component)
                     }
                 }
             }

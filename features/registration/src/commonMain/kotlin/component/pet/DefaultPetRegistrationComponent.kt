@@ -5,8 +5,8 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.update
-import data.PetGender
-import data.PetType
+import org.example.whiskr.dto.PetGender
+import org.example.whiskr.dto.PetType
 import domain.RegistrationRepository
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate

@@ -1,0 +1,50 @@
+<resources>
+    <string name="step1">Step 1 of 2</string>
+    <string name="step2">Step 2 of 2</string>
+    <string name="name">Name</string>
+    <string name="username">Username</string>
+    <string name="create_account">Create your account</string>
+    <string name="add_photo">Add photo (optional)</string>
+    <string name="next">Next: Add Pet</string>
+    <string name="registration_title">How should we call you?</string>
+    <string name="registration_caption">Your pets will be the stars, but we need to know who feeds them.</string>
+
+    <string name="pet_registration_title">Who is the star?</string>
+    <string name="pet_registration_caption">Add your first companion</string>
+    <string name="pets_name">Pet's name</string>
+    <string name="its_a">It's a...</string>
+    <string name="gender">Gender</string>
+    <string name="birthday">Birthday</string>
+    <string name="skip">Skip</string>
+    <string name="complete_n_welcome">Complete Setup &amp; Welcome!</string>
+
+    <string name="pet_cat">Cat</string>
+    <string name="pet_dog">Dog</string>
+    <string name="pet_parrot">Parrot</string>
+    <string name="pet_hamster">Hamster</string>
+    <string name="pet_rabbit">Rabbit</string>
+    <string name="pet_fish">Fish</string>
+    <string name="pet_turtle">Turtle</string>
+    <string name="pet_snake">Snake</string>
+    <string name="pet_spider">Spider</string>
+    <string name="pet_horse">Horse</string>
+    <string name="pet_other">Other</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="birthdatepicker_hint">DD.MM.YYYY</string>
+
+
+    <string name="edit_profile_title">Edit Profile</string>
+    <string name="add_pet_title">Add New Pet</string>
+    <string name="edit_pet_title">Edit Pet</string>
+    <string name="save">Save</string>
+    <string name="bio_label">Bio</string>
+    <string name="bio_hint">Tell us about yourself...</string>
+    <string name="handle_label">Username</string>
+    <string name="name_label">Name</string>
+
+    <string name="pet_type_label">Animal Type</string>
+    <string name="pet_gender_label">Gender</string>
+    <string name="pet_birthdate_label">Birth Date</string>
+</resources>

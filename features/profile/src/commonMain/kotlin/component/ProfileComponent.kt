@@ -2,11 +2,11 @@ package component
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
-import data.Pet
-import data.Profile
 import org.example.whiskr.component.PostListComponent
 import org.example.whiskr.data.Post
 import org.example.whiskr.data.PostMedia
+import org.example.whiskr.dto.PetResponse
+import org.example.whiskr.dto.ProfileResponse
 
 interface ProfileComponent {
     val model: Value<Model>
@@ -19,11 +19,12 @@ interface ProfileComponent {
     fun onNavigateToPost(post: Post)
     fun onMediaClick(media: List<PostMedia>, index: Int)
     fun onHashtagClick(tag: String)
-    fun onPetClick(petId: Long)
+    fun onPetClick(petId: Long, pet: PetResponse)
+    fun onAddPetClick()
 
     data class Model(
-        val profile: Profile? = null,
-        val pets: List<Pet> = emptyList(),
+        val profile: ProfileResponse? = null,
+        val pets: List<PetResponse> = emptyList(),
         val isLoading: Boolean = true,
         val isError: Boolean = false
     )
@@ -37,7 +38,10 @@ interface ProfileComponent {
             onNavigateToUserProfile: (String) -> Unit,
             onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
             onNavigateToHashtag: (String) -> Unit,
-            onNavigateToRepost: (Post) -> Unit
+            onNavigateToRepost: (Post) -> Unit,
+            onNavigateToEditProfile: () -> Unit,
+            onNavigateToAddPet: () -> Unit,
+            onNavigateToEditPet: (Long, PetResponse) -> Unit
         ): ProfileComponent
     }
 }

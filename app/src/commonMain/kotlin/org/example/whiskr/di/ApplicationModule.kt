@@ -1,5 +1,6 @@
 package org.example.whiskr.di
 
+import di.AddEditModule
 import di.ProfileModule
 import di.RegistrationModule
 import di.UserModule
@@ -12,6 +13,6 @@ interface ApplicationModule :
     NetworkModule, AuthModule, RootModule, RegistrationModule,
     HomeModule, PostModule, AuthFlowModule, MainFlowModule, UserModule,
     StorageModule, MediaViewerModule, BillingModule, AiModule, ProfileModule,
-    ExploreModule {
+    ExploreModule, AddEditModule {
     val rootComponentFactory: RootComponent.Factory
 }

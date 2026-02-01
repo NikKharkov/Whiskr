@@ -46,6 +46,7 @@ include(":features:billing")
 include(":features:ai_studio")
 include(":features:profile")
 include(":features:explorer")
+include(":features:add_edit")
 
 include(":core:common")
 include(":core:network")

@@ -33,7 +33,7 @@ fun ProfileScreen(
                         onEditClick = component::onEditProfileClick,
                         onFollowClick = component::onFollowClick,
                         onPetClick = component::onPetClick,
-                        onAddPetClick = { TODO() },
+                        onAddPetClick = component::onAddPetClick,
                         onMessageClick = { TODO() }
                     )
                 }
