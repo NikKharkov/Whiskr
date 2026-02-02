@@ -40,6 +40,7 @@ import org.example.whiskr.data.WalletResponseDto
 import org.example.whiskr.domain.NotificationRepository
 import org.example.whiskr.util.toAiPostMedia
 import org.example.whiskr.util.toConfig
+import org.example.whiskr.util.toMainFlowConfig
 
 @OptIn(DelicateDecomposeApi::class)
 @Inject
@@ -403,27 +404,21 @@ class DefaultMainFlowComponent(
     }
 
     override fun onDeepLink(link: String) {
-        val newStack = getInitialStack(link)
-        if (newStack.size > 1) {
-            val destination = newStack.last()
-            navigation.push(destination)
+        link.toMainFlowConfig()?.let { config ->
+            navigation.push(config)
         }
     }
 
     private fun getInitialStack(link: String?): List<MainFlowComponent.Config> {
-        if (link == null) return listOf(Home)
+        val baseStack = listOf(Home)
 
-        if (link.contains("post")) {
-            val id = link.substringAfterLast("/").toLongOrNull()
+        val deepLinkConfig = link?.toMainFlowConfig()
 
-            if (id != null) {
-                return listOf(
-                    Home,
-                    PostDetails(postId = id)
-                )
-            }
+        return if (deepLinkConfig != null) {
+            baseStack + deepLinkConfig
+        } else {
+            baseStack
         }
-        return listOf(Home)
     }
 
     override fun onTabSelected(tab: MainFlowComponent.Tab) {

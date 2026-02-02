@@ -24,6 +24,7 @@ import org.example.whiskr.theme.LocalIsTablet
 import org.example.whiskr.theme.WhiskrTheme
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import screens.components.HandleVisualTransformation
 import screens.components.ProfilePhotoSelector
 import whiskr.features.add_edit.generated.resources.Res
 import whiskr.features.add_edit.generated.resources.bio_hint
@@ -101,6 +102,7 @@ fun EditProfileScreen(
             value = model.handle,
             onValueChange = component::onHandleChanged,
             hint = "@johndoe",
+            visualTransformation = HandleVisualTransformation(),
             enabled = !model.isLoading,
             imeAction = ImeAction.Next,
             onImeAction = { focusManager.moveFocus(FocusDirection.Down) }

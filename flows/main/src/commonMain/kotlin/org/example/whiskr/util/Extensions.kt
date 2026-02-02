@@ -40,3 +40,33 @@ val MainFlowComponent.Child.showsNavigation: Boolean
 
         else -> true
     }
+
+fun String.toMainFlowConfig(): MainFlowComponent.Config? {
+    val path = this.substringBefore("?")
+        .replace("https://whiskr.app", "")
+        .replace("whiskr://", "")
+        .trimStart('/')
+
+    return when {
+        path.startsWith("post/") -> {
+            val id = path.removePrefix("post/")
+                .replace("/", "")
+                .toLongOrNull()
+
+            id?.let { MainFlowComponent.Config.PostDetails(it) }
+        }
+
+        path.startsWith("profile/") -> {
+            val handle = path.removePrefix("profile/")
+                .replace("/", "")
+                .replace("%40", "@")
+                .trim()
+
+            if (handle.isBlank()) return null
+
+            MainFlowComponent.Config.UserProfile(handle)
+        }
+
+        else -> null
+    }
+}

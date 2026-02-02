@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.arkivanov.decompose.retainedComponent
+import com.mmk.kmpnotifier.extensions.onCreateOrOnNewIntent
 import com.mmk.kmpnotifier.notification.NotifierManager
 import com.mmk.kmpnotifier.permission.permissionUtil
 import io.github.vinceglb.filekit.core.FileKit
@@ -25,7 +26,12 @@ class MainActivity : ComponentActivity() {
         val databaseFactory = AndroidDatabaseFactory(applicationContext)
         val shareService = AndroidShareService(applicationContext)
         val imageShareManager = AndroidImageShareManager(applicationContext)
-        val initialDeepLink = intent?.data?.toString()
+
+        var initialDeepLink = intent?.data?.toString()
+        if (initialDeepLink == null) {
+            initialDeepLink = intent?.extras?.getString("click_action")
+                ?: intent?.extras?.getString("link")
+        }
 
         val appComponent =
             AndroidApplicationModule::class.create(applicationContext, databaseFactory, shareService, imageShareManager)
@@ -39,6 +45,7 @@ class MainActivity : ComponentActivity() {
         FileKit.init(this)
         val permissionUtil by permissionUtil()
         permissionUtil.askNotificationPermission()
+        NotifierManager.onCreateOrOnNewIntent(intent)
         setContent {
             RootContent(root)
         }
@@ -46,9 +53,15 @@ class MainActivity : ComponentActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        val newLink = intent.data?.toString()
-        if (newLink != null) {
-            rootComponent?.onDeepLink(newLink)
+        NotifierManager.onCreateOrOnNewIntent(intent)
+        var link = intent.data?.toString()
+        if (link == null) {
+            link = intent.extras?.getString("click_action")
+                ?: intent.extras?.getString("link")
+        }
+
+        if (link != null) {
+            rootComponent?.onDeepLink(link)
         }
     }
 }
