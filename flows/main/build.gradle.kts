@@ -20,6 +20,7 @@ kotlin {
             api(projects.features.explorer)
             api(projects.features.addEdit)
 
+            api(projects.core.notifications)
             implementation(projects.core.user)
             implementation(projects.core.storage)
 

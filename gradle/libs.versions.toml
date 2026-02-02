@@ -58,10 +58,14 @@ gms-plugin = "4.4.4"
 
 # --- Authentication ---
 kmpauth = "2.4.0-alpha05"
+
 uiTooling = "1.10.1"
 
 # --- Stripe ---
 stripe-android = "22.6.1"
+
+# --- Notifications ---
+kmpNotifier = "1.6.1"
 
 [libraries]
 # Build Logic Dependencies
@@ -154,6 +158,9 @@ kotest-assertions = { module = "io.kotest:kotest-assertions-core", version.ref =
 mokkery = { module = "dev.mokkery:mokkery-runtime", version.ref = "mokkery" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }
+
+# Notifications
+kmp-notifier = { module = "io.github.mirzemehdi:kmpnotifier", version.ref = "kmpNotifier" }
 
 [plugins]
 # Core Plugins

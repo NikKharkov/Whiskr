@@ -13,6 +13,6 @@ interface ApplicationModule :
     NetworkModule, AuthModule, RootModule, RegistrationModule,
     HomeModule, PostModule, AuthFlowModule, MainFlowModule, UserModule,
     StorageModule, MediaViewerModule, BillingModule, AiModule, ProfileModule,
-    ExploreModule, AddEditModule {
+    ExploreModule, AddEditModule, NotificationModule {
     val rootComponentFactory: RootComponent.Factory
 }

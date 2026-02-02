@@ -6,6 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.arkivanov.decompose.retainedComponent
+import com.mmk.kmpnotifier.notification.NotifierManager
+import com.mmk.kmpnotifier.permission.permissionUtil
 import io.github.vinceglb.filekit.core.FileKit
 import org.example.whiskr.di.AndroidApplicationModule
 import org.example.whiskr.di.create
@@ -35,7 +37,8 @@ class MainActivity : ComponentActivity() {
         rootComponent = root
 
         FileKit.init(this)
-
+        val permissionUtil by permissionUtil()
+        permissionUtil.askNotificationPermission()
         setContent {
             RootContent(root)
         }

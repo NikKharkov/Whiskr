@@ -37,6 +37,7 @@ import org.example.whiskr.component.explore.ExploreComponent
 import org.example.whiskr.component.viewer.NewsViewerComponent
 import org.example.whiskr.domain.BillingRepository
 import org.example.whiskr.data.WalletResponseDto
+import org.example.whiskr.domain.NotificationRepository
 import org.example.whiskr.util.toAiPostMedia
 import org.example.whiskr.util.toConfig
 
@@ -48,6 +49,7 @@ class DefaultMainFlowComponent(
     @Assisted private val deepLink: String?,
     private val userRepository: UserRepository,
     private val billingRepository: BillingRepository,
+    private val notificationRepository: NotificationRepository,
     private val homeFactory: HomeComponent.Factory,
     private val createPostFactory: CreatePostComponent.Factory,
     private val createReplyFactory: CreateReplyComponent.Factory,
@@ -82,6 +84,7 @@ class DefaultMainFlowComponent(
             if (userRepository.user.value.profile == null) {
                 userRepository.getMyProfile()
             }
+            notificationRepository.syncToken()
         }
     }
 
