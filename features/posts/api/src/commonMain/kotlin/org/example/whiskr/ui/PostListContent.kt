@@ -1,6 +1,7 @@
 package org.example.whiskr.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,6 +24,7 @@ import org.example.whiskr.theme.WhiskrTheme
 fun PostListContent(
     component: PostListComponent,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
     headerContent: (@Composable () -> Unit)? = null,
     interval: Int = 0,
     additionalContent: (@Composable (index: Int) -> Unit)? = null
@@ -48,6 +50,7 @@ fun PostListContent(
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
+            contentPadding = contentPadding,
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
