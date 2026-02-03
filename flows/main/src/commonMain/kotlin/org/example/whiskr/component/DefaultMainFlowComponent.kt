@@ -1,5 +1,6 @@
 package org.example.whiskr.component
 
+import co.touchlab.kermit.Logger
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.DelicateDecomposeApi
 import com.arkivanov.decompose.router.slot.SlotNavigation
@@ -35,8 +36,8 @@ import org.example.whiskr.component.MainFlowComponent.Config.Profile
 import org.example.whiskr.component.MainFlowComponent.Config.UserProfile
 import org.example.whiskr.component.explore.ExploreComponent
 import org.example.whiskr.component.viewer.NewsViewerComponent
-import org.example.whiskr.domain.BillingRepository
 import org.example.whiskr.data.WalletResponseDto
+import org.example.whiskr.domain.BillingRepository
 import org.example.whiskr.domain.NotificationRepository
 import org.example.whiskr.util.toAiPostMedia
 import org.example.whiskr.util.toConfig
@@ -65,7 +66,8 @@ class DefaultMainFlowComponent(
     private val newsViewerFactory: NewsViewerComponent.Factory,
     private val editProfileFactory: EditProfileComponent.Factory,
     private val addPetFactory: AddPetComponent.Factory,
-    private val editPetFactory: EditPetComponent.Factory
+    private val editPetFactory: EditPetComponent.Factory,
+    private val notificationFactory: NotificationComponent.Factory
 ) : MainFlowComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<MainFlowComponent.Config>()
@@ -79,6 +81,9 @@ class DefaultMainFlowComponent(
     private val _isDrawerOpen = MutableValue(false)
     override val isDrawerOpen: Value<Boolean> = _isDrawerOpen
 
+    private val _unreadNotificationsCount = MutableValue(0L)
+    override val unreadNotificationsCount: Value<Long> = _unreadNotificationsCount
+
     init {
         scope.launch {
             billingRepository.getWallet()
@@ -87,10 +92,24 @@ class DefaultMainFlowComponent(
             }
             notificationRepository.syncToken()
         }
+        scope.launch {
+            notificationRepository.getUnreadCount()
+                .onSuccess { count ->
+                    _unreadNotificationsCount.value = count
+                }
+                .onFailure { error ->
+                    Logger.e(error) {"Error getting unread notifications: ${error.message}"}
+                }
+        }
     }
 
     override fun setDrawerOpen(isOpen: Boolean) {
         _isDrawerOpen.value = isOpen
+    }
+
+    override fun onNotificationsClick() {
+        _unreadNotificationsCount.value = 0
+        navigation.push(MainFlowComponent.Config.Notifications)
     }
 
     override val stack = childStack(
@@ -343,6 +362,19 @@ class DefaultMainFlowComponent(
             )
         )
 
+        MainFlowComponent.Config.Notifications -> MainFlowComponent.Child.Notifications(
+            notificationFactory(
+                componentContext = context,
+                onBack = { navigation.pop() },
+                onNavigateToDeepLink = { link ->
+                    val config = link.toMainFlowConfig()
+                    if (config != null) {
+                        navigation.push(config)
+                    }
+                }
+            )
+        )
+
         Games -> TODO()
         Messages -> TODO()
     }
@@ -404,9 +436,15 @@ class DefaultMainFlowComponent(
     }
 
     override fun onDeepLink(link: String) {
-        link.toMainFlowConfig()?.let { config ->
-            navigation.push(config)
+        val newConfig = link.toMainFlowConfig() ?: return
+
+        val activeConfig = stack.value.active.configuration
+
+        if (activeConfig == newConfig) {
+            return
         }
+
+        navigation.push(newConfig)
     }
 
     private fun getInitialStack(link: String?): List<MainFlowComponent.Config> {

@@ -9,6 +9,7 @@ fun MainFlowComponent.Child.toTab(): MainFlowComponent.Tab? = when (this) {
     is MainFlowComponent.Child.Games -> MainFlowComponent.Tab.GAMES
     is MainFlowComponent.Child.Messages -> MainFlowComponent.Tab.MESSAGES
     is MainFlowComponent.Child.Store -> MainFlowComponent.Tab.STORE
+    is MainFlowComponent.Child.Notifications -> MainFlowComponent.Tab.NOTIFICATIONS
     is MainFlowComponent.Child.Profile -> {
         if (isMe) {
             MainFlowComponent.Tab.PROFILE
@@ -27,6 +28,7 @@ fun MainFlowComponent.Tab.toConfig(): MainFlowComponent.Config = when (this) {
     MainFlowComponent.Tab.MESSAGES -> MainFlowComponent.Config.Messages
     MainFlowComponent.Tab.PROFILE -> MainFlowComponent.Config.Profile
     MainFlowComponent.Tab.STORE -> MainFlowComponent.Config.Store
+    MainFlowComponent.Tab.NOTIFICATIONS -> MainFlowComponent.Config.Notifications
 }
 
 val MainFlowComponent.Child.showsNavigation: Boolean
@@ -36,6 +38,7 @@ val MainFlowComponent.Child.showsNavigation: Boolean
         is MainFlowComponent.Child.PostDetails,
         is MainFlowComponent.Child.HashtagsFeed,
         is MainFlowComponent.Child.Profile,
+        is MainFlowComponent.Child.Notifications,
         is MainFlowComponent.Child.MediaViewer -> false
 
         else -> true

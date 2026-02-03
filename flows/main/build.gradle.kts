@@ -19,8 +19,8 @@ kotlin {
             api(projects.features.profile)
             api(projects.features.explorer)
             api(projects.features.addEdit)
+            api(projects.features.notifications.impl)
 
-            api(projects.core.notifications)
             implementation(projects.core.user)
             implementation(projects.core.storage)
 

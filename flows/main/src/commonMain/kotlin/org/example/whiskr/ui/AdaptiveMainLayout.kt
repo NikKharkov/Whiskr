@@ -46,6 +46,8 @@ fun AdaptiveMainLayout(
     onDrawerOpenChange: (Boolean) -> Unit,
     onPostClick: () -> Unit,
     shouldShowNavigation: Boolean,
+    unreadNotificationsCount: Long,
+    onNotificationsClick: () -> Unit,
     content: @Composable () -> Unit
 ) {
     val isTablet = LocalIsTablet.current
@@ -62,6 +64,7 @@ fun AdaptiveMainLayout(
                 isDarkTheme = isDarkTheme,
                 onThemeToggle = onThemeToggle,
                 onPostClick = onPostClick,
+                unreadNotificationsCount = unreadNotificationsCount,
                 modifier = Modifier
                     .widthIn(max = 300.dp)
                     .fillMaxHeight()
@@ -132,9 +135,9 @@ fun AdaptiveMainLayout(
                 topBar = {
                     if (shouldShowNavigation) {
                         MobileTopBar(
-                            isThereUnreadNotifications = true,
+                            unreadCount = unreadNotificationsCount,
                             onAvatarClick = { scope.launch { drawerState.open() } },
-                            onNotificationsClick = {},
+                            onNotificationsClick = onNotificationsClick,
                             modifier = Modifier
                                 .windowInsetsPadding(
                                     WindowInsets.safeDrawing

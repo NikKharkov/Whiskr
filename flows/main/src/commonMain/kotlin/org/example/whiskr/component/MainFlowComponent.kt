@@ -24,6 +24,7 @@ import whiskr.flows.main.generated.resources.ic_explore
 import whiskr.flows.main.generated.resources.ic_games
 import whiskr.flows.main.generated.resources.ic_home
 import whiskr.flows.main.generated.resources.ic_messages
+import whiskr.flows.main.generated.resources.ic_notification_filled
 import whiskr.flows.main.generated.resources.ic_profile
 import whiskr.flows.main.generated.resources.ic_store
 import whiskr.flows.main.generated.resources.tab_ai
@@ -31,6 +32,7 @@ import whiskr.flows.main.generated.resources.tab_explore
 import whiskr.flows.main.generated.resources.tab_games
 import whiskr.flows.main.generated.resources.tab_home
 import whiskr.flows.main.generated.resources.tab_messages
+import whiskr.flows.main.generated.resources.tab_notifications
 import whiskr.flows.main.generated.resources.tab_profile
 import whiskr.flows.main.generated.resources.tab_store
 
@@ -43,7 +45,9 @@ interface MainFlowComponent {
     val walletState: Value<WalletResponseDto>
     val isDarkTheme: Value<Boolean>
     val isDrawerOpen: Value<Boolean>
+    val unreadNotificationsCount: Value<Long>
 
+    fun onNotificationsClick()
     fun setDrawerOpen(isOpen: Boolean)
     fun onTabSelected(tab: Tab)
     fun onPostClick()
@@ -62,6 +66,7 @@ interface MainFlowComponent {
         class NewsViewer(val component: NewsViewerComponent) : Child()
         class Games(val component: Any) : Child()
         class Messages(val component: Any) : Child()
+        class Notifications(val component: NotificationComponent) : Child()
         class Profile(val component: ProfileComponent, val isMe: Boolean) : Child()
     }
 
@@ -111,6 +116,9 @@ interface MainFlowComponent {
 
         @Serializable
         data object Store : Config
+
+        @Serializable
+        data object Notifications : Config
     }
 
     sealed interface DialogChild {
@@ -148,14 +156,16 @@ interface MainFlowComponent {
     enum class Tab(
         val label: StringResource,
         val icon: DrawableResource,
-        val showInBottomBar: Boolean = true
+        val showInBottomBar: Boolean = true,
+        val showInSidebar: Boolean = true
     ) {
         HOME(Res.string.tab_home, Res.drawable.ic_home),
+        PROFILE(Res.string.tab_profile, Res.drawable.ic_profile, false),
         EXPLORE(Res.string.tab_explore, Res.drawable.ic_explore),
+        STORE(Res.string.tab_store, Res.drawable.ic_store, false),
         AI_STUDIO(Res.string.tab_ai, Res.drawable.ic_ai),
         GAMES(Res.string.tab_games, Res.drawable.ic_games),
-        PROFILE(Res.string.tab_profile, Res.drawable.ic_profile, false),
         MESSAGES(Res.string.tab_messages, Res.drawable.ic_messages),
-        STORE(Res.string.tab_store, Res.drawable.ic_store, false)
+        NOTIFICATIONS(Res.string.tab_notifications, Res.drawable.ic_notification_filled, false,false)
     }
 }

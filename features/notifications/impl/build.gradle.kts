@@ -5,13 +5,14 @@ plugins {
 }
 
 configure<LibraryExtension> {
-    namespace = "org.example.whiskr.core.notifications"
+    namespace = "org.example.whiskr.feature.notifications.impl"
 }
 
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            api(libs.kmp.notifier)
+            api(projects.features.notifications.api)
+            implementation(libs.kmp.notifier)
         }
     }
 }

@@ -54,7 +54,7 @@ fun MobileDrawerContent(
 
         HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
-        MainFlowComponent.Tab.entries.filter { !it.showInBottomBar }.forEach { tab ->
+        MainFlowComponent.Tab.entries.filter { !it.showInBottomBar && it.showInSidebar }.forEach { tab ->
             val isSelected = tab == activeTab
 
             NavigationDrawerItem(

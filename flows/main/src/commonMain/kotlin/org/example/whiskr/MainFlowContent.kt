@@ -23,6 +23,7 @@ import org.example.whiskr.ui.HashtagFeedScreen
 import org.example.whiskr.ui.HomeScreen
 import org.example.whiskr.ui.MediaViewerScreen
 import org.example.whiskr.ui.NewsViewerScreen
+import org.example.whiskr.ui.NotificationsScreen
 import org.example.whiskr.ui.PostDetailsScreen
 import org.example.whiskr.ui.StoreScreen
 import org.example.whiskr.util.showsNavigation
@@ -42,6 +43,7 @@ fun MainFlowContent(
     val stack by component.stack.subscribeAsState()
     val dialogSlot by component.dialogSlot.subscribeAsState()
     val user by component.userState.subscribeAsState()
+    val unreadCount by component.unreadNotificationsCount.subscribeAsState()
     val isDrawerOpen by component.isDrawerOpen.subscribeAsState()
 
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
@@ -61,7 +63,9 @@ fun MainFlowContent(
                 isDrawerOpen = isDrawerOpen,
                 shouldShowNavigation = stack.active.instance.showsNavigation,
                 onPostClick = component::onPostClick,
-                onDrawerOpenChange = component::setDrawerOpen
+                onDrawerOpenChange = component::setDrawerOpen,
+                unreadNotificationsCount = unreadCount,
+                onNotificationsClick = component::onNotificationsClick
             ) {
                 Children(
                     stack = stack,
@@ -81,6 +85,7 @@ fun MainFlowContent(
                         is MainFlowComponent.Child.HashtagsFeed -> HashtagFeedScreen(child.component)
                         is MainFlowComponent.Child.Store -> StoreScreen(child.component)
                         is MainFlowComponent.Child.NewsViewer -> NewsViewerScreen(child.component)
+                        is MainFlowComponent.Child.Notifications -> NotificationsScreen(child.component)
                     }
                 }
 

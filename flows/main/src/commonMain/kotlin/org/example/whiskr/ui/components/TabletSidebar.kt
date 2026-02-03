@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Badge
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
@@ -30,6 +31,7 @@ import whiskr.flows.main.generated.resources.post
 fun TabletSidebar(
     modifier: Modifier = Modifier,
     activeTab: MainFlowComponent.Tab?,
+    unreadNotificationsCount: Long,
     isDarkTheme: Boolean,
     onThemeToggle: (Offset) -> Unit,
     onPostClick: () -> Unit,
@@ -57,6 +59,23 @@ fun TabletSidebar(
                         contentDescription = null,
                         modifier = Modifier.size(24.dp)
                     )
+                },
+                badge = {
+                    if (tab == MainFlowComponent.Tab.NOTIFICATIONS && unreadNotificationsCount > 0) {
+                        Badge(
+                            containerColor = WhiskrTheme.colors.error,
+                            contentColor = Color.White
+                        ) {
+                            val badgeText =
+                                if (unreadNotificationsCount >= 10) "9+" else unreadNotificationsCount.toString()
+
+                            Text(
+                                text = badgeText,
+                                style = WhiskrTheme.typography.caption,
+                                color = Color.White,
+                            )
+                        }
+                    }
                 },
                 selected = isSelected,
                 onClick = { onTabSelected(tab) },

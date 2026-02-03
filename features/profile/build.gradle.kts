@@ -12,7 +12,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(projects.core.user)
-            implementation(projects.core.notifications)
+            implementation(projects.features.notifications.api)
             implementation(projects.features.posts.api)
         }
     }

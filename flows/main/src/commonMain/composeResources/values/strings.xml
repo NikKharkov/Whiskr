@@ -6,6 +6,7 @@
     <string name="tab_profile">Profile</string>
     <string name="tab_messages">Messages</string>
     <string name="tab_store">Store</string>
+    <string name="tab_notifications">Notifications</string>
     <string name="options">Options</string>
     <string name="post">Post</string>
     <string name="dark_mode">Dark Mode</string>
