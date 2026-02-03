@@ -32,6 +32,7 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
             export(projects.features.billing)
+            export(libs.kmp.notifier)
         }
 
         podfile = project.file("../iosApp/Podfile")
@@ -49,6 +50,7 @@ kotlin {
             implementation(projects.flows.main)
             implementation(projects.flows.auth)
             api(projects.features.billing)
+            api(libs.kmp.notifier)
 
             implementation(projects.core.common)
             implementation(projects.core.network)

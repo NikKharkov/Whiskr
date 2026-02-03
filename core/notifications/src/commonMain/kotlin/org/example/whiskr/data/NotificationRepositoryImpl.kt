@@ -9,13 +9,25 @@ import org.example.whiskr.domain.NotificationRepository
 class NotificationRepositoryImpl(
     private val notificationApiService: NotificationApiService
 ): NotificationRepository {
+    private val notifier = NotifierManager.getPushNotifier()
+
     override suspend fun syncToken() {
-        val token = NotifierManager.getPushNotifier().getToken() ?: return
+        val token = notifier.getToken() ?: return
 
         try {
             notificationApiService.registerDevice(DeviceTokenRequest(token = token))
         } catch (e: Exception) {
             Logger.e(e) { "Error sending token" }
         }
+    }
+
+    override suspend fun subscribeToUser(userId: Long) {
+        val topic = "user_posts_$userId"
+        notifier.subscribeToTopic(topic)
+    }
+
+    override suspend fun unsubscribeFromUser(userId: Long) {
+        val topic = "user_posts_$userId"
+        notifier.unSubscribeFromTopic(topic)
     }
 }

@@ -99,7 +99,7 @@ fun EditProfileScreen(
         )
 
         WhiskrTextField(
-            value = model.handle,
+            value = model.handle.removePrefix("@"),
             onValueChange = component::onHandleChanged,
             hint = "@johndoe",
             visualTransformation = HandleVisualTransformation(),

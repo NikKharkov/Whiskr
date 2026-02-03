@@ -1,6 +1,7 @@
 import SwiftUI
 import StripeCore
 import FirebaseCore
+import FirebaseMessaging
 import ComposeApp
 
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -11,7 +12,18 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         StripeAPI.defaultPublishableKey = "pk_test_51SqLqAD9IFbFeS4YHydYpaVu3ot9Xspu6MYQCiQcbO4Zh5ELSQyc9Dim0aWLtZ0JHMPF7ZLX3VcgaB9TY7h1Pbq100onTcH6mb"
         StripeBridge.initialize()
         
+        NotifierManager.shared.initialize(configuration: NotificationPlatformConfigurationIos(
+              showPushNotification: true,
+              askNotificationPermissionOnStart: true,
+              notificationSoundName: nil
+            )
+        )
+        
         return true
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+          Messaging.messaging().apnsToken = deviceToken
     }
 }
 

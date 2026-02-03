@@ -30,9 +30,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import component.ProfileComponent
-import org.example.whiskr.dto.PetResponse
 import org.example.whiskr.components.AvatarPlaceholder
 import org.example.whiskr.components.WhiskrButton
+import org.example.whiskr.dto.PetResponse
 import org.example.whiskr.extensions.animatedGradientBackground
 import org.example.whiskr.extensions.customClickable
 import org.example.whiskr.theme.LocalIsTablet

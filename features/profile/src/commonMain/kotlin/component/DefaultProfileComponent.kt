@@ -17,6 +17,7 @@ import org.example.whiskr.component.PostListComponent
 import org.example.whiskr.component.componentScope
 import org.example.whiskr.data.Post
 import org.example.whiskr.data.PostMedia
+import org.example.whiskr.domain.NotificationRepository
 import org.example.whiskr.domain.PostRepository
 import org.example.whiskr.dto.ProfileResponse
 import kotlin.onSuccess
@@ -36,20 +37,22 @@ class DefaultProfileComponent(
     @Assisted private val onNavigateToEditPet: (Long, PetResponse) -> Unit,
     private val profileRepository: ProfileRepository,
     private val postRepository: PostRepository,
+    private val notificationRepository: NotificationRepository,
     userRepository: UserRepository,
     postListFactory: PostListComponent.Factory
 ) : ProfileComponent, ComponentContext by componentContext {
 
     private val scope = componentScope()
+    private var currentHandle = handle
 
     private val _model = MutableValue(ProfileComponent.Model())
     override val model: Value<ProfileComponent.Model> = _model
 
     override val postsComponent: PostListComponent = postListFactory(
         componentContext = childContext("ProfilePosts"),
-        loader = { page -> postRepository.getPostsByHandle(handle, page) },
+        loader = { page -> postRepository.getPostsByHandle(currentHandle, page) },
         onNavigateToProfile = { clickedHandle ->
-            if (clickedHandle != handle) {
+            if (clickedHandle != currentHandle) {
                 onNavigateToUserProfile(clickedHandle)
             }
         },
@@ -63,9 +66,17 @@ class DefaultProfileComponent(
         loadProfileData()
 
         val cancellation = userRepository.user.subscribe { userState ->
-            val user = userState.profile
+            val user = userState.profile ?: return@subscribe
 
-            if (user != null && user.handle == handle) {
+            val currentProfileId = _model.value.profile?.id
+            val isMe = (currentProfileId != null && user.id == currentProfileId) || (user.handle == currentHandle)
+
+            if (isMe) {
+                if (currentHandle != user.handle) {
+                    currentHandle = user.handle
+                    postsComponent.onRefresh()
+                }
+
                 _model.update { currentModel ->
                     val updatedProfile = ProfileResponse(
                         id = user.id,
@@ -79,9 +90,9 @@ class DefaultProfileComponent(
                         isFollowing = false,
                         isMe = true
                     )
-
                     currentModel.copy(profile = updatedProfile)
                 }
+
                 loadProfileData(isSilent = true)
             }
         }
@@ -94,7 +105,7 @@ class DefaultProfileComponent(
                 _model.update { it.copy(isLoading = true) }
             }
 
-            profileRepository.getFullProfile(handle)
+            profileRepository.getFullProfile(currentHandle)
                 .onSuccess { fullProfile ->
                     _model.update {
                         it.copy(
@@ -127,9 +138,15 @@ class DefaultProfileComponent(
         _model.value = _model.value.copy(profile = updatedProfile)
 
         scope.launch {
-            profileRepository.toggleFollow(handle)
-                .onSuccess { serverProfile ->
-                    _model.value = _model.value.copy(profile = serverProfile)
+            profileRepository.toggleFollow(currentHandle)
+                .onSuccess { newProfile ->
+                    _model.value = _model.value.copy(profile = newProfile)
+
+                    if (newProfile.isFollowing) {
+                        notificationRepository.subscribeToUser(newProfile.id)
+                    } else {
+                        notificationRepository.unsubscribeFromUser(newProfile.id)
+                    }
                 }
                 .onFailure { error ->
                     _model.value = _model.value.copy(profile = currentProfile)
