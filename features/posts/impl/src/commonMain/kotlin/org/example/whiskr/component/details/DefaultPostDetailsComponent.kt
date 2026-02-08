@@ -11,7 +11,7 @@ import org.example.whiskr.component.PostDetailsComponent
 import org.example.whiskr.component.PostListComponent
 import org.example.whiskr.component.componentScope
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.Media
 import org.example.whiskr.domain.PostRepository
 
 @Inject

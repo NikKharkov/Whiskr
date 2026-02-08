@@ -17,7 +17,7 @@ import org.example.whiskr.component.reply.DefaultCreateReplyComponent
 import org.example.whiskr.component.repost.DefaultCreateRepostComponent
 import org.example.whiskr.data.Post
 import org.example.whiskr.data.PostApiService
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.Media
 import org.example.whiskr.data.PostRepositoryImpl
 import org.example.whiskr.data.createPostApiService
 import org.example.whiskr.domain.PostRepository

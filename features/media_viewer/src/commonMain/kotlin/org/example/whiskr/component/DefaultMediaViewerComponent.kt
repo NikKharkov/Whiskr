@@ -9,8 +9,8 @@ import io.ktor.client.request.get
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
-import org.example.whiskr.data.MediaType
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.MediaType
+import org.example.whiskr.dto.Media
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 

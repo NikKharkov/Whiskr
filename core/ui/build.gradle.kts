@@ -14,7 +14,11 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.core.common)
+            implementation(libs.calf.file.picker)
+            implementation(libs.calf.file.picker.coil)
+            implementation(libs.media.player)
             implementation(libs.coil.compose)
+            implementation(libs.coil.network)
         }
 
         androidMain.dependencies {

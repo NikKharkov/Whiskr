@@ -2,7 +2,7 @@ package org.example.whiskr.component
 
 import com.arkivanov.decompose.ComponentContext
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.Media
 
 interface HomeComponent {
     val postsComponent: PostListComponent

@@ -7,7 +7,7 @@ import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.component.HashtagsComponent
 import org.example.whiskr.component.PostListComponent
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.Media
 import org.example.whiskr.domain.PostRepository
 
 @Inject

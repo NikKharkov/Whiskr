@@ -7,7 +7,7 @@ import com.mohamedrejeb.calf.io.KmpFile
 import data.ChatDto
 import data.ChatMessageDto
 import data.UserState
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.Media
 
 interface ChatDetailComponent {
 

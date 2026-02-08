@@ -3,9 +3,9 @@ package org.example.whiskr.util
 import data.UserResponseDto
 import domain.UserState
 import kotlinx.datetime.LocalDateTime
-import org.example.whiskr.data.MediaType
+import org.example.whiskr.dto.MediaType
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.Media
 import org.example.whiskr.data.PostStats
 import org.example.whiskr.data.PostType
 import org.example.whiskr.data.UserInteraction

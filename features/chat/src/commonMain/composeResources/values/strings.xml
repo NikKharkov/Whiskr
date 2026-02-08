@@ -1,8 +1,9 @@
 <resources>
     <string name="type_message">Message...</string>
     <string name="online">Online</string>
-    <string name="typing">Typing...</string>
+    <string name="typing">Typing</string>
     <string name="send">Send</string>
+    <string name="inputbar_placeholder">Message...</string>
     <string name="attach_media">Attach media</string>
     <string name="remove_attachment">Remove</string>
     <string name="loading">Loading...</string>

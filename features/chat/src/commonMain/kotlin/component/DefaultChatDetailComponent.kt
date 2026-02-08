@@ -24,8 +24,8 @@ import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.PagingDelegate
 import org.example.whiskr.component.componentScope
-import org.example.whiskr.data.Media
-import org.example.whiskr.data.MediaType
+import org.example.whiskr.dto.Media
+import org.example.whiskr.dto.MediaType
 import kotlin.random.Random
 import kotlin.time.Clock
 

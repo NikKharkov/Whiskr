@@ -5,7 +5,7 @@ import com.arkivanov.decompose.childContext
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.Media
 import org.example.whiskr.domain.PostRepository
 
 @Inject

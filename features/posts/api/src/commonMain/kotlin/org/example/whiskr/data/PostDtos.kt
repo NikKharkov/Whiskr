@@ -2,6 +2,7 @@ package org.example.whiskr.data
 
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
+import org.example.whiskr.dto.Media
 
 @Serializable
 data class Post(
@@ -15,17 +16,6 @@ data class Post(
     val stats: PostStats,
     val interaction: UserInteraction,
     val parentPost: Post? = null
-)
-
-@Serializable
-data class Media(
-    val id: Long,
-    val url: String,
-    val type: MediaType,
-    val width: Int,
-    val height: Int,
-    val thumbnailUrl: String? = null,
-    val duration: Int? = null
 )
 
 @Serializable
@@ -51,7 +41,6 @@ data class UserInteraction(
 )
 
 enum class PostType { ORIGINAL, REPOST, QUOTE, REPLY }
-enum class MediaType { IMAGE, VIDEO }
 
 @Serializable
 data class CreatePostRequest(

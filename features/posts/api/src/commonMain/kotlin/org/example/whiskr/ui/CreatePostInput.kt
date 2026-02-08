@@ -30,10 +30,10 @@ import com.mohamedrejeb.calf.picker.FilePickerFileType
 import com.mohamedrejeb.calf.picker.FilePickerSelectionMode
 import com.mohamedrejeb.calf.picker.rememberFilePickerLauncher
 import org.example.whiskr.components.AvatarPlaceholder
+import org.example.whiskr.components.MediaPreviewItem
 import org.example.whiskr.components.WhiskrButton
 import org.example.whiskr.extensions.customClickable
 import org.example.whiskr.theme.WhiskrTheme
-import org.example.whiskr.ui.components.MediaPreviewItem
 import org.example.whiskr.ui.components.RemoteMediaPreviewItem
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource

@@ -37,7 +37,7 @@ import net.engawapg.lib.zoomable.rememberZoomState
 import net.engawapg.lib.zoomable.zoomable
 import org.example.whiskr.component.MediaViewerComponent
 import org.example.whiskr.components.SimpleTopBar
-import org.example.whiskr.data.MediaType
+import org.example.whiskr.dto.MediaType
 import org.example.whiskr.extensions.customClickable
 import org.example.whiskr.util.toCloudStorageUrl
 import org.jetbrains.compose.resources.painterResource

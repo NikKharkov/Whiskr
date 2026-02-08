@@ -5,7 +5,7 @@ import me.tatarka.inject.annotations.Provides
 import org.example.whiskr.component.DefaultHomeComponent
 import org.example.whiskr.component.HomeComponent
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.Media
 
 interface HomeModule {
     @Provides

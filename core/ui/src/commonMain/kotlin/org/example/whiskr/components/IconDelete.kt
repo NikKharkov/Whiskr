@@ -1,4 +1,4 @@
-package org.example.whiskr.ui.components
+package org.example.whiskr.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -13,8 +13,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import org.example.whiskr.extensions.customClickable
 import org.jetbrains.compose.resources.painterResource
-import whiskr.features.posts.api.generated.resources.Res
-import whiskr.features.posts.api.generated.resources.ic_close
+import whiskr.core.ui.generated.resources.Res
+import whiskr.core.ui.generated.resources.ic_close
 
 @Composable
 fun IconDelete(

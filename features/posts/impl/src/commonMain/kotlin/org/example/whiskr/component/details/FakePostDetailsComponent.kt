@@ -6,7 +6,7 @@ import org.example.whiskr.component.PostDetailsComponent
 import org.example.whiskr.component.PostListComponent
 import org.example.whiskr.component.list.FakePostListComponent
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.Media
 import org.example.whiskr.util.mockPost
 
 class FakePostDetailsComponent(

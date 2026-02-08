@@ -13,7 +13,7 @@ import domain.UserState
 import kotlinx.serialization.Serializable
 import org.example.whiskr.component.explore.ExploreComponent
 import org.example.whiskr.component.viewer.NewsViewerComponent
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.Media
 import org.example.whiskr.data.Post
 import org.example.whiskr.data.WalletResponseDto
 import org.example.whiskr.dto.PetResponse

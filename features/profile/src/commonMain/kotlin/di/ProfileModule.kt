@@ -11,7 +11,7 @@ import de.jensklingenberg.ktorfit.Ktorfit
 import domain.ProfileRepository
 import me.tatarka.inject.annotations.Provides
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.Media
 import org.example.whiskr.di.Singleton
 
 interface ProfileModule {

@@ -12,8 +12,8 @@ import domain.ChatRepository
 import kotlinx.serialization.json.Json
 import me.tatarka.inject.annotations.Provides
 import org.example.whiskr.TokenStorage
-import org.example.whiskr.data.Media
 import org.example.whiskr.di.Singleton
+import org.example.whiskr.dto.Media
 
 interface ChatModule {
 

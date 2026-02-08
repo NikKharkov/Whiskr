@@ -11,7 +11,6 @@ configure<LibraryExtension> {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.features.posts.api)
             implementation(projects.core.user)
             implementation(libs.krossbow.stomp.core)
             implementation(libs.krossbow.websocket.builtin)

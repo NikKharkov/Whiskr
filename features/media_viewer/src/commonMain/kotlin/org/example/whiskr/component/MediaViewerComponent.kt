@@ -1,8 +1,8 @@
 package org.example.whiskr.component
 
 import com.arkivanov.decompose.ComponentContext
-import org.example.whiskr.data.MediaType
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.MediaType
+import org.example.whiskr.dto.Media
 
 interface MediaViewerComponent {
 

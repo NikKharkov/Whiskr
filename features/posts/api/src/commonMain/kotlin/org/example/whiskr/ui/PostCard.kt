@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.example.whiskr.components.AvatarPlaceholder
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.Media
 import org.example.whiskr.data.PostType
 import org.example.whiskr.extensions.customClickable
 import org.example.whiskr.theme.WhiskrTheme

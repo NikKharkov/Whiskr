@@ -3,7 +3,7 @@ package org.example.whiskr.component
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.Media
 
 interface PostDetailsComponent {
     val model: Value<Model>

@@ -7,6 +7,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import coil3.compose.AsyncImage
+import org.example.whiskr.components.IconDelete
 import org.example.whiskr.util.toCloudStorageUrl
 
 @Composable

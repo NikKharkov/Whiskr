@@ -1,15 +1,7 @@
 package org.example.whiskr.util
 
-import com.mohamedrejeb.calf.core.PlatformContext
-import com.mohamedrejeb.calf.io.KmpFile
-import com.mohamedrejeb.calf.io.getName
-import org.example.whiskr.data.MediaType
-import org.example.whiskr.data.Media
-
-fun KmpFile.isVideo(context: PlatformContext): Boolean {
-    val name = this.getName(context)?.lowercase() ?: ""
-    return name.endsWith(".mp4") || name.endsWith(".mov") || name.endsWith(".avi")
-}
+import org.example.whiskr.dto.Media
+import org.example.whiskr.dto.MediaType
 
 fun String.toAiPostMedia(): Media {
     return Media(

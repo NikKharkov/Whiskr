@@ -10,7 +10,7 @@ import org.example.whiskr.component.viewer.NewsViewerComponent
 import org.example.whiskr.data.ExplorerApiService
 import org.example.whiskr.data.ExplorerRepositoryImpl
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.Media
 import org.example.whiskr.domain.ExplorerRepository
 
 interface ExploreModule {

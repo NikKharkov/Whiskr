@@ -5,7 +5,7 @@ import com.arkivanov.decompose.value.Value
 import org.example.whiskr.PagingDelegate
 import org.example.whiskr.component.PostListComponent
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.Media
+import org.example.whiskr.dto.Media
 import org.example.whiskr.util.mockPost
 
 class FakePostListComponent(
