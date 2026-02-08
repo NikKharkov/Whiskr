@@ -24,22 +24,13 @@ import domain.UserState
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
-import org.example.whiskr.component.MainFlowComponent.Config.AiStudio
-import org.example.whiskr.component.MainFlowComponent.Config.CreatePost
-import org.example.whiskr.component.MainFlowComponent.Config.CreateReply
-import org.example.whiskr.component.MainFlowComponent.Config.Explore
-import org.example.whiskr.component.MainFlowComponent.Config.Games
-import org.example.whiskr.component.MainFlowComponent.Config.Home
-import org.example.whiskr.component.MainFlowComponent.Config.MediaViewer
-import org.example.whiskr.component.MainFlowComponent.Config.Messages
-import org.example.whiskr.component.MainFlowComponent.Config.PostDetails
-import org.example.whiskr.component.MainFlowComponent.Config.Profile
-import org.example.whiskr.component.MainFlowComponent.Config.UserProfile
 import org.example.whiskr.component.explore.ExploreComponent
 import org.example.whiskr.component.viewer.NewsViewerComponent
+import org.example.whiskr.data.Post
 import org.example.whiskr.data.WalletResponseDto
 import org.example.whiskr.domain.BillingRepository
 import org.example.whiskr.domain.NotificationRepository
+import org.example.whiskr.dto.Media
 import org.example.whiskr.util.toAiPostMedia
 import org.example.whiskr.util.toConfig
 import org.example.whiskr.util.toMainFlowConfig
@@ -53,6 +44,7 @@ class DefaultMainFlowComponent(
     private val userRepository: UserRepository,
     private val billingRepository: BillingRepository,
     private val notificationRepository: NotificationRepository,
+
     private val homeFactory: HomeComponent.Factory,
     private val createPostFactory: CreatePostComponent.Factory,
     private val createReplyFactory: CreateReplyComponent.Factory,
@@ -69,12 +61,12 @@ class DefaultMainFlowComponent(
     private val addPetFactory: AddPetComponent.Factory,
     private val editPetFactory: EditPetComponent.Factory,
     private val notificationFactory: NotificationComponent.Factory,
-    private val chatDetailFactory: ChatDetailComponent.Factory
+    private val chatDetailFactory: ChatDetailComponent.Factory,
+    // private val chatListFactory: ChatListComponent.Factory
 ) : MainFlowComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<MainFlowComponent.Config>()
     private val dialogNavigation = SlotNavigation<MainFlowComponent.DialogConfig>()
-
     private val scope = componentScope()
 
     override val userState: Value<UserState> = userRepository.user
@@ -96,13 +88,33 @@ class DefaultMainFlowComponent(
         }
         scope.launch {
             notificationRepository.getUnreadCount()
-                .onSuccess { count ->
-                    _unreadNotificationsCount.value = count
-                }
-                .onFailure { error ->
-                    Logger.e(error) {"Error getting unread notifications: ${error.message}"}
-                }
+                .onSuccess { _unreadNotificationsCount.value = it }
+                .onFailure { Logger.e(it) { "Error getting unread count" } }
         }
+    }
+
+    private fun navigateToPost(post: Post) {
+        navigation.push(MainFlowComponent.Config.PostDetails(post.id))
+    }
+
+    private fun navigateToProfile(handle: String) {
+        navigation.bringToFront(MainFlowComponent.Config.UserProfile(handle))
+    }
+
+    private fun navigateToMedia(media: List<Media>, index: Int) {
+        navigation.push(MainFlowComponent.Config.MediaViewer(media, index))
+    }
+
+    private fun navigateToHashtag(tag: String) {
+        navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
+    }
+
+    private fun navigateToChat(chatId: Long = -1L, userId: Long = -1L) {
+        navigation.push(MainFlowComponent.Config.ChatDetail(chatId, userId))
+    }
+
+    private fun openRepostDialog(post: Post) {
+        dialogNavigation.activate(MainFlowComponent.DialogConfig.CreateRepost(post))
     }
 
     override fun setDrawerOpen(isOpen: Boolean) {
@@ -112,6 +124,19 @@ class DefaultMainFlowComponent(
     override fun onNotificationsClick() {
         _unreadNotificationsCount.value = 0
         navigation.push(MainFlowComponent.Config.Notifications)
+    }
+
+    override fun onPostClick() = navigation.push(MainFlowComponent.Config.CreatePost())
+
+    override fun onTabSelected(tab: MainFlowComponent.Tab) {
+        navigation.bringToFront(tab.toConfig())
+    }
+
+    override fun onDeepLink(link: String) {
+        val newConfig = link.toMainFlowConfig() ?: return
+        if (stack.value.active.configuration != newConfig) {
+            navigation.push(newConfig)
+        }
     }
 
     override val stack = childStack(
@@ -133,254 +158,71 @@ class DefaultMainFlowComponent(
         config: MainFlowComponent.Config,
         context: ComponentContext
     ): MainFlowComponent.Child = when (config) {
-        Home -> MainFlowComponent.Child.Home(
+
+        MainFlowComponent.Config.Home -> MainFlowComponent.Child.Home(
             homeFactory(
                 componentContext = context,
-                onNavigateToCreatePost = {
-                    navigation.push(CreatePost())
-                },
-                onNavigateToProfile = { userHandle ->
-                    navigation.bringToFront(UserProfile(userHandle))
-                },
-                onNavigateToComments = { post ->
-                    navigation.push(PostDetails(postId = post.id))
-                },
-                onNavigateToMediaViewer = { mediaList, index ->
-                    navigation.push(MediaViewer(mediaList, index))
-                },
-                onNavigateToHashtag = { tag ->
-                    navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
-                },
-                onNavigateToRepost = { post ->
-                    dialogNavigation.activate(MainFlowComponent.DialogConfig.CreateRepost(post))
-                }
+                onNavigateToCreatePost = { navigation.push(MainFlowComponent.Config.CreatePost()) },
+                onNavigateToProfile = ::navigateToProfile,
+                onNavigateToComments = ::navigateToPost,
+                onNavigateToMediaViewer = ::navigateToMedia,
+                onNavigateToHashtag = ::navigateToHashtag,
+                onNavigateToRepost = ::openRepostDialog
             )
         )
 
-        is PostDetails -> MainFlowComponent.Child.PostDetails(
+        MainFlowComponent.Config.Explore -> MainFlowComponent.Child.Explore(
+            exploreFactory(
+                componentContext = context,
+                onNavigateToPost = ::navigateToPost,
+                onNavigateToProfile = ::navigateToProfile,
+                onNavigateToMediaViewer = ::navigateToMedia,
+                onNavigateToHashtag = ::navigateToHashtag,
+                onNavigateToNews = { url -> navigation.push(MainFlowComponent.Config.NewsViewer(url)) },
+                onNavigateToRepost = ::openRepostDialog
+            )
+        )
+
+        is MainFlowComponent.Config.PostDetails -> MainFlowComponent.Child.PostDetails(
             postDetailsFactory(
                 componentContext = context,
                 postId = config.postId,
-                onBack = { navigation.pop() },
-                onNavigateToReply = { postToReply ->
-                    navigation.push(CreateReply(targetPost = postToReply))
-                },
-                onNavigateToPostDetails = { post ->
-                    navigation.push(PostDetails(postId = post.id))
-                },
-                onNavigateToMediaViewer = { mediaList, index ->
-                    navigation.push(MediaViewer(mediaList, index))
-                },
-                onNavigateToHashtag = { tag ->
-                    navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
-                },
-                onNavigateToProfile = { handle ->
-                    navigation.bringToFront(UserProfile(handle))
-                },
-                onNavigateToRepost = { post ->
-                    dialogNavigation.activate(MainFlowComponent.DialogConfig.CreateRepost(post))
-                }
-            )
-        )
-
-        is MainFlowComponent.Config.HashtagsFeed -> MainFlowComponent.Child.HashtagsFeed(
-            hashtagsFactory(
-                componentContext = context,
-                hashtag = config.hashtag,
-                onBack = { navigation.pop() },
-                onNavigateToComments = { post ->
-                    navigation.push(PostDetails(postId = post.id))
-                },
-                onNavigateToMediaViewer = { mediaList, index ->
-                    navigation.push(MediaViewer(mediaList, index))
-                },
-                onNavigateToHashtag = { tag ->
-                    navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
-                },
-                onNavigateToProfile = { handle ->
-                    navigation.bringToFront(UserProfile(handle))
-                },
-                onNavigateToRepost = { post ->
-                    dialogNavigation.activate(MainFlowComponent.DialogConfig.CreateRepost(post))
-                }
-            )
-        )
-
-        is UserProfile -> MainFlowComponent.Child.Profile(
-            profileFactory(
-                componentContext = context,
-                handle = config.handle,
-                onBack = { navigation.pop() },
-                onNavigateToPost = { post -> navigation.push(PostDetails(postId = post.id)) },
-                onNavigateToUserProfile = { handle -> navigation.bringToFront(UserProfile(handle)) },
-                onNavigateToMediaViewer = { media, index ->
+                onBack = navigation::pop,
+                onNavigateToReply = { post ->
                     navigation.push(
-                        MediaViewer(
-                            media,
-                            index
+                        MainFlowComponent.Config.CreateReply(
+                            post
                         )
                     )
                 },
-                onNavigateToHashtag = { tag ->
-                    navigation.push(
-                        MainFlowComponent.Config.HashtagsFeed(
-                            tag
-                        )
-                    )
-                },
-                onNavigateToRepost = { post ->
-                    dialogNavigation.activate(MainFlowComponent.DialogConfig.CreateRepost(post))
-                },
-                onNavigateToEditProfile = {
-                    dialogNavigation.activate(MainFlowComponent.DialogConfig.EditProfile)
-                },
-                onNavigateToAddPet = {
-                    dialogNavigation.activate(MainFlowComponent.DialogConfig.AddPet)
-                },
-                onNavigateToEditPet = { petId, petData ->
-                    dialogNavigation.activate(MainFlowComponent.DialogConfig.EditPet(petId, petData))
-                },
-                onSendMessageClick = { targetUserId ->
-                    navigation.push(MainFlowComponent.Config.ChatDetail(userId = targetUserId))
-                }
-            ),
+                onNavigateToPostDetails = ::navigateToPost,
+                onNavigateToMediaViewer = ::navigateToMedia,
+                onNavigateToHashtag = ::navigateToHashtag,
+                onNavigateToProfile = ::navigateToProfile,
+                onNavigateToRepost = ::openRepostDialog
+            )
+        )
+
+        is MainFlowComponent.Config.UserProfile -> createProfileChild(
+            context,
+            config.handle,
             isMe = false
         )
 
-        Profile -> MainFlowComponent.Child.Profile(
-            profileFactory(
-                componentContext = context,
-                handle = userState.value.profile?.handle ?: "",
-                onBack = { navigation.pop() },
-                onNavigateToPost = { post -> navigation.push(PostDetails(postId = post.id)) },
-                onNavigateToUserProfile = { handle -> navigation.bringToFront(UserProfile(handle)) },
-                onNavigateToMediaViewer = { media, index ->
-                    navigation.push(
-                        MediaViewer(
-                            media,
-                            index
-                        )
-                    )
-                },
-                onNavigateToHashtag = { tag ->
-                    navigation.push(
-                        MainFlowComponent.Config.HashtagsFeed(
-                            tag
-                        )
-                    )
-                },
-                onNavigateToRepost = { post ->
-                    dialogNavigation.activate(MainFlowComponent.DialogConfig.CreateRepost(post))
-                },
-                onNavigateToEditProfile = {
-                    dialogNavigation.activate(MainFlowComponent.DialogConfig.EditProfile)
-                },
-                onNavigateToAddPet = {
-                    dialogNavigation.activate(MainFlowComponent.DialogConfig.AddPet)
-                },
-                onNavigateToEditPet = { petId, petData ->
-                    dialogNavigation.activate(MainFlowComponent.DialogConfig.EditPet(petId, petData))
-                },
-                onSendMessageClick = { targetUserId ->
-                    navigation.push(MainFlowComponent.Config.ChatDetail(userId = targetUserId))
-                }
-            ),
+        MainFlowComponent.Config.Profile -> createProfileChild(
+            context,
+            handle = userState.value.profile?.handle.orEmpty(),
             isMe = true
         )
 
-        is CreatePost -> MainFlowComponent.Child.CreatePost(
-            createPostFactory(
-                componentContext = context,
-                initialImageUrl = config.imageUrl,
-                onBack = { navigation.pop() },
-                onPostCreated = { navigation.pop() }
-            )
-        )
-
-        is CreateReply -> MainFlowComponent.Child.CreateReply(
-            createReplyFactory(
-                componentContext = context,
-                targetPost = config.targetPost,
-                onBack = { navigation.pop() },
-                onReplyCreated = { navigation.pop() }
-            )
-        )
-
-        is MediaViewer -> MainFlowComponent.Child.MediaViewer(
-            mediaViewerFactory(
-                componentContext = context,
-                mediaList = config.media,
-                initialIndex = config.index,
-                onFinished = { navigation.pop() }
-            )
-        )
-
-        MainFlowComponent.Config.Store -> MainFlowComponent.Child.Store(
-            storeFactory(
-                componentContext = context,
-                onBack = { navigation.pop() }
-            )
-        )
-
-        AiStudio -> MainFlowComponent.Child.AiStudio(
-            aiFactory(
-                componentContext = context,
-                initialBalance = walletState.value.balance,
-                onNavigateToMediaViewer = { url ->
-                    navigation.push(
-                        MediaViewer(
-                            media = listOf(url.toAiPostMedia()),
-                            index = 0
-                        )
-                    )
-                },
-                onNavigateToCreatePost = { url ->
-                    navigation.push(CreatePost(imageUrl = url))
-                }
-            )
-        )
-
-        Explore -> MainFlowComponent.Child.Explore(
-            exploreFactory(
-                componentContext = context,
-                onNavigateToPost = { post ->
-                    navigation.push(PostDetails(postId = post.id))
-                },
-                onNavigateToProfile = { userHandle ->
-                    navigation.bringToFront(UserProfile(userHandle))
-                },
-                onNavigateToMediaViewer = { mediaList, index ->
-                    navigation.push(MediaViewer(mediaList, index))
-                },
-                onNavigateToHashtag = { tag ->
-                    navigation.push(MainFlowComponent.Config.HashtagsFeed(tag))
-                },
-                onNavigateToNews = { url -> navigation.push(MainFlowComponent.Config.NewsViewer(url))},
-                onNavigateToRepost = { post ->
-                    dialogNavigation.activate(MainFlowComponent.DialogConfig.CreateRepost(post))
-                }
-            )
-        )
-
-        is MainFlowComponent.Config.NewsViewer -> MainFlowComponent.Child.NewsViewer(
-            newsViewerFactory(
-                componentContext = context,
-                url = config.url,
-                onBack = { navigation.pop() }
-            )
-        )
-
-        MainFlowComponent.Config.Notifications -> MainFlowComponent.Child.Notifications(
-            notificationFactory(
-                componentContext = context,
-                onBack = { navigation.pop() },
-                onNavigateToDeepLink = { link ->
-                    val config = link.toMainFlowConfig()
-                    if (config != null) {
-                        navigation.push(config)
-                    }
-                }
-            )
+        MainFlowComponent.Config.Messages -> MainFlowComponent.Child.Messages(
+            // TODO: ChatListFactory
+            /* chatListFactory(
+                   componentContext = context,
+                   onNavigateToChat = { chatId -> navigateToChat(chatId = chatId) },
+                   onNavigateToNewChat = { /* ... */ }
+               ) */
+            Unit
         )
 
         is MainFlowComponent.Config.ChatDetail -> MainFlowComponent.Child.ChatDetail(
@@ -388,18 +230,108 @@ class DefaultMainFlowComponent(
                 componentContext = context,
                 chatId = config.chatId,
                 userId = config.userId,
-                onBack = { navigation.pop() },
-                onNavigateToProfile = { handle ->
-                    navigation.bringToFront(UserProfile(handle))
+                onBack = navigation::pop,
+                onNavigateToProfile = ::navigateToProfile,
+                onNavigateToMediaViewer = ::navigateToMedia
+            )
+        )
+
+        MainFlowComponent.Config.Notifications -> MainFlowComponent.Child.Notifications(
+            notificationFactory(
+                componentContext = context,
+                onBack = navigation::pop,
+                onNavigateToDeepLink = ::onDeepLink
+            )
+        )
+
+        MainFlowComponent.Config.AiStudio -> MainFlowComponent.Child.AiStudio(
+            aiFactory(
+                componentContext = context,
+                initialBalance = walletState.value.balance,
+                onNavigateToMediaViewer = { url ->
+                    navigateToMedia(
+                        listOf(url.toAiPostMedia()),
+                        0
+                    )
                 },
-                onNavigateToMediaViewer = { media, index ->
-                    navigation.push(MediaViewer(media, index))
+                onNavigateToCreatePost = { url ->
+                    navigation.push(
+                        MainFlowComponent.Config.CreatePost(
+                            imageUrl = url
+                        )
+                    )
                 }
             )
         )
 
-        Games -> TODO()
-        Messages -> TODO()
+        is MainFlowComponent.Config.CreatePost -> MainFlowComponent.Child.CreatePost(
+            createPostFactory(context, config.imageUrl, { navigation.pop() }, navigation::pop)
+        )
+
+        is MainFlowComponent.Config.CreateReply -> MainFlowComponent.Child.CreateReply(
+            createReplyFactory(context, config.targetPost, { navigation.pop() }, navigation::pop)
+        )
+
+        is MainFlowComponent.Config.MediaViewer -> MainFlowComponent.Child.MediaViewer(
+            mediaViewerFactory(context, config.media, config.index, navigation::pop)
+        )
+
+        is MainFlowComponent.Config.NewsViewer -> MainFlowComponent.Child.NewsViewer(
+            newsViewerFactory(context, config.url, navigation::pop)
+        )
+
+        MainFlowComponent.Config.Store -> MainFlowComponent.Child.Store(
+            storeFactory(
+                context,
+                navigation::pop
+            )
+        )
+
+        is MainFlowComponent.Config.HashtagsFeed -> MainFlowComponent.Child.HashtagsFeed(
+            hashtagsFactory(
+                componentContext = context,
+                hashtag = config.hashtag,
+                onBack = navigation::pop,
+                onNavigateToComments = ::navigateToPost,
+                onNavigateToMediaViewer = ::navigateToMedia,
+                onNavigateToHashtag = ::navigateToHashtag,
+                onNavigateToProfile = ::navigateToProfile,
+                onNavigateToRepost = ::openRepostDialog
+            )
+        )
+
+        MainFlowComponent.Config.Games -> MainFlowComponent.Child.Games(Unit) // TODO("Games")
+    }
+
+    private fun createProfileChild(
+        context: ComponentContext,
+        handle: String,
+        isMe: Boolean
+    ): MainFlowComponent.Child.Profile {
+        return MainFlowComponent.Child.Profile(
+            profileFactory(
+                componentContext = context,
+                handle = handle,
+                onBack = navigation::pop,
+                onNavigateToPost = ::navigateToPost,
+                onNavigateToUserProfile = ::navigateToProfile,
+                onNavigateToMediaViewer = ::navigateToMedia,
+                onNavigateToHashtag = ::navigateToHashtag,
+                onNavigateToRepost = ::openRepostDialog,
+                onNavigateToEditProfile = { dialogNavigation.activate(MainFlowComponent.DialogConfig.EditProfile) },
+                onNavigateToAddPet = { dialogNavigation.activate(MainFlowComponent.DialogConfig.AddPet) },
+                onNavigateToEditPet = { id, data ->
+                    dialogNavigation.activate(
+                        MainFlowComponent.DialogConfig.EditPet(
+                            id,
+                            data
+                        )
+                    )
+                },
+                onSendMessageClick = { userId -> navigateToChat(userId = userId) }
+            ),
+            isMe = isMe
+        )
     }
 
     private fun createDialogChild(
@@ -408,10 +340,10 @@ class DefaultMainFlowComponent(
     ): MainFlowComponent.DialogChild = when (config) {
         is MainFlowComponent.DialogConfig.CreateRepost -> MainFlowComponent.DialogChild.CreateRepost(
             repostFactory(
-                componentContext = context,
-                targetPost = config.targetPost,
-                onBack = { dialogNavigation.dismiss() },
-                onRepostCreated = { dialogNavigation.dismiss() }
+                context,
+                config.targetPost,
+                dialogNavigation::dismiss,
+                dialogNavigation::dismiss
             )
         )
 
@@ -419,26 +351,16 @@ class DefaultMainFlowComponent(
             editProfileFactory(
                 componentContext = context,
                 initialProfile = userState.value,
-                onBack = { dialogNavigation.dismiss() },
-                onProfileUpdated = {
-                    scope.launch {
-                        userRepository.getMyProfile()
-                        dialogNavigation.dismiss()
-                    }
-                }
+                onBack = dialogNavigation::dismiss,
+                onProfileUpdated = { scope.launch { userRepository.getMyProfile(); dialogNavigation.dismiss() } }
             )
         )
 
         MainFlowComponent.DialogConfig.AddPet -> MainFlowComponent.DialogChild.AddPet(
             addPetFactory(
                 componentContext = context,
-                onBack = { dialogNavigation.dismiss() },
-                onPetAdded = {
-                    scope.launch {
-                        userRepository.getMyProfile()
-                        dialogNavigation.dismiss()
-                    }
-                }
+                onBack = dialogNavigation::dismiss,
+                onPetAdded = { scope.launch { userRepository.getMyProfile(); dialogNavigation.dismiss() } }
             )
         )
 
@@ -447,44 +369,15 @@ class DefaultMainFlowComponent(
                 componentContext = context,
                 petId = config.petId,
                 initialPetData = config.petData,
-                onBack = { dialogNavigation.dismiss() },
-                onPetUpdated = {
-                    scope.launch {
-                        userRepository.getMyProfile()
-                        dialogNavigation.dismiss()
-                    }
-                }
+                onBack = dialogNavigation::dismiss,
+                onPetUpdated = { scope.launch { userRepository.getMyProfile(); dialogNavigation.dismiss() } }
             )
         )
     }
 
-    override fun onDeepLink(link: String) {
-        val newConfig = link.toMainFlowConfig() ?: return
-
-        val activeConfig = stack.value.active.configuration
-
-        if (activeConfig == newConfig) {
-            return
-        }
-
-        navigation.push(newConfig)
-    }
-
     private fun getInitialStack(link: String?): List<MainFlowComponent.Config> {
-        val baseStack = listOf(Home)
-
-        val deepLinkConfig = link?.toMainFlowConfig()
-
-        return if (deepLinkConfig != null) {
-            baseStack + deepLinkConfig
-        } else {
-            baseStack
-        }
+        val base = listOf(MainFlowComponent.Config.Home)
+        val deep = link?.toMainFlowConfig()
+        return if (deep != null) base + deep else base
     }
-
-    override fun onTabSelected(tab: MainFlowComponent.Tab) {
-        navigation.bringToFront(tab.toConfig())
-    }
-
-    override fun onPostClick() = navigation.push(CreatePost())
 }

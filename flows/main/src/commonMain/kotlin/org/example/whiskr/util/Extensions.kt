@@ -49,28 +49,26 @@ val MainFlowComponent.Child.showsNavigation: Boolean
 
 fun String.toMainFlowConfig(): MainFlowComponent.Config? {
     val path = this.substringBefore("?")
-        .replace("https://whiskr.app", "")
+        .replace("https://whiskr.app/", "")
         .replace("whiskr://", "")
         .trimStart('/')
 
     return when {
         path.startsWith("post/") -> {
-            val id = path.removePrefix("post/")
-                .replace("/", "")
-                .toLongOrNull()
-
+            val id = path.removePrefix("post/").toLongOrNull()
             id?.let { MainFlowComponent.Config.PostDetails(it) }
         }
 
         path.startsWith("profile/") -> {
             val handle = path.removePrefix("profile/")
-                .replace("/", "")
                 .replace("%40", "@")
                 .trim()
+            if (handle.isBlank()) null else MainFlowComponent.Config.UserProfile(handle)
+        }
 
-            if (handle.isBlank()) return null
-
-            MainFlowComponent.Config.UserProfile(handle)
+        path.startsWith("chat/") -> {
+            val id = path.removePrefix("chat/").toLongOrNull()
+            id?.let { MainFlowComponent.Config.ChatDetail(chatId = it) }
         }
 
         else -> null
