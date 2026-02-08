@@ -17,6 +17,7 @@ fun MainFlowComponent.Child.toTab(): MainFlowComponent.Tab? = when (this) {
             null
         }
     }
+
     else -> null
 }
 
@@ -39,6 +40,8 @@ val MainFlowComponent.Child.showsNavigation: Boolean
         is MainFlowComponent.Child.HashtagsFeed,
         is MainFlowComponent.Child.Profile,
         is MainFlowComponent.Child.Notifications,
+        is MainFlowComponent.Child.NewsViewer,
+        is MainFlowComponent.Child.ChatDetail,
         is MainFlowComponent.Child.MediaViewer -> false
 
         else -> true

@@ -49,6 +49,7 @@ include(":features:explorer")
 include(":features:add_edit")
 include(":features:notifications:api")
 include(":features:notifications:impl")
+include(":features:chat")
 
 include(":core:common")
 include(":core:network")

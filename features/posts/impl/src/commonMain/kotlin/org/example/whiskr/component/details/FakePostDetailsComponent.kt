@@ -6,7 +6,7 @@ import org.example.whiskr.component.PostDetailsComponent
 import org.example.whiskr.component.PostListComponent
 import org.example.whiskr.component.list.FakePostListComponent
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import org.example.whiskr.util.mockPost
 
 class FakePostDetailsComponent(
@@ -22,7 +22,7 @@ class FakePostDetailsComponent(
     override fun onBackClick() {}
     override fun onReplyClick(post: Post) {}
     override fun onLikeClick(postId: Long) {}
-    override fun onMediaClick(media: List<PostMedia>, index: Int) {}
+    override fun onMediaClick(media: List<Media>, index: Int) {}
     override fun onShareClick(post: Post) {}
     override fun onNavigateToParentProfile(handle: String) {}
     override fun onRepostClick(post: Post) {}

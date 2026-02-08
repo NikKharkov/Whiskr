@@ -32,6 +32,7 @@ fun MediaPreviewItem(
                 modifier = Modifier.fillMaxSize(),
                 playerHost = MediaPlayerHost(
                     mediaUrl = videoUrl,
+                    isMuted = true,
                     autoPlay = true
                 ),
                 playerConfig = VideoPlayerConfig(

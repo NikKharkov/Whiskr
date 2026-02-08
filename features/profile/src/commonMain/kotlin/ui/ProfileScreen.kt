@@ -34,7 +34,7 @@ fun ProfileScreen(
                         onFollowClick = component::onFollowClick,
                         onPetClick = component::onPetClick,
                         onAddPetClick = component::onAddPetClick,
-                        onMessageClick = { TODO() }
+                        onMessageClick = component::onMessageClick
                     )
                 }
             )

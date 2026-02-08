@@ -5,7 +5,7 @@ import com.arkivanov.decompose.value.Value
 import org.example.whiskr.PagingDelegate
 import org.example.whiskr.component.PostListComponent
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import org.example.whiskr.util.mockPost
 
 class FakePostListComponent(
@@ -34,7 +34,7 @@ class FakePostListComponent(
     override fun onLoadMore() {}
     override fun onLikeClick(postId: Long) {}
     override fun onShareClick(post: Post) {}
-    override fun onMediaClick(media: List<PostMedia>, index: Int) {}
+    override fun onMediaClick(media: List<Media>, index: Int) {}
     override fun onNavigateToDetails(post: Post) {}
     override fun onProfileClick(handle: String) {}
     override fun onHashtagClick(tag: String) {}

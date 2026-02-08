@@ -4,7 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import org.example.whiskr.PagingDelegate
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import org.example.whiskr.dto.PagedResponse
 
 interface PostListComponent {
@@ -15,7 +15,7 @@ interface PostListComponent {
     fun onLikeClick(postId: Long)
     fun onShareClick(post: Post)
     fun onRepostClick(post: Post)
-    fun onMediaClick(media: List<PostMedia>, index: Int)
+    fun onMediaClick(media: List<Media>, index: Int)
     fun onNavigateToDetails(post: Post)
     fun onProfileClick(handle: String)
     fun onHashtagClick(tag: String)
@@ -29,7 +29,7 @@ interface PostListComponent {
             loader: suspend (page: Int) -> Result<PagedResponse<Post>>,
             onNavigateToProfile: (String) -> Unit,
             onNavigateToComments: (Post) -> Unit,
-            onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
+            onNavigateToMediaViewer: (List<Media>, Int) -> Unit,
             onNavigateToHashtag: (String) -> Unit,
             onNavigateToRepost: (Post) -> Unit
         ): PostListComponent

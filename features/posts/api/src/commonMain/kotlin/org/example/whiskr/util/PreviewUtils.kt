@@ -5,7 +5,7 @@ import domain.UserState
 import kotlinx.datetime.LocalDateTime
 import org.example.whiskr.data.MediaType
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import org.example.whiskr.data.PostStats
 import org.example.whiskr.data.PostType
 import org.example.whiskr.data.UserInteraction
@@ -36,7 +36,7 @@ val mockInteraction = UserInteraction(
 )
 
 val mockMediaList = listOf(
-    PostMedia(
+    Media(
         id = 99L,
         url = "https://example.com/image.jpg",
         type = MediaType.IMAGE,

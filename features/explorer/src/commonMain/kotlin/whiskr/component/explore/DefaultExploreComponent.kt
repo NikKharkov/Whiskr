@@ -14,7 +14,7 @@ import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.component.PostListComponent
 import org.example.whiskr.component.componentScope
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import org.example.whiskr.domain.AnimalNews
 import org.example.whiskr.domain.ExplorerRepository
 
@@ -23,7 +23,7 @@ class DefaultExploreComponent(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onNavigateToPost: (Post) -> Unit,
     @Assisted private val onNavigateToProfile: (String) -> Unit,
-    @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
+    @Assisted private val onNavigateToMediaViewer: (List<Media>, Int) -> Unit,
     @Assisted private val onNavigateToHashtag: (String) -> Unit,
     @Assisted private val onNavigateToUrl: (String) -> Unit,
     @Assisted private val onNavigateToRepost: (Post) -> Unit,

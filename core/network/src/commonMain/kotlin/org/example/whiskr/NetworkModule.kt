@@ -92,7 +92,7 @@ interface NetworkModule {
                                 }
                             }
                             val authResponse: AuthResponseDto =
-                                refreshClient.post("$BASE_URL/auth/refresh") {
+                                refreshClient.post("${BASE_URL.removeSuffix("/")}/auth/refresh") {
                                     contentType(ContentType.Application.Json)
                                     setBody(body = RefreshTokenRequestDto(refreshToken))
                                 }.body()

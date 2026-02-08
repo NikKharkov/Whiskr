@@ -11,7 +11,7 @@ import org.example.whiskr.component.PostDetailsComponent
 import org.example.whiskr.component.PostListComponent
 import org.example.whiskr.component.componentScope
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import org.example.whiskr.domain.PostRepository
 
 @Inject
@@ -20,7 +20,7 @@ class DefaultPostDetailsComponent(
     @Assisted private val postId: Long,
     @Assisted private val onNavigateToReply: (Post) -> Unit,
     @Assisted private val onNavigateToPostDetails: (Post) -> Unit,
-    @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
+    @Assisted private val onNavigateToMediaViewer: (List<Media>, Int) -> Unit,
     @Assisted private val onBack: () -> Unit,
     @Assisted private val onNavigateToHashtag: (String) -> Unit,
     @Assisted private val onNavigateToProfile: (String) -> Unit,
@@ -118,7 +118,7 @@ class DefaultPostDetailsComponent(
 
     override fun onBackClick() = onBack()
     override fun onReplyClick(post: Post) = onNavigateToReply(post)
-    override fun onMediaClick(media: List<PostMedia>, index: Int) = onNavigateToMediaViewer(media, index)
+    override fun onMediaClick(media: List<Media>, index: Int) = onNavigateToMediaViewer(media, index)
     override fun onNavigateToParentProfile(handle: String) = onNavigateToProfile(handle)
     override fun onRepostClick(post: Post) = onNavigateToRepost(post)
 }

@@ -11,7 +11,7 @@ import de.jensklingenberg.ktorfit.Ktorfit
 import domain.ProfileRepository
 import me.tatarka.inject.annotations.Provides
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import org.example.whiskr.di.Singleton
 
 interface ProfileModule {
@@ -33,12 +33,13 @@ interface ProfileModule {
             () -> Unit, // onBack
             (Post) -> Unit, // onNavPost
             (String) -> Unit, // onNavUser
-            (List<PostMedia>, Int) -> Unit, // onNavMedia
+            (List<Media>, Int) -> Unit, // onNavMedia
             (String) -> Unit, // onNavTag,
             (Post) -> Unit, // onRepost
             () -> Unit, // editProfile
             () -> Unit, // addPet
-            (Long, PetResponse) -> Unit, //editPet
+            (Long, PetResponse) -> Unit, // editPet
+            (Long) -> Unit, // onMessage
         ) -> DefaultProfileComponent
     ): ProfileComponent.Factory {
         return ProfileComponent.Factory(factory)

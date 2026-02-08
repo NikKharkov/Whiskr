@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.example.whiskr.components.AvatarPlaceholder
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import org.example.whiskr.data.PostType
 import org.example.whiskr.extensions.customClickable
 import org.example.whiskr.theme.WhiskrTheme
@@ -29,7 +29,7 @@ import org.example.whiskr.util.rememberRelativeTime
 @Composable
 fun PostCard(
     post: Post,
-    onMediaClick: (List<PostMedia>, Int) -> Unit,
+    onMediaClick: (List<Media>, Int) -> Unit,
     onLikeClick: () -> Unit,
     onCommentClick: () -> Unit,
     onRepostClick: () -> Unit,
@@ -94,7 +94,7 @@ fun PostCard(
 @Composable
 private fun RegularPostContent(
     post: Post,
-    onMediaClick: (List<PostMedia>, Int) -> Unit,
+    onMediaClick: (List<Media>, Int) -> Unit,
     onLikeClick: () -> Unit,
     onCommentClick: () -> Unit,
     onRepostClick: () -> Unit,

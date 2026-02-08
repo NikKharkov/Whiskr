@@ -5,12 +5,14 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import com.multiplatform.webview.web.LoadingState
 import com.multiplatform.webview.web.WebView
 import com.multiplatform.webview.web.rememberWebViewNavigator
@@ -31,7 +33,11 @@ fun NewsViewerScreen(
 
     Scaffold(
         topBar = {
-            Column {
+            Column(
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .padding(vertical = 8.dp, horizontal = 16.dp)
+            ) {
                 SimpleTopBar(
                     title = {
                         Text(
@@ -43,7 +49,7 @@ fun NewsViewerScreen(
                         )
                     },
                     icon = painterResource(Res.drawable.ic_arrow_back),
-                    onIconClick = component::onBackClick
+                    onIconClick = component::onBackClick,
                 )
 
                 val loadingState = state.loadingState
@@ -65,8 +71,8 @@ fun NewsViewerScreen(
             state = state,
             navigator = navigator,
             modifier = Modifier
-                .fillMaxSize()
                 .padding(innerPadding)
+                .fillMaxSize()
         )
     }
 }

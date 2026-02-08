@@ -3,7 +3,7 @@ package org.example.whiskr.component
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 
 interface PostDetailsComponent {
     val model: Value<Model>
@@ -15,7 +15,7 @@ interface PostDetailsComponent {
     fun onRepostClick(post: Post)
     fun onLikeClick(postId: Long)
     fun onShareClick(post: Post)
-    fun onMediaClick(media: List<PostMedia>, index: Int)
+    fun onMediaClick(media: List<Media>, index: Int)
     fun onNavigateToParentProfile(handle: String)
 
     data class Model(
@@ -30,7 +30,7 @@ interface PostDetailsComponent {
             postId: Long,
             onNavigateToReply: (Post) -> Unit,
             onNavigateToPostDetails: (Post) -> Unit,
-            onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
+            onNavigateToMediaViewer: (List<Media>, Int) -> Unit,
             onBack: () -> Unit,
             onNavigateToHashtag: (String) -> Unit,
             onNavigateToProfile: (String) -> Unit,

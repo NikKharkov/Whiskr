@@ -7,7 +7,7 @@ import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.component.PostListComponent
 import org.example.whiskr.component.componentScope
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import org.example.whiskr.delegates.PostFeedDelegate
 import org.example.whiskr.domain.PostRepository
 import org.example.whiskr.domain.ShareService
@@ -19,7 +19,7 @@ class DefaultPostListComponent(
     @Assisted private val loader: suspend (Int) -> Result<PagedResponse<Post>>,
     @Assisted private val onNavigateToProfile: (String) -> Unit,
     @Assisted private val onNavigateToComments: (Post) -> Unit,
-    @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
+    @Assisted private val onNavigateToMediaViewer: (List<Media>, Int) -> Unit,
     @Assisted private val onNavigateToHashtag: (String) -> Unit,
     @Assisted private val onNavigateToRepost: (Post) -> Unit,
     private val postRepository: PostRepository,
@@ -50,7 +50,7 @@ class DefaultPostListComponent(
     override fun onLikeClick(postId: Long) = feedDelegate.onLikeClick(postId)
     override fun onShareClick(post: Post) = feedDelegate.onShareClick(post)
 
-    override fun onMediaClick(media: List<PostMedia>, index: Int) = onNavigateToMediaViewer(media, index)
+    override fun onMediaClick(media: List<Media>, index: Int) = onNavigateToMediaViewer(media, index)
     override fun onNavigateToDetails(post: Post) = onNavigateToComments(post)
     override fun onProfileClick(handle: String) = onNavigateToProfile(handle)
     override fun onHashtagClick(tag: String) = onNavigateToHashtag(tag)

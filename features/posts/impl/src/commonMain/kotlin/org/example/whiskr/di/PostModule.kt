@@ -17,7 +17,7 @@ import org.example.whiskr.component.reply.DefaultCreateReplyComponent
 import org.example.whiskr.component.repost.DefaultCreateRepostComponent
 import org.example.whiskr.data.Post
 import org.example.whiskr.data.PostApiService
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import org.example.whiskr.data.PostRepositoryImpl
 import org.example.whiskr.data.createPostApiService
 import org.example.whiskr.domain.PostRepository
@@ -51,7 +51,7 @@ interface PostModule {
             suspend (Int) -> Result<PagedResponse<Post>>,
             (String) -> Unit,
             (Post) -> Unit,
-            (List<PostMedia>, Int) -> Unit,
+            (List<Media>, Int) -> Unit,
             (String) -> Unit,
             (Post) -> Unit
         ) -> DefaultPostListComponent
@@ -75,7 +75,7 @@ interface PostModule {
             Long,
             (Post) -> Unit,
             (Post) -> Unit,
-            (List<PostMedia>, Int) -> Unit,
+            (List<Media>, Int) -> Unit,
             () -> Unit,
             (String) -> Unit,
             (String) -> Unit,
@@ -93,7 +93,7 @@ interface PostModule {
             String, // hashtag
             () -> Unit, // onBack
             (Post) -> Unit, // comments
-            (List<PostMedia>, Int) -> Unit, // media
+            (List<Media>, Int) -> Unit, // media
             (String) -> Unit, // hashtag nav
             (String) -> Unit, // profile nav
             (Post) -> Unit // repost

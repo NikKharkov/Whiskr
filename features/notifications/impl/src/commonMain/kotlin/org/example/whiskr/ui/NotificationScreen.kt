@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import org.example.whiskr.component.NotificationComponent
 import org.example.whiskr.components.SimpleTopBar
+import org.example.whiskr.theme.LocalIsTablet
 import org.example.whiskr.theme.WhiskrTheme
 import org.example.whiskr.ui.components.NotificationCard
 import org.jetbrains.compose.resources.painterResource
@@ -47,6 +48,7 @@ fun NotificationsScreen(
     val model by component.model.subscribeAsState()
     val listState = rememberLazyListState()
     val pullRefreshState = rememberPullToRefreshState()
+    val isTablet = LocalIsTablet.current
 
     val shouldLoadMore by remember {
         derivedStateOf {
@@ -67,20 +69,22 @@ fun NotificationsScreen(
         modifier = Modifier.fillMaxSize(),
         containerColor = WhiskrTheme.colors.background,
         topBar = {
-            SimpleTopBar(
-                icon = painterResource(Res.drawable.ic_arrow_back),
-                onIconClick = component::onBackClicked,
-                title = {
-                    Text(
-                        text = stringResource(Res.string.notifications_title),
-                        style = WhiskrTheme.typography.h3,
-                        color = WhiskrTheme.colors.onBackground,
-                    )
-                },
-                modifier = Modifier
-                    .statusBarsPadding()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-            )
+            if (!isTablet) {
+                SimpleTopBar(
+                    icon = painterResource(Res.drawable.ic_arrow_back),
+                    onIconClick = component::onBackClicked,
+                    title = {
+                        Text(
+                            text = stringResource(Res.string.notifications_title),
+                            style = WhiskrTheme.typography.h3,
+                            color = WhiskrTheme.colors.onBackground,
+                        )
+                    },
+                    modifier = Modifier
+                        .statusBarsPadding()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                )
+            }
         },
         contentWindowInsets = WindowInsets(0, 0, 0, 0)
     ) { paddingValues ->

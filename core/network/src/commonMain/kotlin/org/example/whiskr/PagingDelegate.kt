@@ -9,7 +9,7 @@ import org.example.whiskr.dto.PagedResponse
 
 class PagingDelegate<T>(
     private val scope: CoroutineScope,
-    private val initialItems: List<T> = emptyList(),
+    initialItems: List<T> = emptyList(),
     private val loader: suspend (page: Int) -> Result<PagedResponse<T>>
 ) {
     data class State<T>(
@@ -83,5 +83,17 @@ class PagingDelegate<T>(
 
     fun prependItem(item: T) {
         updateItems { listOf(item) + it }
+    }
+
+    fun tryReplace(predicate: (T) -> Boolean, newItem: T): Boolean {
+        val currentList = _state.value.items.toMutableList()
+        val index = currentList.indexOfFirst(predicate)
+
+        if (index != -1) {
+            currentList[index] = newItem
+            _state.update { it.copy(items = currentList) }
+            return true
+        }
+        return false
     }
 }

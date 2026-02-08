@@ -4,7 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import org.example.whiskr.component.PostListComponent
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import org.example.whiskr.domain.AnimalNews
 
 interface ExploreComponent {
@@ -29,7 +29,7 @@ interface ExploreComponent {
             componentContext: ComponentContext,
             onNavigateToPost: (Post) -> Unit,
             onNavigateToProfile: (String) -> Unit,
-            onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
+            onNavigateToMediaViewer: (List<Media>, Int) -> Unit,
             onNavigateToHashtag: (String) -> Unit,
             onNavigateToNews: (String) -> Unit,
             onNavigateToRepost: (Post) -> Unit

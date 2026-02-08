@@ -16,7 +16,7 @@ import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.component.PostListComponent
 import org.example.whiskr.component.componentScope
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import org.example.whiskr.domain.NotificationRepository
 import org.example.whiskr.domain.PostRepository
 import org.example.whiskr.dto.ProfileResponse
@@ -29,12 +29,13 @@ class DefaultProfileComponent(
     @Assisted private val onBack: () -> Unit,
     @Assisted private val onNavigateToPost: (Post) -> Unit,
     @Assisted private val onNavigateToUserProfile: (String) -> Unit,
-    @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
+    @Assisted private val onNavigateToMediaViewer: (List<Media>, Int) -> Unit,
     @Assisted private val onNavigateToHashtag: (String) -> Unit,
     @Assisted private val onNavigateToRepost: (Post) -> Unit,
     @Assisted private val onNavigateToEditProfile: () -> Unit,
     @Assisted private val onNavigateToAddPet: () -> Unit,
     @Assisted private val onNavigateToEditPet: (Long, PetResponse) -> Unit,
+    @Assisted private val onSendMessageClick: (Long) -> Unit,
     private val profileRepository: ProfileRepository,
     private val postRepository: PostRepository,
     private val notificationRepository: NotificationRepository,
@@ -155,12 +156,17 @@ class DefaultProfileComponent(
         }
     }
 
+    override fun onMessageClick() {
+        val profile = _model.value.profile ?: return
+        if (profile.isMe) return
+
+        onSendMessageClick(profile.userId)
+    }
+
     override fun onBackClick() = onBack()
     override fun onNavigateToUserProfile(handle: String) = onNavigateToUserProfile.invoke(handle)
     override fun onNavigateToPost(post: Post) = onNavigateToPost.invoke(post)
-    override fun onMediaClick(media: List<PostMedia>, index: Int) =
-        onNavigateToMediaViewer(media, index)
-
+    override fun onMediaClick(media: List<Media>, index: Int) = onNavigateToMediaViewer(media, index)
     override fun onHashtagClick(tag: String) = onNavigateToHashtag(tag)
     override fun onPetClick(petId: Long, pet: PetResponse) = onNavigateToEditPet(petId, pet)
     override fun onEditProfileClick() = onNavigateToEditProfile()

@@ -2,11 +2,11 @@ package org.example.whiskr.component
 
 import com.arkivanov.decompose.ComponentContext
 import org.example.whiskr.data.MediaType
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 
 interface MediaViewerComponent {
 
-    val mediaList: List<PostMedia>
+    val mediaList: List<Media>
     val initialIndex: Int
 
     fun onBackClicked()
@@ -15,7 +15,7 @@ interface MediaViewerComponent {
     fun interface Factory {
         operator fun invoke(
             componentContext: ComponentContext,
-            mediaList: List<PostMedia>,
+            mediaList: List<Media>,
             initialIndex: Int,
             onFinished: () -> Unit
         ): MediaViewerComponent

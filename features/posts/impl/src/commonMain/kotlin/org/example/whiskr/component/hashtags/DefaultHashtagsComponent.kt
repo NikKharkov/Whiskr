@@ -7,7 +7,7 @@ import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.component.HashtagsComponent
 import org.example.whiskr.component.PostListComponent
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import org.example.whiskr.domain.PostRepository
 
 @Inject
@@ -16,7 +16,7 @@ class DefaultHashtagsComponent(
     @Assisted override val hashtag: String,
     @Assisted private val onBack: () -> Unit,
     @Assisted private val onNavigateToComments: (Post) -> Unit,
-    @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
+    @Assisted private val onNavigateToMediaViewer: (List<Media>, Int) -> Unit,
     @Assisted private val onNavigateToHashtag: (String) -> Unit,
     @Assisted private val onNavigateToProfile: (String) -> Unit,
     @Assisted private val onNavigateToRepost: (Post) -> Unit,

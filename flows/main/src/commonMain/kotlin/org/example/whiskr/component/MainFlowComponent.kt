@@ -4,6 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
+import component.ChatDetailComponent
 import component.ProfileComponent
 import component.add_pet.AddPetComponent
 import component.edit_pet.EditPetComponent
@@ -12,8 +13,8 @@ import domain.UserState
 import kotlinx.serialization.Serializable
 import org.example.whiskr.component.explore.ExploreComponent
 import org.example.whiskr.component.viewer.NewsViewerComponent
+import org.example.whiskr.data.Media
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
 import org.example.whiskr.data.WalletResponseDto
 import org.example.whiskr.dto.PetResponse
 import org.jetbrains.compose.resources.DrawableResource
@@ -24,7 +25,7 @@ import whiskr.flows.main.generated.resources.ic_explore
 import whiskr.flows.main.generated.resources.ic_games
 import whiskr.flows.main.generated.resources.ic_home
 import whiskr.flows.main.generated.resources.ic_messages
-import whiskr.flows.main.generated.resources.ic_notification_filled
+import whiskr.flows.main.generated.resources.ic_notification
 import whiskr.flows.main.generated.resources.ic_profile
 import whiskr.flows.main.generated.resources.ic_store
 import whiskr.flows.main.generated.resources.tab_ai
@@ -66,6 +67,7 @@ interface MainFlowComponent {
         class NewsViewer(val component: NewsViewerComponent) : Child()
         class Games(val component: Any) : Child()
         class Messages(val component: Any) : Child()
+        class ChatDetail(val component: ChatDetailComponent) : Child()
         class Notifications(val component: NotificationComponent) : Child()
         class Profile(val component: ProfileComponent, val isMe: Boolean) : Child()
     }
@@ -107,18 +109,24 @@ interface MainFlowComponent {
 
         @Serializable
         data class MediaViewer(
-            val media: List<PostMedia>,
+            val media: List<Media>,
             val index: Int
         ) : Config
 
         @Serializable
-        data class NewsViewer(val url: String): Config
+        data class NewsViewer(val url: String) : Config
 
         @Serializable
         data object Store : Config
 
         @Serializable
         data object Notifications : Config
+
+        @Serializable
+        data class ChatDetail(
+            val chatId: Long = -1L,
+            val userId: Long = -1L
+        ) : Config
     }
 
     sealed interface DialogChild {
@@ -132,6 +140,7 @@ interface MainFlowComponent {
     sealed interface DialogConfig {
         @Serializable
         data class CreateRepost(val targetPost: Post) : DialogConfig
+
         @Serializable
         data object EditProfile : DialogConfig
 
@@ -166,6 +175,6 @@ interface MainFlowComponent {
         AI_STUDIO(Res.string.tab_ai, Res.drawable.ic_ai),
         GAMES(Res.string.tab_games, Res.drawable.ic_games),
         MESSAGES(Res.string.tab_messages, Res.drawable.ic_messages),
-        NOTIFICATIONS(Res.string.tab_notifications, Res.drawable.ic_notification_filled, false,false)
+        NOTIFICATIONS(Res.string.tab_notifications, Res.drawable.ic_notification, false, false)
     }
 }

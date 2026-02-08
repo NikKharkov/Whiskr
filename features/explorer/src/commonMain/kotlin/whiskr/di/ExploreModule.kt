@@ -10,7 +10,7 @@ import org.example.whiskr.component.viewer.NewsViewerComponent
 import org.example.whiskr.data.ExplorerApiService
 import org.example.whiskr.data.ExplorerRepositoryImpl
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import org.example.whiskr.domain.ExplorerRepository
 
 interface ExploreModule {
@@ -32,7 +32,7 @@ interface ExploreModule {
             ComponentContext,
             (Post) -> Unit,   // onPost
             (String) -> Unit, // onProfile
-            (List<PostMedia>, Int) -> Unit, // onMedia
+            (List<Media>, Int) -> Unit, // onMedia
             (String) -> Unit, // onHashtag
             (String) -> Unit, //onNews
             (Post) -> Unit // onRepost

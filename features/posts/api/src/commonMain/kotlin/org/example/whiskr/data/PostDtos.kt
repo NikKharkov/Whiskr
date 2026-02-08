@@ -10,7 +10,7 @@ data class Post(
     val content: String?,
     val type: PostType,
     val createdAt: LocalDateTime,
-    val media: List<PostMedia>,
+    val media: List<Media>,
     val hashtags: Set<String>,
     val stats: PostStats,
     val interaction: UserInteraction,
@@ -18,7 +18,7 @@ data class Post(
 )
 
 @Serializable
-data class PostMedia(
+data class Media(
     val id: Long,
     val url: String,
     val type: MediaType,

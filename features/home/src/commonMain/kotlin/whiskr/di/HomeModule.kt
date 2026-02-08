@@ -5,7 +5,7 @@ import me.tatarka.inject.annotations.Provides
 import org.example.whiskr.component.DefaultHomeComponent
 import org.example.whiskr.component.HomeComponent
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 
 interface HomeModule {
     @Provides
@@ -16,7 +16,7 @@ interface HomeModule {
             () -> Unit, // onNavigateToCreatePost
             (String) -> Unit, // onNavigateToProfile
             (Post) -> Unit, // onNavigateToComments
-            (List<PostMedia>, Int) -> Unit, // onNavigateToMediaViewer
+            (List<Media>, Int) -> Unit, // onNavigateToMediaViewer
             (String) -> Unit, // onNavigateToHashtag
             (Post) -> Unit // onNavigateToRepost
         ) -> DefaultHomeComponent

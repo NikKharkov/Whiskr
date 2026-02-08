@@ -28,9 +28,10 @@ import androidx.compose.ui.unit.dp
 import chaintech.videoplayer.host.MediaPlayerHost
 import chaintech.videoplayer.model.VideoPlayerConfig
 import chaintech.videoplayer.ui.video.VideoPlayerComposable
+import co.touchlab.kermit.Logger
 import coil3.compose.AsyncImage
 import org.example.whiskr.data.MediaType
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import org.example.whiskr.extensions.customClickable
 import org.example.whiskr.theme.WhiskrTheme
 import org.example.whiskr.util.toCloudStorageUrl
@@ -40,7 +41,7 @@ import whiskr.features.posts.api.generated.resources.ic_full_screen
 
 @Composable
 fun PostMediaCarousel(
-    medias: List<PostMedia>,
+    medias: List<Media>,
     onMediaClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -83,7 +84,7 @@ fun PostMediaCarousel(
 @Composable
 private fun MediaCard(
     modifier: Modifier = Modifier,
-    media: PostMedia,
+    media: Media,
     isPlaying: Boolean,
     onClick: () -> Unit
 ) {
@@ -101,6 +102,7 @@ private fun MediaCard(
 
         MediaType.VIDEO -> {
             var isMuted by remember { mutableStateOf(true) }
+            Logger.d("VideoURL") { "Index: URL: ${media.url.toCloudStorageUrl()}" }
 
             val videoPlayerHost = remember(media.url, isPlaying, isMuted) {
                 MediaPlayerHost(

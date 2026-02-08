@@ -31,6 +31,7 @@ import org.example.whiskr.util.toTab
 import screens.AddPetScreen
 import screens.EditPetScreen
 import screens.EditProfileScreen
+import ui.ChatDetailScreen
 import ui.ProfileScreen
 import util.LocalUser
 
@@ -86,6 +87,7 @@ fun MainFlowContent(
                         is MainFlowComponent.Child.Store -> StoreScreen(child.component)
                         is MainFlowComponent.Child.NewsViewer -> NewsViewerScreen(child.component)
                         is MainFlowComponent.Child.Notifications -> NotificationsScreen(child.component)
+                        is MainFlowComponent.Child.ChatDetail -> ChatDetailScreen(child.component)
                     }
                 }
 

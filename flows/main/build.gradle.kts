@@ -12,6 +12,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api(projects.features.posts.impl)
+            api(projects.features.notifications.impl)
             api(projects.features.mediaViewer)
             api(projects.features.billing)
             api(projects.features.aiStudio)
@@ -19,7 +20,7 @@ kotlin {
             api(projects.features.profile)
             api(projects.features.explorer)
             api(projects.features.addEdit)
-            api(projects.features.notifications.impl)
+            api(projects.features.chat)
 
             implementation(projects.core.user)
             implementation(projects.core.storage)

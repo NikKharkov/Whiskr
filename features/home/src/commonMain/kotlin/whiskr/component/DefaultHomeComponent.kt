@@ -5,7 +5,7 @@ import com.arkivanov.decompose.childContext
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import org.example.whiskr.domain.PostRepository
 
 @Inject
@@ -14,7 +14,7 @@ class DefaultHomeComponent(
     @Assisted private val onNavigateToCreatePost: () -> Unit,
     @Assisted private val onNavigateToProfile: (String) -> Unit,
     @Assisted private val onNavigateToComments: (Post) -> Unit,
-    @Assisted private val onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
+    @Assisted private val onNavigateToMediaViewer: (List<Media>, Int) -> Unit,
     @Assisted private val onNavigateToHashtag: (String) -> Unit,
     @Assisted private val onNavigateToRepost: (Post) -> Unit,
     private val postRepository: PostRepository,

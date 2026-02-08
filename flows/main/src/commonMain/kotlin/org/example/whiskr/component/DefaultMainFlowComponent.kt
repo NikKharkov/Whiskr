@@ -14,6 +14,7 @@ import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
+import component.ChatDetailComponent
 import component.ProfileComponent
 import component.add_pet.AddPetComponent
 import component.edit_pet.EditPetComponent
@@ -67,7 +68,8 @@ class DefaultMainFlowComponent(
     private val editProfileFactory: EditProfileComponent.Factory,
     private val addPetFactory: AddPetComponent.Factory,
     private val editPetFactory: EditPetComponent.Factory,
-    private val notificationFactory: NotificationComponent.Factory
+    private val notificationFactory: NotificationComponent.Factory,
+    private val chatDetailFactory: ChatDetailComponent.Factory
 ) : MainFlowComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<MainFlowComponent.Config>()
@@ -237,6 +239,9 @@ class DefaultMainFlowComponent(
                 },
                 onNavigateToEditPet = { petId, petData ->
                     dialogNavigation.activate(MainFlowComponent.DialogConfig.EditPet(petId, petData))
+                },
+                onSendMessageClick = { targetUserId ->
+                    navigation.push(MainFlowComponent.Config.ChatDetail(userId = targetUserId))
                 }
             ),
             isMe = false
@@ -275,6 +280,9 @@ class DefaultMainFlowComponent(
                 },
                 onNavigateToEditPet = { petId, petData ->
                     dialogNavigation.activate(MainFlowComponent.DialogConfig.EditPet(petId, petData))
+                },
+                onSendMessageClick = { targetUserId ->
+                    navigation.push(MainFlowComponent.Config.ChatDetail(userId = targetUserId))
                 }
             ),
             isMe = true
@@ -371,6 +379,21 @@ class DefaultMainFlowComponent(
                     if (config != null) {
                         navigation.push(config)
                     }
+                }
+            )
+        )
+
+        is MainFlowComponent.Config.ChatDetail -> MainFlowComponent.Child.ChatDetail(
+            chatDetailFactory(
+                componentContext = context,
+                chatId = config.chatId,
+                userId = config.userId,
+                onBack = { navigation.pop() },
+                onNavigateToProfile = { handle ->
+                    navigation.bringToFront(UserProfile(handle))
+                },
+                onNavigateToMediaViewer = { media, index ->
+                    navigation.push(MediaViewer(media, index))
                 }
             )
         )

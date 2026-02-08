@@ -10,14 +10,14 @@ import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.data.MediaType
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 @Inject
 class DefaultMediaViewerComponent(
     @Assisted componentContext: ComponentContext,
-    @Assisted override val mediaList: List<PostMedia>,
+    @Assisted override val mediaList: List<Media>,
     @Assisted override val initialIndex: Int,
     @Assisted private val onFinished: () -> Unit,
     private val httpClient: HttpClient

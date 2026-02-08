@@ -2,7 +2,7 @@ package org.example.whiskr.component
 
 import com.arkivanov.decompose.ComponentContext
 import org.example.whiskr.data.Post
-import org.example.whiskr.data.PostMedia
+import org.example.whiskr.data.Media
 
 interface HashtagsComponent {
     val hashtag: String
@@ -16,7 +16,7 @@ interface HashtagsComponent {
             hashtag: String,
             onBack: () -> Unit,
             onNavigateToComments: (Post) -> Unit,
-            onNavigateToMediaViewer: (List<PostMedia>, Int) -> Unit,
+            onNavigateToMediaViewer: (List<Media>, Int) -> Unit,
             onNavigateToHashtag: (String) -> Unit,
             onNavigateToProfile: (String) -> Unit,
             onNavigateToRepost: (Post) -> Unit
