@@ -14,11 +14,12 @@ import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import component.ChatDetailComponent
+import component.detail.ChatDetailComponent
 import component.ProfileComponent
 import component.add_pet.AddPetComponent
 import component.edit_pet.EditPetComponent
 import component.edit_profile.EditProfileComponent
+import component.list.ChatListComponent
 import domain.UserRepository
 import domain.UserState
 import kotlinx.coroutines.launch
@@ -62,7 +63,7 @@ class DefaultMainFlowComponent(
     private val editPetFactory: EditPetComponent.Factory,
     private val notificationFactory: NotificationComponent.Factory,
     private val chatDetailFactory: ChatDetailComponent.Factory,
-    // private val chatListFactory: ChatListComponent.Factory
+    private val chatListFactory: ChatListComponent.Factory
 ) : MainFlowComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<MainFlowComponent.Config>()
@@ -216,13 +217,10 @@ class DefaultMainFlowComponent(
         )
 
         MainFlowComponent.Config.Messages -> MainFlowComponent.Child.Messages(
-            // TODO: ChatListFactory
-            /* chatListFactory(
+            chatListFactory(
                    componentContext = context,
-                   onNavigateToChat = { chatId -> navigateToChat(chatId = chatId) },
-                   onNavigateToNewChat = { /* ... */ }
-               ) */
-            Unit
+                   onNavigateToChat = { chatId -> navigateToChat(chatId = chatId) }
+               )
         )
 
         is MainFlowComponent.Config.ChatDetail -> MainFlowComponent.Child.ChatDetail(

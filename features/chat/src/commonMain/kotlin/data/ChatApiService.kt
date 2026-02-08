@@ -7,6 +7,7 @@ import de.jensklingenberg.ktorfit.http.Path
 import de.jensklingenberg.ktorfit.http.Query
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import org.example.whiskr.dto.PagedResponse
+import org.example.whiskr.dto.ProfileResponse
 
 interface ChatApiService {
 
@@ -15,6 +16,11 @@ interface ChatApiService {
         @Query("page") page: Int,
         @Query("size") size: Int = 20
     ): PagedResponse<ChatDto>
+
+    @GET("chats/{chatId}")
+    suspend fun getChatById(
+        @Path("chatId") chatId: Long
+    ): ChatDto
 
     @GET("chats/{chatId}/messages")
     suspend fun getChatHistory(
@@ -33,4 +39,11 @@ interface ChatApiService {
     suspend fun createPrivateChat(
         @Query("targetUserId") targetUserId: Long
     ): ChatDto
+
+    @GET("profile/search")
+    suspend fun searchUsers(
+        @Query("query") query: String,
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 20
+    ): PagedResponse<ProfileResponse>
 }

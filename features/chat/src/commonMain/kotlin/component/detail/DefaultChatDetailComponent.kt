@@ -1,4 +1,4 @@
-package component
+package component.detail
 
 import co.touchlab.kermit.Logger
 import com.arkivanov.decompose.ComponentContext
@@ -82,7 +82,19 @@ class DefaultChatDetailComponent(
     }
 
     private suspend fun resolveChatAndSetupInitialState(): Long? {
-        if (initialChatId != -1L) return initialChatId
+        if (initialChatId != -1L) {
+            if (_model.value.chatInfo == null) {
+                chatRepository.getChat(initialChatId).onSuccess { chatDto ->
+                    _model.update {
+                        it.copy(
+                            chatInfo = chatDto,
+                            partnerStatus = if (chatDto.isOnline) UserState.ONLINE else UserState.OFFLINE
+                        )
+                    }
+                }
+            }
+            return initialChatId
+        }
 
         if (targetUserId != -1L) {
             val chatDto = chatRepository.getOrCreatePrivateChat(targetUserId).getOrNull()

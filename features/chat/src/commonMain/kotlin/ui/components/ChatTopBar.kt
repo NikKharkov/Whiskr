@@ -32,7 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import component.ChatDetailComponent
+import component.detail.ChatDetailComponent
 import data.UserState
 import kotlinx.coroutines.delay
 import org.example.whiskr.components.AvatarPlaceholder

@@ -1,4 +1,4 @@
-package component
+package component.detail
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value

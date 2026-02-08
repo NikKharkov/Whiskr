@@ -32,6 +32,7 @@ import screens.AddPetScreen
 import screens.EditPetScreen
 import screens.EditProfileScreen
 import ui.ChatDetailScreen
+import ui.MessagesScreen
 import ui.ProfileScreen
 import util.LocalUser
 
@@ -77,7 +78,7 @@ fun MainFlowContent(
                         is MainFlowComponent.Child.Explore -> ExploreScreen(child.component)
                         is MainFlowComponent.Child.AiStudio -> AiStudioScreen(child.component)
                         is MainFlowComponent.Child.Games -> Text("Games screen")
-                        is MainFlowComponent.Child.Messages -> Text("Messages screen")
+                        is MainFlowComponent.Child.Messages -> MessagesScreen(child.component)
                         is MainFlowComponent.Child.Profile -> ProfileScreen(child.component)
                         is MainFlowComponent.Child.CreatePost -> CreatePostScreen(child.component)
                         is MainFlowComponent.Child.CreateReply -> CreateReplyScreen(child.component)

@@ -12,6 +12,7 @@ import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import me.tatarka.inject.annotations.Inject
 import org.example.whiskr.dto.PagedResponse
+import org.example.whiskr.dto.ProfileResponse
 
 @Inject
 class ChatRepositoryImpl(
@@ -26,9 +27,20 @@ class ChatRepositoryImpl(
         return runCatching { chatApiService.getChatHistory(chatId, page) }
     }
 
+    override suspend fun getChat(chatId: Long): Result<ChatDto> {
+        return runCatching { chatApiService.getChatById(chatId) }
+    }
+
     override suspend fun getOrCreatePrivateChat(targetUserId: Long): Result<ChatDto> {
         return runCatching {
             chatApiService.createPrivateChat(targetUserId)
+        }
+    }
+
+    override suspend fun searchUsers(query: String): Result<List<ProfileResponse>> {
+        return runCatching {
+            val response = chatApiService.searchUsers(query)
+            response.content
         }
     }
 

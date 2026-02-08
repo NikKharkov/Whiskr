@@ -1,8 +1,10 @@
 package di
 
 import com.arkivanov.decompose.ComponentContext
-import component.ChatDetailComponent
-import component.DefaultChatDetailComponent
+import component.detail.ChatDetailComponent
+import component.detail.DefaultChatDetailComponent
+import component.list.ChatListComponent
+import component.list.DefaultChatListComponent
 import data.ChatApiService
 import data.ChatRepositoryImpl
 import data.ChatSocketService
@@ -47,5 +49,16 @@ interface ChatModule {
         ) -> DefaultChatDetailComponent
     ): ChatDetailComponent.Factory {
         return ChatDetailComponent.Factory(factory)
+    }
+
+    @Provides
+    @Singleton
+    fun provideChatListFactory(
+        factory: (
+            ComponentContext,
+            (Long) -> Unit // onNavigateToChat
+        ) -> DefaultChatListComponent
+    ): ChatListComponent.Factory {
+        return ChatListComponent.Factory(factory)
     }
 }

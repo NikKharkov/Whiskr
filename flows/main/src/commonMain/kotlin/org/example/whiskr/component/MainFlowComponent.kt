@@ -4,11 +4,12 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
-import component.ChatDetailComponent
+import component.detail.ChatDetailComponent
 import component.ProfileComponent
 import component.add_pet.AddPetComponent
 import component.edit_pet.EditPetComponent
 import component.edit_profile.EditProfileComponent
+import component.list.ChatListComponent
 import domain.UserState
 import kotlinx.serialization.Serializable
 import org.example.whiskr.component.explore.ExploreComponent
@@ -66,7 +67,7 @@ interface MainFlowComponent {
         class AiStudio(val component: AiStudioComponent) : Child()
         class NewsViewer(val component: NewsViewerComponent) : Child()
         class Games(val component: Any) : Child()
-        class Messages(val component: Any) : Child()
+        class Messages(val component: ChatListComponent) : Child()
         class ChatDetail(val component: ChatDetailComponent) : Child()
         class Notifications(val component: NotificationComponent) : Child()
         class Profile(val component: ProfileComponent, val isMe: Boolean) : Child()

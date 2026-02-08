@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.mohamedrejeb.calf.core.LocalPlatformContext
-import component.ChatDetailComponent
+import component.detail.ChatDetailComponent
 import data.ChatMessageDto
 import org.example.whiskr.layouts.CollapsingTopBarScaffold
 import ui.components.ChatInputBar
