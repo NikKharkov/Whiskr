@@ -34,10 +34,9 @@
 | ![AI Studio](screenshots/ai_studio.jpg) | ![Chat](screenshots/chat.jpg) | ![Replies](screenshots/replies.jpg) |
 
 ### Monetization
-|     Premium Shop (Stripe)     |
-|:-----------------------------:|
-| ![Shop](screenshots/shop.gif) |
-
+|                     Premium Shop (Stripe)                      |
+|:--------------------------------------------------------------:|
+| <img src="screenshots/shop.gif" width="400" alt="Shop Demo" /> |
 ## 🛠 Tech Stack
 
 The project leverages the most advanced libraries in the Kotlin Multiplatform ecosystem:
