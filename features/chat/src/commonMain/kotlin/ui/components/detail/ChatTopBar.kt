@@ -1,4 +1,4 @@
-package ui.components
+package ui.components.detail
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing

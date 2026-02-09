@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Assisted
 import me.tatarka.inject.annotations.Inject
+import org.example.whiskr.PagingDelegate
 import org.example.whiskr.component.componentScope
 import org.example.whiskr.dto.ProfileResponse
 
@@ -25,29 +26,43 @@ class DefaultChatListComponent(
     @Assisted componentContext: ComponentContext,
     @Assisted private val onNavigateToChat: (Long) -> Unit,
     private val chatRepository: ChatRepository,
-    private val userRepository: UserRepository
+    userRepository: UserRepository
 ) : ChatListComponent, ComponentContext by componentContext {
 
     private val scope = componentScope()
     private val _model = MutableValue(ChatListComponent.Model())
     override val model: Value<ChatListComponent.Model> = _model
 
+    private val pagingDelegate = PagingDelegate(
+        scope = scope,
+        loader = { page -> chatRepository.getMyChats(page) }
+    )
+
     private val searchQueryFlow = MutableStateFlow("")
 
     init {
-        scope.launch {
-            val user = userRepository.user.value
-            _model.update { it.copy(currentUserId = user.profile?.id ?: -1) }
-            loadChats()
+        val user = userRepository.user.value
+        _model.update { it.copy(currentUserId = user.profile?.id ?: -1) }
+
+        pagingDelegate.state.subscribe { pagingState ->
+            _model.update { current ->
+                current.copy(
+                    chats = pagingState.items,
+                    isRefreshing = pagingState.isRefreshing || pagingState.isLoading,
+                    isLoadingMore = pagingState.isLoadingMore
+                )
+            }
         }
+
+        pagingDelegate.firstLoad()
 
         scope.launch {
             searchQueryFlow
-                .debounce(500)
+                .debounce(200)
                 .distinctUntilChanged()
                 .collectLatest { query ->
                     if (query.isNotBlank()) {
-                        search(query)
+                        performGlobalSearch(query)
                     } else {
                         _model.update {
                             it.copy(searchResults = emptyList(), isSearching = false)
@@ -62,7 +77,7 @@ class DefaultChatListComponent(
         searchQueryFlow.value = query
     }
 
-    private fun search(query: String) {
+    private fun performGlobalSearch(query: String) {
         scope.launch {
             _model.update { it.copy(isSearching = true) }
 
@@ -81,20 +96,13 @@ class DefaultChatListComponent(
         }
     }
 
-    private fun loadChats() {
-        scope.launch {
-            _model.update { it.copy(isRefreshing = true) }
+    override fun onRefresh() {
+        pagingDelegate.refresh()
+    }
 
-            chatRepository.getMyChats(page = 0)
-                .onSuccess { paged ->
-                    _model.update {
-                        it.copy(chats = paged.content, isRefreshing = false)
-                    }
-                }
-                .onFailure { error ->
-                    Logger.e(error) { "Failed to load chats" }
-                    _model.update { it.copy(isRefreshing = false) }
-                }
+    override fun onLoadMore() {
+        if (_model.value.searchQuery.isBlank()) {
+            pagingDelegate.loadMore()
         }
     }
 
@@ -116,9 +124,5 @@ class DefaultChatListComponent(
                     Logger.e(error) { "Failed to create chat" }
                 }
         }
-    }
-
-    override fun onRefresh() {
-        loadChats()
     }
 }

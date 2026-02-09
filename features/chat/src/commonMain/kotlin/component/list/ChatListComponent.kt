@@ -12,12 +12,14 @@ interface ChatListComponent {
     fun onChatClicked(chat: ChatDto)
     fun onUserClicked(profile: ProfileResponse)
     fun onRefresh()
+    fun onLoadMore()
 
     data class Model(
         val chats: List<ChatDto> = emptyList(),
         val searchResults: List<ProfileResponse> = emptyList(),
         val searchQuery: String = "",
         val isSearching: Boolean = false,
+        val isLoadingMore: Boolean = false,
         val isRefreshing: Boolean = false,
         val currentUserId: Long = -1L
     )

@@ -1,6 +1,7 @@
 package util
 
 import androidx.compose.runtime.Composable
+import data.ChatMessageDto
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.minus
@@ -11,6 +12,11 @@ import whiskr.features.chat.generated.resources.Res
 import whiskr.features.chat.generated.resources.last_seen_at
 import whiskr.features.chat.generated.resources.last_seen_date
 import whiskr.features.chat.generated.resources.last_seen_yesterday
+import whiskr.features.chat.generated.resources.media_photo
+import whiskr.features.chat.generated.resources.media_video
+import whiskr.features.chat.generated.resources.no_messages
+import whiskr.features.chat.generated.resources.type_message
+import whiskr.features.chat.generated.resources.you_prefix
 import kotlin.time.Clock
 import kotlin.time.Instant
 
@@ -31,12 +37,29 @@ fun Instant.toLastSeenText(): String {
     val dateStr = "${messageTime.day.toString().padStart(2, '0')}.${messageTime.month.number.toString().padStart(2, '0')}.${messageTime.year}"
 
     val today = now.date
-    val messageDate = messageTime.date
     val yesterday = today.minus(1, DateTimeUnit.DAY)
 
-    return when (messageDate) {
+    return when (messageTime.date) {
         today -> stringResource(Res.string.last_seen_at, timeStr)
         yesterday -> stringResource(Res.string.last_seen_yesterday, timeStr)
         else -> stringResource(Res.string.last_seen_date, dateStr)
+    }
+}
+
+@Composable
+fun getMessagePreviewText(message: ChatMessageDto?, currentUserId: Long): String {
+    if (message == null) return stringResource(Res.string.no_messages)
+
+    val content = when {
+        !message.content.isNullOrBlank() -> message.content
+        message.attachments.any { it.type == "IMAGE" } -> stringResource(Res.string.media_photo)
+        message.attachments.any { it.type == "VIDEO" } -> stringResource(Res.string.media_video)
+        else -> stringResource(Res.string.type_message)
+    }
+
+    return if (message.senderId == currentUserId) {
+        stringResource(Res.string.you_prefix, content)
+    } else {
+        content
     }
 }

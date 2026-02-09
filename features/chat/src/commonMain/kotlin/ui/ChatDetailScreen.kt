@@ -18,9 +18,9 @@ import com.mohamedrejeb.calf.core.LocalPlatformContext
 import component.detail.ChatDetailComponent
 import data.ChatMessageDto
 import org.example.whiskr.layouts.CollapsingTopBarScaffold
-import ui.components.ChatInputBar
-import ui.components.ChatTopBar
-import ui.components.MessageBubble
+import ui.components.detail.ChatInputBar
+import ui.components.detail.ChatTopBar
+import ui.components.detail.MessageBubble
 import util.LocalUser
 
 @Composable

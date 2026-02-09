@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "636998600750",
+    "project_id": "whiskr-ceb25",
+    "storage_bucket": "whiskr-ceb25.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:636998600750:android:2d15185c678ee8c549f7bf",
+        "android_client_info": {
+          "package_name": "org.example.whiskr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "636998600750-vrfnb0qknr5ihre2f788md9638lbi6gc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.example.whiskr",
+            "certificate_hash": "292e00920aade8a2ac6a480e8805630b89362b36"
+          }
+        },
+        {
+          "client_id": "636998600750-vahjv4od7bh58ehh6n0k4o5d4jn73u9i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYo7NxT8NXXAdscDAt9ZuJMka_H8hfYPY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "636998600750-vahjv4od7bh58ehh6n0k4o5d4jn73u9i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "636998600750-16bbquj27h7d2t9dg2v7pvophgcgr4mg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.example.whiskr"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
