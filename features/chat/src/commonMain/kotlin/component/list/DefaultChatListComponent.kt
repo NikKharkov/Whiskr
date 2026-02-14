@@ -62,7 +62,7 @@ class DefaultChatListComponent(
                 .distinctUntilChanged()
                 .collectLatest { query ->
                     if (query.isNotBlank()) {
-                        performGlobalSearch(query)
+                        search(query)
                     } else {
                         _model.update {
                             it.copy(searchResults = emptyList(), isSearching = false)
@@ -77,7 +77,7 @@ class DefaultChatListComponent(
         searchQueryFlow.value = query
     }
 
-    private fun performGlobalSearch(query: String) {
+    private fun search(query: String) {
         scope.launch {
             _model.update { it.copy(isSearching = true) }
 
@@ -117,6 +117,7 @@ class DefaultChatListComponent(
             chatRepository.getOrCreatePrivateChat(profile.userId)
                 .onSuccess { chat ->
                     _model.update { it.copy(isSearching = false) }
+                    pagingDelegate.refresh()
                     onNavigateToChat(chat.id)
                 }
                 .onFailure { error ->

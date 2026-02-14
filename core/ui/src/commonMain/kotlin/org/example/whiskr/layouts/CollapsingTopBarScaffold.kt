@@ -81,6 +81,7 @@ fun CollapsingTopBarScaffold(
         }
     }
 }
+
 @Composable
 fun rememberCollapsingState(
     maxHeight: Float,
@@ -108,11 +109,25 @@ class CollapsingState(
                 onUserScroll()
             }
 
-            val delta = available.y
-            val newOffset = offset + delta
-            offset = newOffset.coerceIn(-maxHeight, 0f)
+            if (available.y > 0) {
+                val newOffset = offset + available.y
+                offset = newOffset.coerceIn(-maxHeight, 0f)
+            }
 
             return Offset.Zero
+        }
+
+        override fun onPostScroll(
+            consumed: Offset,
+            available: Offset,
+            source: NestedScrollSource
+        ): Offset {
+            if (consumed.y < 0) {
+                val newOffset = offset + consumed.y
+                offset = newOffset.coerceIn(-maxHeight, 0f)
+            }
+
+            return super.onPostScroll(consumed, available, source)
         }
     }
 

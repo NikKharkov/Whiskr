@@ -39,7 +39,7 @@ fun MessagesScreen(
     val isSearchMode = model.searchQuery.isNotEmpty()
 
     CollapsingTopBarScaffold(
-        topBarContentHeight = 110.dp,
+        topBarContentHeight = 120.dp,
         useStatusBarPadding = true,
         topBar = { modifier ->
             Column(

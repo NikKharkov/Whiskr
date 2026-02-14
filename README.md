@@ -37,6 +37,7 @@
 |                     Premium Shop (Stripe)                      |
 |:--------------------------------------------------------------:|
 | <img src="screenshots/shop.gif" width="400" alt="Shop Demo" /> |
+
 ## 🛠 Tech Stack
 
 The project leverages the most advanced libraries in the Kotlin Multiplatform ecosystem:
