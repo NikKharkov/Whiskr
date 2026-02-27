@@ -50,6 +50,7 @@ include(":features:add_edit")
 include(":features:notifications:api")
 include(":features:notifications:impl")
 include(":features:chat")
+include(":features:games")
 
 include(":core:common")
 include(":core:network")

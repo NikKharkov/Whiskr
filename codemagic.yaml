@@ -1,0 +1,45 @@
+workflows:
+  ios-debug-build:
+    name: iOS Debug Build
+    instance_type: mac_mini_m1
+
+    environment:
+      xcode: 15.0
+      java: 17
+      cocoapods: default
+
+    triggering:
+      events:
+        - pull_request
+        - push
+      branch_patterns:
+        - pattern: 'develop'
+          include: true
+          source: true
+
+    scripts:
+      - name: Set up local.properties
+        script: |
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+
+      - name: Generate Dummy Framework for CocoaPods
+        script: |
+          chmod +x gradlew
+          ./gradlew :app:generateDummyFramework
+
+      - name: Install CocoaPods dependencies
+        script: |
+          cd iosApp
+          pod install
+
+      - name: Build iOS Debug (Simulator)
+        script: |
+          cd iosApp
+          xcodebuild clean build \
+            -workspace iosApp.xcworkspace \
+            -scheme iosApp \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            COMPILER_INDEX_STORE_ENABLE=NO
