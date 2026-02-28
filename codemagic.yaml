@@ -1,6 +1,6 @@
 workflows:
   ios-debug-build:
-    name: iOS Debug Build
+    name: iOS Debug
     instance_type: mac_mini_m1
 
     environment:
