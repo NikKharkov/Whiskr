@@ -13,7 +13,7 @@ workflows:
         - pull_request
         - push
       branch_patterns:
-        - pattern: '*'
+        - pattern: 'develop'
           include: true
           source: true
 
