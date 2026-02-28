@@ -4,7 +4,7 @@ workflows:
     instance_type: mac_mini_m1
 
     environment:
-      xcode: 15.0
+      xcode: 16.0
       java: 17
       cocoapods: default
 
