@@ -49,9 +49,18 @@ kotlin {
             version = "10.22.0"
             linkOnly = true
         }
-        pod("GoogleSignIn") { version = "7.1.0" }
-        pod("FBSDKCoreKit") { version = "17.0.0" }
-        pod("FBSDKLoginKit") { version = "17.0.0" }
+        pod("GoogleSignIn") {
+            version = "7.1.0"
+            linkOnly = true
+        }
+        pod("FBSDKCoreKit") {
+            version = "17.0.0"
+            linkOnly = true
+        }
+        pod("FBSDKLoginKit") {
+            version = "17.0.0"
+            linkOnly = true
+        }
     }
 
     sourceSets {
