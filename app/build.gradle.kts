@@ -37,9 +37,18 @@ kotlin {
 
         podfile = project.file("../iosApp/Podfile")
 
-        pod("FirebaseCore") { version = "10.22.0" }
-        pod("FirebaseAuth") { version = "10.22.0" }
-        pod("FirebaseMessaging") { version = "10.22.0" }
+        pod("FirebaseCore") {
+            version = "10.22.0"
+            linkOnly = true
+        }
+        pod("FirebaseAuth") {
+            version = "10.22.0"
+            linkOnly = true
+        }
+        pod("FirebaseMessaging") {
+            version = "10.22.0"
+            linkOnly = true
+        }
         pod("GoogleSignIn") { version = "7.1.0" }
         pod("FBSDKCoreKit") { version = "17.0.0" }
         pod("FBSDKLoginKit") { version = "17.0.0" }
