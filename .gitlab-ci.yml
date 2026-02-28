@@ -20,11 +20,8 @@ cache:
 # They run on each commit to the develop branch and in non-draft merge requests
 .development-job:
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_DRAFT == "false"'
+    - if: $CI_COMMIT_BRANCH
       when: always
-    - if: '$CI_COMMIT_BRANCH == "develop"'
-      when: always
-    - when: never
 
 androidBuildDebug:
   image: fabernovel/android:api-35-gcloud-v1.9.0
