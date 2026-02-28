@@ -35,10 +35,13 @@ workflows:
       - name: Build iOS Debug (Simulator)
         script: |
           cd iosApp
+          export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+          
           xcodebuild clean build \
             -workspace iosApp.xcworkspace \
             -scheme iosApp \
             -destination 'generic/platform=iOS Simulator' \
+            JAVA_HOME="$JAVA_HOME" \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
