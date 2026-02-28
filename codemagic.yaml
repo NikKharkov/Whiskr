@@ -10,7 +10,6 @@ workflows:
 
     triggering:
       events:
-        - pull_request
         - push
       branch_patterns:
         - pattern: '*'
@@ -18,31 +17,28 @@ workflows:
           source: true
 
     scripts:
-      - name: Set up local.properties
+      - name: Full iOS Build Setup & Execution
         script: |
-          echo "sdk.dir=$ANDROID_HOME" > local.properties
-
-      - name: Generate Dummy Framework for CocoaPods
-        script: |
-          chmod +x gradlew
-          ./gradlew :app:generateDummyFramework
-
-      - name: Install CocoaPods dependencies
-        script: |
-          cd iosApp
-          pod install
-
-      - name: Build iOS Debug (Simulator)
-        script: |
-          cd iosApp
+          set -e
+          
           export JAVA_HOME=$(/usr/libexec/java_home -v 17)
+          
+          chmod +x gradlew
+          ./gradlew clean --no-daemon
+          ./gradlew :app:generateDummyFramework --no-daemon
+          
+          cd iosApp
+          rm -rf Pods
+          pod install
           
           xcodebuild clean build \
             -workspace iosApp.xcworkspace \
             -scheme iosApp \
             -destination 'generic/platform=iOS Simulator' \
-            JAVA_HOME="$JAVA_HOME" \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             COMPILER_INDEX_STORE_ENABLE=NO
+
+    artifacts:
+      - iosApp/build/Build/Products/Debug-iphonesimulator/*.app
