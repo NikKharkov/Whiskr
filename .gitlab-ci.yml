@@ -6,18 +6,13 @@ stages:
 
 before_script:
   - chmod +x gradlew
-  # set gradle folder in project dir so that we can cache it
-  # https://stackoverflow.com/questions/34162120/gitlab-ci-gradle-dependency-cache
   - export GRADLE_USER_HOME=`pwd`/.gradle
 
-# cache dependencies
 cache:
   paths:
     - .gradle/wrapper
     - .gradle/caches
 
-# template for jobs that are needed during the development process.!reference:
-# They run on each commit to the develop branch and in non-draft merge requests
 .development-job:
   rules:
     - if: $CI_COMMIT_BRANCH
@@ -28,6 +23,7 @@ androidBuildDebug:
   extends: .development-job
   stage: androidBuildDebug
   script:
+    - ./gradlew :app:bundleDebug --no-daemon
     - ./gradlew :app:assembleDebug --no-daemon
   artifacts:
     name: "$CI_JOB_NAME-artifacts"
