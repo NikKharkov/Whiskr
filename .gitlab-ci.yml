@@ -2,7 +2,7 @@ stages:
   - androidBuildDebug
   - androidLint
   - androidTest
-  - androidAssembleRelease
+  - androidBundleRelease
 
 before_script:
   - chmod +x gradlew
@@ -43,15 +43,17 @@ androidTest:
   script:
     - ./gradlew :app:testDebugUnitTest --no-daemon
 
-androidAssembleRelease:
+androidBundleRelease:
   image: fabernovel/android:api-35-gcloud-v1.9.0
   extends: .development-job
-  stage: androidAssembleRelease
+  stage: androidBundleRelease
   needs:
     - androidBuildDebug
     - androidTest
   script:
-    - ./gradlew :app:assembleRelease --no-daemon
+    - ./gradlew :app:bundleRelease --no-daemon
   artifacts:
+    name: "release-aab"
+    expire_in: 1 week
     paths:
-      - app/build/outputs/apk/release/*.apk
+      - app/build/outputs/bundle/release/*.aab
