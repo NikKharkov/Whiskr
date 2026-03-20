@@ -33,7 +33,7 @@ trigger_ios_build:
       -H "x-auth-token: $CODEMAGIC_API_TOKEN" \
       -d '{
         "appId": "69bc0aad1fa59f10af9ed361",
-        "workflowId": "ios-release-build",
+        "workflowId": "ios-debug-build",
         "branch": "'"$CI_COMMIT_BRANCH"'"
       }'
     - echo "Успешно! Билд в Codemagic запущен."
