@@ -14,7 +14,6 @@ class WhiskrRoomPlugin : Plugin<Project> {
             add("commonMainImplementation", libs.findLibrary("room-runtime").get())
             add("commonMainImplementation", libs.findLibrary("sqlite-bundled").get())
 
-
             val roomCompiler = libs.findLibrary("room-compiler").get()
             add("kspAndroid", roomCompiler)
             add("kspIosSimulatorArm64", roomCompiler)
