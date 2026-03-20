@@ -1,8 +1,6 @@
 stages:
-  - androidBuildDebug
-  - androidLint
-  - androidTest
-  - androidBundleRelease
+  - iosBuild
+  - androidAssembleRelease
 
 before_script:
   - chmod +x gradlew
@@ -18,42 +16,38 @@ cache:
     - if: $CI_COMMIT_BRANCH
       when: always
 
-androidBuildDebug:
-  image: fabernovel/android:api-35-gcloud-v1.9.0
-  extends: .development-job
-  stage: androidBuildDebug
+trigger_ios_build:
+  stage: iosBuild
+  image: curlimages/curl:latest
+  before_script: []
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "master"'
+      when: always
+    - if: $CI_COMMIT_BRANCH
+      when: manual
   script:
-    - ./gradlew :app:bundleDebug --no-daemon
-    - ./gradlew :app:assembleDebug --no-daemon
-  artifacts:
-    name: "$CI_JOB_NAME-artifacts"
-    expire_in: 1 day
-    access: none
-    paths:
-      - app/build/
+    - echo "Отправляем запрос в Codemagic на сборку ветки $CI_COMMIT_BRANCH..."
+    - |
+      curl -s -X POST https://api.codemagic.io/builds \
+      -H "Content-Type: application/json" \
+      -H "x-auth-token: $CODEMAGIC_API_TOKEN" \
+      -d '{
+        "appId": "69bc0aad1fa59f10af9ed361",
+        "workflowId": "ios-release-build",
+        "branch": "'"$CI_COMMIT_BRANCH"'"
+      }'
+    - echo "Успешно! Билд в Codemagic запущен."
 
-androidTest:
+androidAssembleRelease:
   image: fabernovel/android:api-35-gcloud-v1.9.0
   extends: .development-job
-  stage: androidTest
-  needs:
-    - androidBuildDebug
-  dependencies:
-    - androidBuildDebug
+  stage: androidAssembleRelease
   script:
-    - ./gradlew :app:testDebugUnitTest --no-daemon
-
-androidBundleRelease:
-  image: fabernovel/android:api-35-gcloud-v1.9.0
-  extends: .development-job
-  stage: androidBundleRelease
-  needs:
-    - androidBuildDebug
-    - androidTest
-  script:
+    - ./gradlew :app:assembleRelease --no-daemon
     - ./gradlew :app:bundleRelease --no-daemon
   artifacts:
-    name: "release-aab"
+    name: "release-artifacts"
     expire_in: 1 week
     paths:
+      - app/build/outputs/apk/release/*.apk
       - app/build/outputs/bundle/release/*.aab

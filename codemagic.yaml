@@ -8,14 +8,6 @@ workflows:
       java: 17
       cocoapods: default
 
-    triggering:
-      events:
-        - push
-      branch_patterns:
-        - pattern: '*'
-          include: true
-          source: true
-
     scripts:
       - name: Full iOS Build Setup & Execution
         script: |
@@ -24,7 +16,7 @@ workflows:
           export JAVA_HOME=$(/usr/libexec/java_home -v 17)
           
           chmod +x gradlew
-          ./gradlew clean --no-daemon
+          ./gradlew clean --no-daemon 
           ./gradlew :app:generateDummyFramework --no-daemon
           
           cd iosApp
